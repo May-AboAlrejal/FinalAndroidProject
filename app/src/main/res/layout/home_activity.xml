@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
+
+    <Button
+        android:id="@+id/carStationFinder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Electric Car Charging Station finder" />
+
+    <Button
+        android:id="@+id/recipeSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recipe search engine" />
+
+    <Button
+        android:id="@+id/currencyConversion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Foreign currency conversion api" />
+
+    <Button
+        android:id="@+id/newsHeadlines"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="News Api.org headlines api" />
+</LinearLayout>
