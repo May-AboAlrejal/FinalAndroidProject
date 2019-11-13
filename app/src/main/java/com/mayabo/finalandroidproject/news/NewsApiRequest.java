@@ -118,6 +118,4 @@ public class NewsApiRequest {
         }
         return url;
     }
-
-
 }

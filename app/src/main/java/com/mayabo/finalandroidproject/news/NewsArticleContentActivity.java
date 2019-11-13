@@ -32,7 +32,7 @@ public class NewsArticleContentActivity extends AppCompatActivity {
 
         Intent dataFromPreviousPage = getIntent();
 
-        NewsApiArticle article = (NewsApiArticle) dataFromPreviousPage.getSerializableExtra("article");
+        NewsApiResponse article = (NewsApiResponse) dataFromPreviousPage.getSerializableExtra("article");
 
         TextView title = findViewById(R.id.titleText);
         title.setText(article.getTitle());

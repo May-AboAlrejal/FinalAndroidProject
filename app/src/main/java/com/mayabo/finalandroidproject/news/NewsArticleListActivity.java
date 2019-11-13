@@ -2,14 +2,12 @@ package com.mayabo.finalandroidproject.news;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mayabo.finalandroidproject.R;
 
@@ -21,14 +19,14 @@ public class NewsArticleListActivity extends AppCompatActivity {
 
     private BaseAdapter myAdapter;
     private ListView newsListView;
-    private ArrayList<NewsApiArticle> newsArticles;
+    private ArrayList<NewsApiResponse> newsArticles;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_article_list_activity);
 
         Intent dataFromPreviousPage = getIntent();
-        newsArticles = (ArrayList<NewsApiArticle>) dataFromPreviousPage.getSerializableExtra("NewsArticlesList");
+        newsArticles = (ArrayList<NewsApiResponse>) dataFromPreviousPage.getSerializableExtra("NewsArticlesList");
 
         newsListView = findViewById(R.id.newsListView);
         newsListView.setAdapter(myAdapter = new MyListAdapter());
@@ -42,7 +40,7 @@ public class NewsArticleListActivity extends AppCompatActivity {
         }
 
         @Override
-        public NewsApiArticle getItem(int i) {
+        public NewsApiResponse getItem(int i) {
             return newsArticles.get(i);
         }
 
@@ -56,7 +54,7 @@ public class NewsArticleListActivity extends AppCompatActivity {
             View thisRow = view;
             thisRow = getLayoutInflater().inflate(R.layout.news_article_activity, null);
 
-            NewsApiArticle newsApiArticle = getItem(i);
+            NewsApiResponse newsApiResponse = getItem(i);
 
             TextView titleText = thisRow.findViewById(R.id.titleText);
             TextView authorText = thisRow.findViewById(R.id.authorText);
@@ -66,13 +64,13 @@ public class NewsArticleListActivity extends AppCompatActivity {
 
             viewArticleButton.setOnClickListener(clik -> {
                 Intent goToNewsArticleContentActivity = new Intent(NewsArticleListActivity.this, NewsArticleContentActivity.class);
-                goToNewsArticleContentActivity.putExtra("article", newsApiArticle);
+                goToNewsArticleContentActivity.putExtra("article", newsApiResponse);
                 startActivityForResult(goToNewsArticleContentActivity, 17);
             });
 
-            titleText.setText(newsApiArticle.getTitle());
-            authorText.setText(newsApiArticle.getAuthor());
-            sourceText.setText(newsApiArticle.getSource());
+            titleText.setText(newsApiResponse.getTitle());
+            authorText.setText(newsApiResponse.getAuthor());
+            sourceText.setText(newsApiResponse.getSource());
 
             return thisRow;
         }

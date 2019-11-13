@@ -14,7 +14,7 @@
         <activity android:name=".news.NewsArticleListActivity" />
         <activity android:name=".news.NewsArticleContentActivity" />
         <activity android:name=".RecipeSearchActivity" />
-        <activity android:name=".news.NewsHeadlinesActivity" />
+        <activity android:name=".news.NewsHeadlinesSearchActivity" />
         <activity android:name=".CurrencyConversionActivity" />
         <activity android:name=".CarStationFinderActivity" />
         <activity android:name=".MainActivity">

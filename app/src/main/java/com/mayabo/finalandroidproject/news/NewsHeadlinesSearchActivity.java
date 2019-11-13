@@ -36,7 +36,7 @@ import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class NewsHeadlinesActivity extends AppCompatActivity {
+public class NewsHeadlinesSearchActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private Context thisApp;
@@ -47,7 +47,7 @@ public class NewsHeadlinesActivity extends AppCompatActivity {
     private Spinner spinnerSortBy;
     private Spinner spinnerLanguage;
     private URL newsURL;
-    private ArrayList<NewsApiArticle> newsArticles = new ArrayList();
+    private ArrayList<NewsApiResponse> newsArticles = new ArrayList();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -181,26 +181,26 @@ public class NewsHeadlinesActivity extends AppCompatActivity {
          * @param result a String coming as response to the url request
          * @return ArrayList of articles
          */
-        private ArrayList<NewsApiArticle> getAllArticles(String result) {
-            ArrayList<NewsApiArticle> newsArticles = new ArrayList<>();
+        private ArrayList<NewsApiResponse> getAllArticles(String result) {
+            ArrayList<NewsApiResponse> newsArticles = new ArrayList<>();
             try {
                 JSONObject jObject = new JSONObject(result);
-                String status = jObject.getString(NewsApiArticle.STATUS);
+                String status = jObject.getString(NewsApiResponse.STATUS);
                 if (status.equals("ok")) {
-                    JSONArray articles = jObject.getJSONArray(NewsApiArticle.ARTICLES);
+                    JSONArray articles = jObject.getJSONArray(NewsApiResponse.ARTICLES);
                     int numberOfArticles = articles.length();
                     if (numberOfArticles >= 1) {
                         for (int i = 0, j = 100 / numberOfArticles; i < numberOfArticles; i++, j++) {
 
-                            String author = articles.getJSONObject(i).getString(NewsApiArticle.AUTHOR);
-                            String title = articles.getJSONObject(i).getString(NewsApiArticle.TITLE);
-                            String description = articles.getJSONObject(i).getString(NewsApiArticle.DESCRIPTION);
-                            String url = articles.getJSONObject(i).getString(NewsApiArticle.URL);
-                            String urlToImage = articles.getJSONObject(i).getString(NewsApiArticle.URL_TO_IMAGE);
-                            String publishedAt = articles.getJSONObject(i).getString(NewsApiArticle.PUBLISHED_AT);
-                            String content = articles.getJSONObject(i).getString(NewsApiArticle.CONTENT);
-                            String source = articles.getJSONObject(i).getJSONObject(NewsApiArticle.SOURCE).getString(NewsApiArticle.NAME);
-                            newsArticles.add(new NewsApiArticle(author, title, description, url, urlToImage, publishedAt, content, source));
+                            String author = articles.getJSONObject(i).getString(NewsApiResponse.AUTHOR);
+                            String title = articles.getJSONObject(i).getString(NewsApiResponse.TITLE);
+                            String description = articles.getJSONObject(i).getString(NewsApiResponse.DESCRIPTION);
+                            String url = articles.getJSONObject(i).getString(NewsApiResponse.URL);
+                            String urlToImage = articles.getJSONObject(i).getString(NewsApiResponse.URL_TO_IMAGE);
+                            String publishedAt = articles.getJSONObject(i).getString(NewsApiResponse.PUBLISHED_AT);
+                            String content = articles.getJSONObject(i).getString(NewsApiResponse.CONTENT);
+                            String source = articles.getJSONObject(i).getJSONObject(NewsApiResponse.SOURCE).getString(NewsApiResponse.NAME);
+                            newsArticles.add(new NewsApiResponse(author, title, description, url, urlToImage, publishedAt, content, source));
 
                             publishProgress(j);
 
@@ -238,7 +238,7 @@ public class NewsHeadlinesActivity extends AppCompatActivity {
 
                 Snackbar.make(searchTitle,newsArticles.size() + " articles found!", Snackbar.LENGTH_LONG).show();
 
-                Intent goToNewsArticleListActivity = new Intent(NewsHeadlinesActivity.this, NewsArticleListActivity.class);
+                Intent goToNewsArticleListActivity = new Intent(NewsHeadlinesSearchActivity.this, NewsArticleListActivity.class);
                 goToNewsArticleListActivity.putExtra("NewsArticlesList", newsArticles);
                 startActivity(goToNewsArticleListActivity);
             } else {

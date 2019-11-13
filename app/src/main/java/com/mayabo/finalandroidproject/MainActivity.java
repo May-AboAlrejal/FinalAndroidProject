@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import com.mayabo.finalandroidproject.news.NewsHeadlinesActivity;
+import com.mayabo.finalandroidproject.news.NewsHeadlinesSearchActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         newsHeadlines.setOnClickListener( clk -> {
-            Intent goToNewsHeadlinesActivity = new Intent(MainActivity.this, NewsHeadlinesActivity.class);
+            Intent goToNewsHeadlinesActivity = new Intent(MainActivity.this, NewsHeadlinesSearchActivity.class);
             startActivity(goToNewsHeadlinesActivity);
         });
 

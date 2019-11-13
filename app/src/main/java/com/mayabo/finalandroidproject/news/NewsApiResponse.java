@@ -3,7 +3,7 @@ package com.mayabo.finalandroidproject.news;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class NewsApiArticle implements Serializable {
+public class NewsApiResponse implements Serializable {
     private String author;
     private String title;
     private String description;
@@ -26,10 +26,10 @@ public class NewsApiArticle implements Serializable {
     public static final String NAME = "name";
 
 
-    public NewsApiArticle() {
+    public NewsApiResponse() {
     }
 
-    public NewsApiArticle(String author, String title, String description, String url, String urlToImage, String publishedAt, String content, String source) {
+    public NewsApiResponse(String author, String title, String description, String url, String urlToImage, String publishedAt, String content, String source) {
         this.author = author;
         this.title = title;
         this.description = description;
@@ -108,7 +108,7 @@ public class NewsApiArticle implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NewsApiArticle that = (NewsApiArticle) o;
+        NewsApiResponse that = (NewsApiResponse) o;
         return Objects.equals(author, that.author) &&
                 Objects.equals(title, that.title) &&
                 Objects.equals(description, that.description) &&
