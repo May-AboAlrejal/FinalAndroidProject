@@ -12,23 +12,23 @@
         android:id="@+id/carStationFinder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Electric Car Charging Station finder" />
+        android:text="@string/car_title" />
 
     <Button
         android:id="@+id/recipeSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recipe search engine" />
+        android:text="@string/recipe_title" />
 
     <Button
         android:id="@+id/currencyConversion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Foreign currency conversion api" />
+        android:text="@string/currency_title" />
 
     <Button
         android:id="@+id/newsHeadlines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="News Api.org headlines api" />
+        android:text="@string/news_title" />
 </LinearLayout>
