@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/money"
+        android:title="@string/moneyIcon"
+        android:icon="@drawable/money"
+        android:orderInCategory="1"
+        android:tooltipText="@string/moneyIcon"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/food"
+        android:title="@string/foodIcon"
+        android:icon="@drawable/food"
+        android:orderInCategory="2"
+        android:tooltipText="@string/foodIcon"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/car"
+        android:title="@string/carIcon"
+        android:icon="@drawable/car"
+        android:orderInCategory="3"
+        android:tooltipText="@string/carIcon"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/news"
+        android:title="@string/newsIcon"
+        android:icon="@drawable/news"
+        android:tooltipText="@string/newsIcon"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
+
+</menu>
