@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">FinalAndroidProject</string>
-    <string name="title">Title: </string>
-    <string name="content">Content: </string>
-
     <string name="searchTitle">Search Title</string>
     <string name="searchContent">Search Content</string>
 
@@ -19,4 +16,11 @@
 
     <string name="viewArticle">View Article</string>
     <string name="saveArticle">Save Article</string>
+    <string name="title">Title: </string>
+    <string name="content">Content: </string>
+
+    <string name="moneyIcon">Electric Car Charging Station finder</string>
+    <string name="carIcon">Recipe search</string>
+    <string name="foodIcon">Foreign currency</string>
+    <string name="newsIcon">News Headlines search</string>
 </resources>

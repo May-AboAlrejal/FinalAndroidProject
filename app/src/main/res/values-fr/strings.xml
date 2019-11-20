@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FinalAndroidProject</string>
+    <string name="title">Titre: </string>
+    <string name="content">Contenu: </string>
+
+    <string name="moneyIcon">Moteur de recherche de voiture électrique</string>
+    <string name="carIcon">Recherche de recette</string>
+    <string name="foodIcon">Monnaie étrangère</string>
+    <string name="newsIcon">Recherche dans l\'actualité</string>
+</resources>
