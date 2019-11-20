@@ -21,6 +21,8 @@ public class NewsApiRequest {
     public static final String SORT_BY = "sortBy";
     public static final String LANGUAGE = "language";
     public static final String API_KEY = "apiKey";
+    public static final String PAGE_SIZE = "pageSize";
+    public static final String SIZE = "5";
     public static final String KEY = "0c64d719c28f4eb9b557ac89ad04b679";
     public final Map<String, String> sortByList = getSortBy();
     public final Map<String, String> languageList = getLanguage();
@@ -93,17 +95,18 @@ public class NewsApiRequest {
      * source https://github.com/udacity/Sunshine-Version-2/blob/2.07_build_url_with_params/app/src/main/java/com/example/android/sunshine/app/ForecastFragment.java#L141
      * Construct the url
      *
-     * @return
+     * @return URL
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public URL urlBuilder(Map<String, String> urlPrameters) {
+    public URL urlBuilder(Map<String, String> urlParameters) {
         URL url = null;
         Uri.Builder builtUri = Uri.parse(NEWS_URL)
                 .buildUpon()
-                .appendQueryParameter(API_KEY, KEY);
+                .appendQueryParameter(API_KEY, KEY)
+                .appendQueryParameter(PAGE_SIZE, SIZE);
 
 
-        urlPrameters.forEach((k, v) -> {
+        urlParameters.forEach((k, v) -> {
             try {
                 builtUri.appendQueryParameter(k, URLEncoder.encode(v, "UTF-8"));
             } catch (UnsupportedEncodingException e) {

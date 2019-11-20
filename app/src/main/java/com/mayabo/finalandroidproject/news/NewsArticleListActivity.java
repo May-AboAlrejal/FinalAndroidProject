@@ -42,7 +42,7 @@ public class NewsArticleListActivity extends AppCompatActivity {
 
         newsListView = findViewById(R.id.newsListView);
         newsListView.setAdapter(myAdapter = new MyListAdapter());
-        //myAdapter.notifyDataSetChanged();
+
     }
 
     private class MyListAdapter extends BaseAdapter {

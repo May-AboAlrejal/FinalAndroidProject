@@ -19,7 +19,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
 
+
         Toolbar tBar = findViewById(R.id.toolbar);
+        /**
+         * With AppCompat libraries we use setSupportActionBar method for the toolbar
+         */
         setSupportActionBar(tBar);
 
         Button carStationFinder = findViewById(R.id.carStationFinder);
@@ -49,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method specify the options menu for Toolbar
+     * @param menu
+     * @return boolean
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -56,6 +65,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * This method gets the selected item from the menu toolbar
+     * each menu item will redirect the activity to a different page
+     * @param item
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -68,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(goToRecipeSearchActivity);
                 break;
             case R.id.news:
-                Intent goToNewsHeadlinesActivity = new Intent(MainActivity.this, NewsHeadlinesActivity.class);
+                Intent goToNewsHeadlinesActivity = new Intent(MainActivity.this, NewsHeadlinesSearchActivity.class);
                 startActivity(goToNewsHeadlinesActivity);
                 break;
             case R.id.money:

@@ -44,8 +44,6 @@ public class NewsArticleContentActivity extends AppCompatActivity {
         publishedAt.setText(article.getPublishedAt());
         TextView url = findViewById(R.id.urlText);
         url.setText(article.getUrl());
-        TextView description = findViewById(R.id.descriptionText);
-        description.setText(article.getDescription());
         TextView content = findViewById(R.id.contentText);
         content.setText(article.getContent());
 
@@ -57,6 +55,7 @@ public class NewsArticleContentActivity extends AppCompatActivity {
 
         NewsQuery newsQuery = new NewsQuery();
         newsQuery.execute(imageURL);
+
     }
 
     private class NewsQuery extends AsyncTask<String, Integer, String> {

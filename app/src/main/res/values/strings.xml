@@ -23,4 +23,11 @@
     <string name="carIcon">Recipe search</string>
     <string name="foodIcon">Foreign currency</string>
     <string name="newsIcon">News Headlines search</string>
+
+    <string name="authorNewsName">Author’s name: </string>
+    <string name="authorNewsNameText">May Abo-Alrejal</string>
+    <string name="newsVersion">Activity version number: </string>
+    <string name="newsVersionText">1</string>
+    <string name="newsInstructions">Instructions on how to use NewsApi: </string>
+    <string name="newsInstructionsText">Test me</string>
 </resources>

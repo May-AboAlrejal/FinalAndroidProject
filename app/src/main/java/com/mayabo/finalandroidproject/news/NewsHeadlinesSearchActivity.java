@@ -1,10 +1,14 @@
 package com.mayabo.finalandroidproject.news;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -12,7 +16,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
-
+import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.mayabo.finalandroidproject.R;
 
@@ -57,6 +61,9 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
 
         thisApp = this;
 
+        Toolbar tBar = findViewById(R.id.toolbar);
+        setSupportActionBar(tBar);
+
         /**
          * Get the spinner from XML
          * Initialize a new instance of {@link NewsApiRequest}
@@ -96,30 +103,30 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
         Button searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(clik -> {
 
-            Map<String, String> urlPrameters = new HashMap<>(4);
+            Map<String, String> urlParameters = new HashMap<>(4);
 
             String searchBodyText = searchBody.getText().toString().trim();
             if (searchBodyText.length() >= 1) {
-                urlPrameters.put(NewsApiRequest.KEYWORD, searchBodyText);
+                urlParameters.put(NewsApiRequest.KEYWORD, searchBodyText);
             }
 
             String searchTitleText = searchTitle.getText().toString().trim();
             if (searchTitleText.length() >= 1) {
-                urlPrameters.put(NewsApiRequest.KEYWORD_IN_TITLE, searchTitleText);
+                urlParameters.put(NewsApiRequest.KEYWORD_IN_TITLE, searchTitleText);
             }
 
             String sortByText = spinnerSortBy.getSelectedItem().toString();
             if (sortByText.trim().length() >= 1) {
-                urlPrameters.put(NewsApiRequest.SORT_BY, newsApiRequest.getKeyFromValue(sortByText, "sortBy"));
+                urlParameters.put(NewsApiRequest.SORT_BY, newsApiRequest.getKeyFromValue(sortByText, "sortBy"));
             }
 
             String languageText = spinnerLanguage.getSelectedItem().toString();
             if (languageText.trim().length() >= 1) {
-                urlPrameters.put(NewsApiRequest.LANGUAGE, newsApiRequest.getKeyFromValue(languageText, "language"));
+                urlParameters.put(NewsApiRequest.LANGUAGE, newsApiRequest.getKeyFromValue(languageText, "language"));
             }
 
             if (checkUserInput(searchTitleText, searchBodyText)) {
-                newsURL = newsApiRequest.urlBuilder(urlPrameters);
+                newsURL = newsApiRequest.urlBuilder(urlParameters);
 
                 Snackbar.make(searchTitle,"Searching for related articles!", Snackbar.LENGTH_LONG).show();
 
@@ -136,6 +143,47 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
 
         });
     }
+
+
+    /**
+     * This method specify the options menu for Toolbar
+     * @param menu
+     * @return boolean
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.news_help_menu, menu);
+        return true;
+    }
+
+    /**
+     * This method gets the selected item from the menu toolbar
+     * each menu item will redirect the activity to a different page
+     * @param item
+     * @return boolean
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.news:
+                /**
+                 * Call a specific layout and inflate it into the DialogBox Builder
+                 * The layout will display some general information
+                 * The use can click the negative button to dismiss the dialogBox
+                 */
+                View v = getLayoutInflater().inflate(R.layout.news_help_builder, null);
+                Builder builder = new Builder(thisApp);
+                builder.setView(v)
+                        .setNegativeButton("Got it!", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        }).create().show();
+                break;
+        }
+        return true;
+    }
+
 
     /**
      * Validate user input, at least one of the search field must have a value
