@@ -86,7 +86,11 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
 
         /**
-         * Get user inputs to add them as parameters to url
+         * Get user inputs and add them as parameters to url
+         *
+         * Create a Map object the key is a "parameter name" coming from {@link NewsApiRequest}
+         * the second is value "parameter value" coming from user input
+         * Check user input before executing the url request
          * execute the URL request
          */
         Button searchButton = findViewById(R.id.searchButton);
@@ -146,6 +150,11 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * This class is running in the background and pass the result to the UI
+     * The class creates a communication link between the URL provided an app
+     * Then reads and handles the result or the response
+     */
     private class NewsQuery extends AsyncTask<String, Integer, String> {
 
         @Override
@@ -177,7 +186,7 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
 
         /**
          * Process the response to find relative data
-         *
+         * For each article Create a new {@link NewsApiResponse} and add it to an ArrayList
          * @param result a String coming as response to the url request
          * @return ArrayList of articles
          */
@@ -189,8 +198,9 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
                 if (status.equals("ok")) {
                     JSONArray articles = jObject.getJSONArray(NewsApiResponse.ARTICLES);
                     int numberOfArticles = articles.length();
+
                     if (numberOfArticles >= 1) {
-                        for (int i = 0, j = 100 / numberOfArticles; i < numberOfArticles; i++, j++) {
+                        for (int i = 0, j = 100 / numberOfArticles; i < numberOfArticles; i++, j +=(100 / numberOfArticles)) {
 
                             String author = articles.getJSONObject(i).getString(NewsApiResponse.AUTHOR);
                             String title = articles.getJSONObject(i).getString(NewsApiResponse.TITLE);
@@ -200,7 +210,8 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
                             String publishedAt = articles.getJSONObject(i).getString(NewsApiResponse.PUBLISHED_AT);
                             String content = articles.getJSONObject(i).getString(NewsApiResponse.CONTENT);
                             String source = articles.getJSONObject(i).getJSONObject(NewsApiResponse.SOURCE).getString(NewsApiResponse.NAME);
-                            newsArticles.add(new NewsApiResponse(author, title, description, url, urlToImage, publishedAt, content, source));
+                            NewsApiResponse newsResponse = new NewsApiResponse(author, title, description, url, urlToImage, publishedAt, content, source);
+                            newsArticles.add(newsResponse);
 
                             publishProgress(j);
 
@@ -232,8 +243,6 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
         protected void onPostExecute(String sentFromDoInBackground) {
             super.onPostExecute(sentFromDoInBackground);
 
-            progressBar.setVisibility(View.INVISIBLE);
-
             if(newsArticles.size() >= 1){
 
                 Snackbar.make(searchTitle,newsArticles.size() + " articles found!", Snackbar.LENGTH_LONG).show();
@@ -244,6 +253,7 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(thisApp, "Sorry! No articles found.", Toast.LENGTH_LONG).show();
             }
+            progressBar.setProgress(0);
         }
     }
 }

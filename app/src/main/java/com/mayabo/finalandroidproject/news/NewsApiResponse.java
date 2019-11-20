@@ -1,5 +1,6 @@
 package com.mayabo.finalandroidproject.news;
 
+import android.graphics.Bitmap;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ public class NewsApiResponse implements Serializable {
     private String publishedAt;
     private String content;
     private String source;
+    private Bitmap image;
 
     public static final String STATUS = "status";
     public static final String ARTICLES = "articles";
@@ -104,6 +106,14 @@ public class NewsApiResponse implements Serializable {
         this.source = source;
     }
 
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -116,12 +126,13 @@ public class NewsApiResponse implements Serializable {
                 Objects.equals(urlToImage, that.urlToImage) &&
                 Objects.equals(publishedAt, that.publishedAt) &&
                 Objects.equals(content, that.content) &&
-                Objects.equals(source, that.source);
+                Objects.equals(source, that.source) &&
+                Objects.equals(image, that.image);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(author, title, description, url, urlToImage, publishedAt, content, source);
+        return Objects.hash(author, title, description, url, urlToImage, publishedAt, content, source, image);
     }
 }
 

@@ -56,7 +56,7 @@ public class NewsArticleContentActivity extends AppCompatActivity {
         Toast.makeText(thisApp, "Downloading Image!", Toast.LENGTH_LONG).show();
 
         NewsQuery newsQuery = new NewsQuery();
-        newsQuery.execute();
+        newsQuery.execute(imageURL);
     }
 
     private class NewsQuery extends AsyncTask<String, Integer, String> {
@@ -65,9 +65,8 @@ public class NewsArticleContentActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             String ret = null;
 
-            String urlString = imageURL;
             try {
-                URL url = new URL(urlString);
+                URL url = new URL(strings[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
                 int responseCode = connection.getResponseCode();
