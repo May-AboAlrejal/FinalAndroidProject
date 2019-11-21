@@ -75,28 +75,7 @@ public class RecipeSingle extends AppCompatActivity {
     }
 
 
-    //Image
-    protected static Bitmap getImage(URL url) {
 
-        HttpURLConnection iconConn = null;
-        try {
-            iconConn = (HttpURLConnection) url.openConnection();
-           iconConn.connect();
-            int response = iconConn.getResponseCode();
-            if (response == 200) {
-                return BitmapFactory.decodeStream(iconConn.getInputStream());
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            if (iconConn != null) {
-                iconConn.disconnect();
-            }
-        }
-    }
 
     public boolean fileExistance(String fileName) {
         Log.i(ACTIVITY_NAME, getBaseContext().getFileStreamPath(fileName).toString());
@@ -112,7 +91,7 @@ public class RecipeSingle extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             result = null;
-            String queryURL = "http://openweathermap.org/img/w/10d.png";
+            String queryURL = "https://static.food2fork.com/4251_MEDIUM71f0.jpg";
 
             try {
                 URL url = new URL(queryURL);
@@ -146,6 +125,30 @@ public class RecipeSingle extends AppCompatActivity {
             super.onProgressUpdate(values);
             itemProgress.setProgress(values[0]);
             itemProgress.setVisibility(View.VISIBLE);
+        }
+
+
+        //Image
+        protected Bitmap getImage(URL url) {
+
+            HttpURLConnection iconConn = null;
+            try {
+                iconConn = (HttpURLConnection) url.openConnection();
+                iconConn.connect();
+                int response = iconConn.getResponseCode();
+                if (response == 200) {
+                    return BitmapFactory.decodeStream(iconConn.getInputStream());
+                } else {
+                    return null;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            } finally {
+                if (iconConn != null) {
+                    iconConn.disconnect();
+                }
+            }
         }
     }
 
