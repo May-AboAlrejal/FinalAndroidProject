@@ -12,7 +12,7 @@
         <activity android:name=".RecipeSearchActivity" />
         <activity android:name=".NewsHeadlinesActivity" />
         <activity android:name=".CurrencyConversionActivity" />
-        <activity android:name=".ChargeStationFinderActivity" />
+        <activity android:name=".chargestationfinder.ChargeStationFinderActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

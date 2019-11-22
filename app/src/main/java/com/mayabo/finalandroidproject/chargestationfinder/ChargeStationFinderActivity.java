@@ -1,4 +1,4 @@
-package com.mayabo.finalandroidproject;
+package com.mayabo.finalandroidproject.chargestationfinder;
 
 import androidx.appcompat.app.AppCompatActivity;
 

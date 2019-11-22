@@ -10,6 +10,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mayabo.finalandroidproject.chargestationfinder.ChargeStationFinderActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
