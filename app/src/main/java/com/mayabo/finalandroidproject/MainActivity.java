@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         Button recipeSearch = findViewById(R.id.recipeSearch);
 
         carStationFinder.setOnClickListener( clk -> {
-            Intent goToCarStationFinderActivity = new Intent(MainActivity.this, CarStationFinderActivity.class);
+            Intent goToCarStationFinderActivity = new Intent(MainActivity.this, ChargeStationFinderActivity.class);
             startActivity(goToCarStationFinderActivity);
         });
 
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.car:
-                Intent goToCarStationFinderActivity = new Intent(MainActivity.this, CarStationFinderActivity.class);
+                Intent goToCarStationFinderActivity = new Intent(MainActivity.this, ChargeStationFinderActivity.class);
                 startActivity(goToCarStationFinderActivity);
                 break;
             case R.id.food:
