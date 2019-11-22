@@ -34,6 +34,7 @@
     <string name="author_name">Tác giả: </string>
     <string name="coin_tbar">Đồng tiền</string>
     <string name="food_tbar">Đồ ăn</string>
+    <string name="save_btn">Lưu vô</string>
 
 
 </resources>

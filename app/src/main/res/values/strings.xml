@@ -36,5 +36,7 @@
         - Clicking on specific item to see details.
     </string>
 
+    <string name="save_btn">Save</string>
+
 
 </resources>

@@ -6,6 +6,7 @@ package com.mayabo.finalandroidproject.recipe;
  * This project is a group project
  * Each person take one topic
  * My Topic is : Recipe
+ *
  * @author The Dai Phong Le
  * @version 1.0
  * @since 2019-11-11
@@ -16,35 +17,38 @@ public class Recipe {
     protected String title;
     protected String url;
     protected String imgUrl;
-
+    protected String imageID;
 
 
     protected long id;
 
 
-
-    /**Recipe constructor
+    /**
+     * Recipe constructor
      * This will take
+     *
      * @Param title, imgUrl, url, id
      * this will be the object that every instance of it will be initialize
-     * */
-    public Recipe(String title,String imgUrl,String url,long id) {
+     */
+    public Recipe(long id, String title, String imageID, String imgUrl, String url) {
         this.title = title;
         this.url = url;
         this.imgUrl = imgUrl;
+        this.imageID = imageID;
         this.id = id;
-
     }
 
-    /**Extra Recipe constructor
+    /**
+     * Extra Recipe constructor
+     *
      * @Param with only three first parameters as the fist constructor
-     * */
+     */
 
-    public Recipe(String title,String imgUrl,String url) {
+    public Recipe(String title, String imageID, String imgUrl, String url) {
+        this.imageID = imageID;
         this.title = title;
         this.url = url;
         this.imgUrl = imgUrl;
-        this.id = 0;
     }
 
     public String getTitle() {
@@ -70,6 +74,15 @@ public class Recipe {
     public void setId(long id) {
         this.id = id;
     }
+
+    public void setImageID(String imageID) {
+        this.imageID = imageID;
+    }
+
+    public String getImageID() {
+        return imageID;
+    }
+
 
     public String getImgUrl() {
         return imgUrl;

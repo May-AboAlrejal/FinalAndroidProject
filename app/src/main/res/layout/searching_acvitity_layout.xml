@@ -2,13 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/linear_layout"
+    >
 <!-- Layout weight is important-->
 
     <ListView
             android:id="@+id/list_search"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="0dp"
             android:transcriptMode="alwaysScroll"
             android:layout_weight="1"
             />
@@ -19,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="invisible"/>
-
 </LinearLayout>
 
 

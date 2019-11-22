@@ -2,11 +2,7 @@ package com.mayabo.finalandroidproject.recipe;
 
 import android.os.Bundle;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import com.mayabo.finalandroidproject.R;
 
 /**
@@ -22,10 +18,27 @@ import com.mayabo.finalandroidproject.R;
 
 public class ListFavouriteActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_favourite_acvitity);
 
-        Toast.makeText(this, "Welcome to Recipe Favourites ", Toast.LENGTH_LONG).show();
+
+
+
+
     }
+
+
+
+
+
+    /**
+     * This is the favourite list is loaded from database list
+     * The list will load the adapter and post everything in the database to the list view
+     * using custom adapter
+     * using the same list view that is create
+     * click on the item will take the user to another single page
+     * the single page will have the Remove button
+     * Delete the item from the database
+     * */
 }

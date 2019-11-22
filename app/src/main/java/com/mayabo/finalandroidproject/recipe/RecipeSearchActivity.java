@@ -53,29 +53,19 @@ public class RecipeSearchActivity extends AppCompatActivity {
         setContentView(R.layout.recipe_home);
         tbar = findViewById(R.id.toolbar);
         setSupportActionBar(tbar);
-        EditText filter = (EditText) findViewById(R.id.search_edit);
 
-
-//        TextView authorName = findViewById(R.id.author);
-//        TextView versionNumber = findViewById(R.id.version);
-//
-//        authorName.setText(authorName.getText().toString() + AUTHOR_NAME);
-//        versionNumber.setText(versionNumber.getText().toString() + VERSION);
-
-
-        Button searchButton = (Button) findViewById(R.id.view_search);
-
-
-        Button viewFavourite = (Button) findViewById(R.id.view_favourite);
+        EditText filter = findViewById(R.id.search_edit);
+        Button searchButton = findViewById(R.id.view_search);
+        Button viewFavourite = findViewById(R.id.view_favourite);
 
 
 
         //Checking if the search Button is exist
         if (searchButton != null) {
             searchButton.setOnClickListener(clk -> {
-                String input = filter.getText().toString();
+
                 if (TextUtils.isEmpty(filter.getText())) {
-                    Toast.makeText(this, "Lasagna Or Chicken Breast Only", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Please Filter", Toast.LENGTH_LONG).show();
                 }
                 else {
                         Intent goToSearch = new Intent(RecipeSearchActivity.this, SearchingActivity.class);
@@ -170,13 +160,9 @@ public class RecipeSearchActivity extends AppCompatActivity {
         //this is call the builder pattern, the order of calling function does not matter
 
         //positive and negative are the button
-        builder.setPositiveButton("Positive", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // What to do on Accept
-                    }
-                })
-                .setNegativeButton("Negative", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
                     }
                 }).setView(middle);
         //can have third button as neutral button
