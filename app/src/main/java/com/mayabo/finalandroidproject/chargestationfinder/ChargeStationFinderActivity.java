@@ -6,6 +6,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,6 +40,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
+
 public class ChargeStationFinderActivity extends AppCompatActivity {
     private TextView mLatitudeView;
     private TextView mLongitudeView;
@@ -47,6 +51,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshView;
     private List<Record> mSearchResults;
     private MyAdapter mSearchResultAdapter;
+    private int mNavigationBarColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
 
         setSupportActionBar(findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mNavigationBarColor = getWindow().getNavigationBarColor();
+        getWindow().setNavigationBarColor(Color.WHITE);
+        getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
 
         mSearchResults = new ArrayList<>();
 
@@ -94,6 +102,12 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mSearchResultsView.setAdapter(mSearchResultAdapter);
 
         mSwipeRefreshView.setOnRefreshListener(() -> search());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getWindow().setNavigationBarColor(mNavigationBarColor);
     }
 
     private void search() {
