@@ -7,7 +7,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +35,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -142,6 +145,25 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.charge_station_finder_main_menu, menu);
+        if (menu != null) {
+            for(int i = 0; i < menu.size(); i++){
+                Drawable drawable = menu.getItem(i).getIcon();
+                if(drawable != null) {
+                    drawable.mutate();
+                    drawable.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                }
+            }
+            if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
+                try {
+                    Method m = menu.getClass().getDeclaredMethod(
+                            "setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                } catch (Exception e) {
+                    Log.e(getClass().getSimpleName(), "onMenuOpened...unable to set icons for overflow menu", e);
+                }
+            }
+        }
         return true;
     }
 
@@ -160,6 +182,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             case R.id.item_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
+            case R.id.item_exit:
+                finish();
             default:
         }
         return super.onOptionsItemSelected(item);
