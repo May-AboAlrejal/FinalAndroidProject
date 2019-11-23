@@ -63,6 +63,12 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mLongitudeView.setOnKeyListener((view, keyCode, keyEvent) -> {
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 mLongitudeView.clearFocus();
+                mSearchResults.clear();
+                mSearchResultAdapter.notifyDataSetChanged();
+                new MyQuery().execute(new ChargeStationFinderActivity.QueryParam(
+                        ChargeStationFinderActivity.this.mLatitudeView.getText().toString(),
+                        ChargeStationFinderActivity.this.mLongitudeView.getText().toString()
+                ));
             }
             return false;
         });
@@ -73,7 +79,6 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 InputMethodManager imm =  (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(findViewById(R.id.longitude).getRootView().getWindowToken(), 0);
-                new MyQuery().execute();
             }
         });
 
