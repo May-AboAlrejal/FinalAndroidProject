@@ -1,15 +1,25 @@
 package com.mayabo.finalandroidproject.chargestationfinder;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,6 +43,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     private TextView mLatitudeView;
     private TextView mLongitudeView;
     private ListView mSearchResultsView;
+    private TextView mEmptyInfoView;
+    private SwipeRefreshLayout mSwipeRefreshView;
     private List<Record> mSearchResults;
     private MyAdapter mSearchResultAdapter;
 
@@ -49,6 +61,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mLatitudeView = findViewById(R.id.latitude);
         mLongitudeView = findViewById(R.id.longitude);
         mSearchResultsView = findViewById(R.id.search_result);
+        mEmptyInfoView = findViewById(R.id.info_empty);
+        mSwipeRefreshView = findViewById(R.id.swipe_to_refresh);
         mSearchResultAdapter = new MyAdapter();
 
         mLatitudeView.setOnFocusChangeListener((view, b) -> {
@@ -63,12 +77,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mLongitudeView.setOnKeyListener((view, keyCode, keyEvent) -> {
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 mLongitudeView.clearFocus();
-                mSearchResults.clear();
-                mSearchResultAdapter.notifyDataSetChanged();
-                new MyQuery().execute(new ChargeStationFinderActivity.QueryParam(
-                        ChargeStationFinderActivity.this.mLatitudeView.getText().toString(),
-                        ChargeStationFinderActivity.this.mLongitudeView.getText().toString()
-                ));
+                search();
             }
             return false;
         });
@@ -83,18 +92,81 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         });
 
         mSearchResultsView.setAdapter(mSearchResultAdapter);
+
+        mSwipeRefreshView.setOnRefreshListener(() -> search());
+    }
+
+    private void search() {
+        mEmptyInfoView.setText("Loading...");
+        mEmptyInfoView.setVisibility(View.VISIBLE);
+        mSearchResultsView.setVisibility(View.GONE);
+        mSearchResults.clear();
+        mSearchResultAdapter.notifyDataSetChanged();
+        new MyQuery().execute(new ChargeStationFinderActivity.QueryParam(
+                ChargeStationFinderActivity.this.mLatitudeView.getText().toString(),
+                ChargeStationFinderActivity.this.mLongitudeView.getText().toString()
+        ));
     }
 
     @Override
     public void onBackPressed() {
-        mLatitudeView.clearFocus();
-        mLongitudeView.clearFocus();
+        if (mLatitudeView.hasFocus() || mLongitudeView.hasFocus()) {
+            mLatitudeView.clearFocus();
+            mLongitudeView.clearFocus();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.charge_station_finder_main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_favorites:
+                startActivity(new Intent(this, ActivityFavorites.class));
+                return true;
+//            case R.id.item_about:
+//                new AlertDialog.Builder(this)
+//                        .setTitle("About")
+//                        .setView(getLayoutInflater().inflate(R.layout.about_dialog, null, false))
+//                        .create().show();
+//                return true;
+            case R.id.item_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            default:
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View view = getCurrentFocus();
+            if (view == mLatitudeView || view == mLongitudeView) {
+                Rect outRect = new Rect();
+                view.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    Log.d("focus", "touchevent");
+                    view.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 
     private class MyAdapter extends BaseAdapter {
@@ -118,9 +190,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             Record record = this.getItem(position);
             convertView = getLayoutInflater().inflate(R.layout.charge_station_brief, parent, false);
             TextView title = convertView.findViewById(R.id.title);
-//            TextView number = convertView.findViewById(R.id.contact);
+            TextView contact = convertView.findViewById(R.id.contact);
             title.setText(record.getTitle());
-//            number.setText(record.getContact());
+            contact.setText(record.getContact());
             return convertView;
         }
     }
@@ -158,7 +230,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         }
     }
 
-    private class MyQuery extends AsyncTask<QueryParam, Integer, Void> {
+    private class MyQuery extends AsyncTask<QueryParam, Record, Void> {
         @Override
         protected Void doInBackground(QueryParam... queryParams) {
             try {
@@ -173,8 +245,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                     String contact = jObject.getString("ContactTelephone1");
                     String latitude = String.valueOf(jObject.getDouble("Latitude"));
                     String longitude = String.valueOf(jObject.getDouble("Longitude"));
-                    ChargeStationFinderActivity.this.mSearchResults.add(new Record(title, contact, latitude, longitude));
-                    this.publishProgress(i);
+                    this.publishProgress(new Record(title, contact, latitude, longitude));
                 }
             }
             catch (MalformedURLException e) {
@@ -188,9 +259,24 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             }
             return null;
         }
+
         @Override
-        protected void onProgressUpdate(Integer... value) {
+        protected void onProgressUpdate(Record... value) {
+            ChargeStationFinderActivity.this.mSearchResults.add(value[0]);
             ChargeStationFinderActivity.this.mSearchResultAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            mSwipeRefreshView.setRefreshing(false);
+            if (mSearchResults.isEmpty()) {
+                mSearchResultsView.setVisibility(View.GONE);
+                mEmptyInfoView.setVisibility(View.VISIBLE);
+                mEmptyInfoView.setText("Nothing here...");
+            } else {
+                mEmptyInfoView.setVisibility(View.GONE);
+                mSearchResultsView.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

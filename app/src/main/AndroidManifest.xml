@@ -10,9 +10,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".chargestationfinder.ChargeStationFinderActivity"></activity>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".chargestationfinder.SettingsActivity"></activity>
+        <activity android:name=".chargestationfinder.ActivityFavorites" />
+        <activity
+            android:name=".chargestationfinder.ChargeStationFinderActivity"
+            android:label="Find Charge Stations"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".RecipeSearchActivity" />
         <activity android:name=".NewsHeadlinesActivity" />
         <activity android:name=".CurrencyConversionActivity" />

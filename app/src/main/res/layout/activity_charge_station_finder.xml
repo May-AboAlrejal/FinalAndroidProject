@@ -10,9 +10,8 @@
         android:id="@+id/appbar"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="128dp"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="172dp"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -21,79 +20,99 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
                 <androidx.appcompat.widget.Toolbar
-                    app:title=""
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="12dp">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/text1"
-                            android:theme="@style/CardView.Light"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="6dp">
-
-                            <TextView
-                                android:id="@+id/latitude"
-                                android:hint="Latitude"
-                                android:textColorHint="#A0A0A0"
-                                android:textSize="6.5pt"
-                                android:textColor="#808080"
-                                android:padding="12dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true"
-                                android:cursorVisible="true"
-                                android:textIsSelectable="true"
-                                android:selectAllOnFocus="true"
-                                android:inputType="numberSigned"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/text2"
-                            android:theme="@style/CardView.Light"
-                            app:layout_constraintTop_toBottomOf="@id/text1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="6dp"
-                            android:layout_marginVertical="10dp">
-
-                            <TextView
-                                android:id="@+id/longitude"
-                                android:hint="Longitude"
-                                android:textColorHint="#A0A0A0"
-                                android:textSize="6.5pt"
-                                android:textColor="#808080"
-                                android:padding="12dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true"
-                                android:cursorVisible="true"
-                                android:textIsSelectable="true"
-                                android:selectAllOnFocus="true"
-                                android:inputType="numberSigned"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="wrap_content"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
                 </androidx.appcompat.widget.Toolbar>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/text1"
+                        android:theme="@style/CardView.Light"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="6dp">
+
+                        <TextView
+                            android:id="@+id/latitude"
+                            android:hint="Latitude"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="6.5pt"
+                            android:textColor="#808080"
+                            android:padding="12dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:cursorVisible="true"
+                            android:textIsSelectable="true"
+                            android:selectAllOnFocus="true"
+                            android:inputType="numberSigned"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/text2"
+                        android:theme="@style/CardView.Light"
+                        app:layout_constraintTop_toBottomOf="@id/text1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="6dp"
+                        android:layout_marginVertical="10dp">
+
+                        <TextView
+                            android:id="@+id/longitude"
+                            android:hint="Longitude"
+                            android:textColorHint="#A0A0A0"
+                            android:textSize="6.5pt"
+                            android:textColor="#808080"
+                            android:padding="12dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:cursorVisible="true"
+                            android:textIsSelectable="true"
+                            android:selectAllOnFocus="true"
+                            android:inputType="numberSigned"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/info_empty"
+        android:text="Swipe to refresh"
+        android:textSize="36dp"
+        android:textColor="#C0C0C0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_to_refresh"
@@ -106,7 +125,8 @@
         <ListView
             android:id="@+id/search_result"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
