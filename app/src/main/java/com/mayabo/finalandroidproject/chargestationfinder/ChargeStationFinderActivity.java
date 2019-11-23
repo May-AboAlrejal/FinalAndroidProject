@@ -55,6 +55,12 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        mLatitudeView.clearFocus();
+        mLongitudeView.clearFocus();
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
