@@ -14,6 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mayabo.finalandroidproject.R;
@@ -27,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * This is the final project
@@ -53,8 +58,13 @@ public class RecipeSingle extends AppCompatActivity {
     ImageView itemImage;
     ProgressBar itemProgress;
     String imageID;
+    Recipe rep;
 
     Button savebtn;
+    DatabaseHandler db;
+    boolean duplicate = false;
+
+    List<Recipe> recipes;
 
 
     @Override
@@ -71,7 +81,7 @@ public class RecipeSingle extends AppCompatActivity {
         urlFood = dataFromPreviousPage.getStringExtra("url");
         imageURL = dataFromPreviousPage.getStringExtra("imageUrl");
         imageID = dataFromPreviousPage.getStringExtra("imageID");
-        //Recipe rep = new Recipe(titleStr, imageID, imageURL, urlFood);
+        rep = new Recipe(titleStr, imageID, imageURL, urlFood);
 
 
         itemImage = findViewById(R.id.image_single);
@@ -87,10 +97,23 @@ public class RecipeSingle extends AppCompatActivity {
 
         savebtn = (Button) findViewById(R.id.save_btn);
 
+        db = new DatabaseHandler(this);
+
+        recipes = db.getAllRecipes();
+
+        //checking duplicate value
+        for (Recipe r : recipes) {
+            if (r.getTitle().equals(rep.getTitle())) duplicate = true;
+        }
+
         savebtn.setOnClickListener(clk -> {
-            DatabaseHandler db = new DatabaseHandler(this);
-            db.addRecipe(new Recipe(titleStr, imageID, imageURL, urlFood));
-            Toast.makeText(this, "Added", Toast.LENGTH_LONG).show();
+
+            if (!duplicate) {
+                db.addRecipe(rep);
+                Toast.makeText(this, "Added", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Can't add duplicate", Toast.LENGTH_LONG).show();
+            }
         });
 
 

@@ -6,6 +6,9 @@ import android.util.Log;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This is the final project
  * Topic is specify to Recipe Search Engine
@@ -138,6 +141,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // return count
         return cursor.getCount();
+    }
+
+    // code to get all contacts in a list view
+    public List<Recipe> getAllRecipes() {
+        List<Recipe> recipeList = new ArrayList<Recipe>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_RECIPE;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+//        long cID = Long.parseLong(cursor.getString(0));
+//        String cTitle = cursor.getString(1);
+//        String cImageID = cursor.getString(2);
+//        String cImageUrl = cursor.getString(3);
+//        String cUrl = cursor.getString(4);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Recipe recipe = new Recipe();
+                recipe.setId(Long.parseLong(cursor.getString(0)));
+                recipe.setTitle(cursor.getString(1));
+                recipe.setImageID(cursor.getString(2));
+                recipe.setImgUrl(cursor.getString(3));
+                recipe.setUrl(cursor.getString(4));
+
+                // Adding contact to list
+                recipeList.add(recipe);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return recipeList;
     }
 
 

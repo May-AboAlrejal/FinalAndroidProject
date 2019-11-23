@@ -22,6 +22,9 @@ public class Recipe {
 
     protected long id;
 
+    //empty constructor for initializing purposes
+    public Recipe(){   }
+
 
     /**
      * Recipe constructor
