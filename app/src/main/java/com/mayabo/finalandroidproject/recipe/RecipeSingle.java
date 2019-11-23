@@ -62,7 +62,7 @@ public class RecipeSingle extends AppCompatActivity {
 
     Button savebtn;
     DatabaseHandler db;
-    boolean duplicate = false;
+
 
     List<Recipe> recipes;
 
@@ -74,45 +74,60 @@ public class RecipeSingle extends AppCompatActivity {
         title = findViewById(R.id.title_single);
         foodUrl = findViewById(R.id.url_single);
         itemProgress = findViewById(R.id.item_progress);
+        itemImage = findViewById(R.id.image_single);
+        savebtn = (Button) findViewById(R.id.save_btn);
 
         Intent dataFromPreviousPage = getIntent();
 
+        String activityName = dataFromPreviousPage.getStringExtra("ActivityName");
+
         titleStr = dataFromPreviousPage.getStringExtra("title");
         urlFood = dataFromPreviousPage.getStringExtra("url");
+
         imageURL = dataFromPreviousPage.getStringExtra("imageUrl");
         imageID = dataFromPreviousPage.getStringExtra("imageID");
-        rep = new Recipe(titleStr, imageID, imageURL, urlFood);
 
-
-        itemImage = findViewById(R.id.image_single);
         //Setting text
         title.setText(title.getText() + titleStr);
         foodUrl.setText(foodUrl.getText() + urlFood);
-
-        Toast.makeText(this, imageURL, Toast.LENGTH_LONG).show();
 
         SingleQuery singlequery = new SingleQuery();
         singlequery.execute(imageURL, imageID);
         itemProgress.setVisibility(View.VISIBLE);
 
-        savebtn = (Button) findViewById(R.id.save_btn);
 
-        db = new DatabaseHandler(this);
+        switch (activityName) {
+            case "ListFavouriteActivity":
+                savebtn.setText("Remove");
+                break;
+            case "SearchingActivity":
+                break;
 
-        recipes = db.getAllRecipes();
-
-        //checking duplicate value
-        for (Recipe r : recipes) {
-            if (r.getTitle().equals(rep.getTitle())) duplicate = true;
         }
 
+        //Get a new object ready for any action
+        rep = new Recipe(titleStr, imageID, imageURL, urlFood);
         savebtn.setOnClickListener(clk -> {
+            boolean duplicate = false;
 
-            if (!duplicate) {
-                db.addRecipe(rep);
-                Toast.makeText(this, "Added", Toast.LENGTH_LONG).show();
+            db = new DatabaseHandler(this);
+            if (activityName.equals("ListFavouriteActivity")) {
+                db.deleteRecipe(rep);
+                Intent intent = new Intent(this, ListFavouriteActivity.class);
+                startActivityForResult(intent, 30);
+                Toast.makeText(this, "Deleted", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "Can't add duplicate", Toast.LENGTH_LONG).show();
+                recipes = db.getAllRecipes();
+                //checking duplicate value
+                for (Recipe r : recipes) {
+                    if (r.getTitle().equals(rep.getTitle())) duplicate = true;
+                }
+                if (!duplicate) {
+                    db.addRecipe(rep);
+                    Toast.makeText(this, "Added", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Can't add duplicate", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

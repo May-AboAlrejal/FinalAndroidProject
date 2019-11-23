@@ -37,6 +37,6 @@
     </string>
 
     <string name="save_btn">Save</string>
-
+    <string name="saved_title">List of Favourite</string>
 
 </resources>

@@ -1,9 +1,18 @@
 package com.mayabo.finalandroidproject.recipe;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.mayabo.finalandroidproject.R;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the final project
@@ -17,12 +26,46 @@ import com.mayabo.finalandroidproject.R;
  */
 
 public class ListFavouriteActivity extends AppCompatActivity {
+
+    ListView theList;
+    CustomListAdapter adapter;
+    ArrayList<Recipe> savedList;
+    Toolbar tbar;
+    public static final String ACTIVITY_NAME = "ListFavouriteActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_favourite_acvitity);
+        tbar = (Toolbar) findViewById(R.id.toolbar);
+        tbar.setTitle("Your Favourite List");
+        setSupportActionBar(tbar);
+
+        theList = (ListView) findViewById(R.id.list_favourite);
+
+        DatabaseHandler db = new DatabaseHandler(this);
+
+        savedList = new ArrayList<Recipe>(db.getAllRecipes());
+
+        adapter = new CustomListAdapter(this, savedList);
+        theList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
 
+
+
+
+            theList.setOnItemClickListener((parent, view, position, id) -> {
+                Log.e("You clicked on :", " item " + position);
+                Recipe chosenRecipe = savedList.get(position);
+                Intent singlePage = new Intent(ListFavouriteActivity.this, RecipeSingle.class);
+                singlePage.putExtra("ActivityName", ACTIVITY_NAME);
+                singlePage.putExtra("title", chosenRecipe.getTitle());
+                singlePage.putExtra("url", chosenRecipe.getUrl());
+                singlePage.putExtra("imageUrl", chosenRecipe.getImgUrl());
+                singlePage.putExtra("imageID", chosenRecipe.getImageID());
+                startActivity(singlePage);
+            });
 
 
 

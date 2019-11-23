@@ -115,6 +115,7 @@ public class SearchingActivity extends AppCompatActivity {
             Log.e("You clicked on :", " item " + position);
             Recipe chosenRecipe = foodList.get(position);
             Intent singlePage = new Intent(SearchingActivity.this, RecipeSingle.class);
+            singlePage.putExtra("ActivityName", ACTIVITY_NAME);
             singlePage.putExtra("title", chosenRecipe.getTitle());
             singlePage.putExtra("url", chosenRecipe.getUrl());
             singlePage.putExtra("imageUrl", chosenRecipe.getImgUrl());
@@ -205,6 +206,13 @@ public class SearchingActivity extends AppCompatActivity {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"), 8);
                 StringBuilder sb = new StringBuilder();
 
+                publishProgress(50);
+                try {
+                    Thread.sleep(10);
+                } catch (Exception e) {
+                }
+
+
                 String line = null;
                 while ((line = reader.readLine()) != null) {
                     sb.append(line + "\n");
@@ -215,13 +223,13 @@ public class SearchingActivity extends AppCompatActivity {
                     JSONObject jObject = new JSONObject(sb.toString());
                     JSONArray recipesJArray = jObject.getJSONArray("recipes");
 
-                    for (int j = 0; j < 100; j++) {
-                        publishProgress(j);
-                        try {
-                            Thread.sleep(10);
-                        } catch (Exception e) {
-                        }
-                    }
+//                    for (int j = 0; j < 100; j++) {
+//                        publishProgress(j);
+//                        try {
+//                            Thread.sleep(10);
+//                        } catch (Exception e) {
+//                        }
+//                    }
 
                     for (int i = 0; i < recipesJArray.length(); i++) {
                         JSONObject recipeJSON = recipesJArray.getJSONObject(i);
@@ -237,6 +245,8 @@ public class SearchingActivity extends AppCompatActivity {
                     result = "JSON Creating Object Error";
                 }
 
+
+
                 Log.d("Response: ", "> " + line);
                 urlConnection.disconnect();
 
@@ -245,6 +255,12 @@ public class SearchingActivity extends AppCompatActivity {
             } catch (IOException ioe) {
                 result = "IO Exception. Is the Wifi connected?";
             }
+            publishProgress(100);
+            try {
+                Thread.sleep(10);
+            } catch (Exception e) {
+            }
+
 
             return result;
 

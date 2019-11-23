@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/toolbar"
         android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
         />
 
     <LinearLayout
@@ -51,8 +52,6 @@
             android:text="@string/intro"
             android:layout_gravity="center"
             />
-
-
     </LinearLayout>
 
 
