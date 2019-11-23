@@ -41,9 +41,9 @@
 
                             <TextView
                                 android:id="@+id/latitude"
-                                android:text="Latitude"
+                                android:hint="Latitude"
+                                android:textColorHint="#A0A0A0"
                                 android:textSize="6.5pt"
-                                android:fontFamily="sans-serif-light"
                                 android:textColor="#808080"
                                 android:padding="12dp"
                                 android:clickable="true"
@@ -69,9 +69,9 @@
 
                             <TextView
                                 android:id="@+id/longitude"
-                                android:text="Longitude"
+                                android:hint="Longitude"
+                                android:textColorHint="#A0A0A0"
                                 android:textSize="6.5pt"
-                                android:fontFamily="sans-serif-light"
                                 android:textColor="#808080"
                                 android:padding="12dp"
                                 android:clickable="true"
