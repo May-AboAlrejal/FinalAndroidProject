@@ -28,14 +28,6 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mLatitudeView = findViewById(R.id.latitude);
         mLongitudeView = findViewById(R.id.longitude);
 
-        mLatitudeView.setClickable(true);
-        mLatitudeView.setFocusable(true);
-        mLatitudeView.setFocusableInTouchMode(true);
-        mLatitudeView.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        mLatitudeView.setShowSoftInputOnFocus(true);
-        mLatitudeView.setCursorVisible(true);
-        mLatitudeView.setTextIsSelectable(true);
-        mLatitudeView.setSelectAllOnFocus(true);
         mLatitudeView.setOnFocusChangeListener((view, b) -> {
             if (b) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -45,14 +37,6 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             }
         });
 
-        mLongitudeView.setClickable(true);
-        mLongitudeView.setFocusable(true);
-        mLongitudeView.setFocusableInTouchMode(true);
-        mLongitudeView.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        mLongitudeView.setShowSoftInputOnFocus(true);
-        mLongitudeView.setCursorVisible(true);
-        mLongitudeView.setTextIsSelectable(true);
-        mLongitudeView.setSelectAllOnFocus(true);
         mLongitudeView.setOnKeyListener((view, keyCode, keyEvent) -> {
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 mLongitudeView.clearFocus();
