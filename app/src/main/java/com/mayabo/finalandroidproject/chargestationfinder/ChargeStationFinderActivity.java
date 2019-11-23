@@ -137,12 +137,12 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             case R.id.item_favorites:
                 startActivity(new Intent(this, ActivityFavorites.class));
                 return true;
-//            case R.id.item_about:
-//                new AlertDialog.Builder(this)
-//                        .setTitle("About")
-//                        .setView(getLayoutInflater().inflate(R.layout.about_dialog, null, false))
-//                        .create().show();
-//                return true;
+            case R.id.item_about:
+                new AlertDialog.Builder(this)
+                        .setTitle("About")
+                        .setView(getLayoutInflater().inflate(R.layout.about_charge_station_finder_dialog, null, false))
+                        .create().show();
+                return true;
             case R.id.item_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
