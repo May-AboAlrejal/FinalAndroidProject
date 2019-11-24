@@ -97,8 +97,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             }
         });
 
-        mSearchResults = new ArrayList<>();
         favorites = new ArrayList<>();
+        mSearchResults = new ArrayList<>();
+        mIsSearchExpanded = true;
         mPrimaryIconInfo = fillIconWithColor(R.drawable.outline_info_24, getColor(R.color.colorPrimary));
         mPrimaryIconFavorite = fillIconWithColor(R.drawable.outline_favorite_24, getColor(R.color.colorSecondary));
         ((ImageView) findViewById(R.id.my_location)).setImageDrawable(fillIconWithColor(R.drawable.outline_my_location_24, Color.parseColor("#ffffff")));
