@@ -21,7 +21,7 @@
         <TextView
             android:id="@+id/title"
             android:hint="Charge Station"
-            android:textColor="#000000"
+            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"

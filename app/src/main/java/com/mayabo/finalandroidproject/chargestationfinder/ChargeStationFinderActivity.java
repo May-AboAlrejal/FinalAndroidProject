@@ -28,6 +28,7 @@ import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -102,8 +103,6 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mIsSearchExpanded = true;
         mPrimaryIconInfo = fillIconWithColor(R.drawable.outline_info_24, getColor(R.color.colorPrimary));
         mPrimaryIconFavorite = fillIconWithColor(R.drawable.outline_favorite_24, getColor(R.color.colorSecondary));
-        ((ImageView) findViewById(R.id.my_location)).setImageDrawable(fillIconWithColor(R.drawable.outline_my_location_24, Color.parseColor("#ffffff")));
-        ((ImageView) findViewById(R.id.swap_fields)).setImageDrawable(fillIconWithColor(R.drawable.outline_swap_vert_24, Color.parseColor("#ffffff")));
 
         Cursor cursor = new RecordOpenHelper(this).getAll();
         if (cursor.getCount() > 0) {
@@ -217,6 +216,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             }
         });
 
+        mSwipeRefreshView.setColorSchemeResources(R.color.colorAccent);
         mSwipeRefreshView.setOnRefreshListener(() -> search());
     }
 
@@ -238,10 +238,15 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     }
 
     private void restoreNavigationBarColor() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().setNavigationBarColor(mOrigNavigationBarColor);
     }
 
     private void setupNavigationBarColor() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(getColor(R.color.colorPrimary));
         getWindow().setNavigationBarColor(getWindow().getDecorView().getRootView().getSolidColor());
         getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
     }

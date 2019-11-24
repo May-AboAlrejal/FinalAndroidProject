@@ -47,94 +47,116 @@
                         android:theme="@style/CardView.Light"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/my_location"
+                        app:layout_constraintRight_toRightOf="parent"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="6dp">
 
-                        <TextView
-                            android:id="@+id/latitude"
-                            android:nextFocusDown="@id/longitude"
-                            android:hint="Latitude"
-                            android:textColorHint="@android:color/secondary_text_dark"
-                            android:textSize="6pt"
-                            android:textColor="@android:color/primary_text_light_nodisable"
-                            android:padding="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:cursorVisible="true"
-                            android:textIsSelectable="true"
-                            android:selectAllOnFocus="true"
-                            android:inputType="numberSigned"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:ignore="TextViewEdits" />
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/my_location"
+                                android:src="@drawable/outline_my_location_24"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="20dp"
+                                android:focusable="true"
+                                android:clickable="true"
+                                android:contextClickable="true"
+                                android:longClickable="true"
+                                android:background="?attr/actionBarItemBackground"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toLeftOf="@id/latitude"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                            <TextView
+                                android:id="@+id/latitude"
+                                android:nextFocusDown="@id/longitude"
+                                android:hint="Latitude"
+                                android:textColorHint="@android:color/secondary_text_dark"
+                                android:textSize="6pt"
+                                android:textColor="@android:color/primary_text_light_nodisable"
+                                android:padding="10dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:cursorVisible="true"
+                                android:textIsSelectable="true"
+                                android:selectAllOnFocus="true"
+                                android:inputType="numberSigned"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                tools:ignore="TextViewEdits"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toRightOf="@id/my_location"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </com.google.android.material.card.MaterialCardView>
-
-                    <ImageView
-                        android:id="@+id/my_location"
-                        android:src="@drawable/outline_my_location_24"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:contextClickable="true"
-                        android:longClickable="true"
-                        android:background="?attr/actionBarItemBackground"
-                        app:layout_constraintLeft_toRightOf="@id/text1"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/text1"
-                        app:layout_constraintBottom_toBottomOf="@id/text1" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/text2"
                         android:theme="@style/CardView.Light"
                         app:layout_constraintTop_toBottomOf="@id/text1"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/swap_fields"
+                        app:layout_constraintRight_toRightOf="parent"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="6dp"
                         android:layout_marginTop="8dp">
 
-                        <TextView
-                            android:id="@+id/longitude"
-                            android:hint="Longitude"
-                            android:textColorHint="@android:color/secondary_text_dark"
-                            android:textSize="6pt"
-                            android:textColor="@android:color/primary_text_light_nodisable"
-                            android:padding="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:cursorVisible="true"
-                            android:textIsSelectable="true"
-                            android:selectAllOnFocus="true"
-                            android:inputType="numberSigned"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:ignore="TextViewEdits" />
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/swap_fields"
+                                android:src="@drawable/outline_swap_vert_24"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="20dp"
+                                android:focusable="true"
+                                android:clickable="true"
+                                android:contextClickable="true"
+                                android:longClickable="true"
+                                android:background="?attr/actionBarItemBackground"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toLeftOf="@id/longitude"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                            <TextView
+                                android:id="@+id/longitude"
+                                android:hint="Longitude"
+                                android:textColorHint="@android:color/secondary_text_dark"
+                                android:textSize="6pt"
+                                android:textColor="@android:color/primary_text_light_nodisable"
+                                android:padding="10dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:cursorVisible="true"
+                                android:textIsSelectable="true"
+                                android:selectAllOnFocus="true"
+                                android:inputType="numberSigned"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                tools:ignore="TextViewEdits"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toRightOf="@id/swap_fields"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </com.google.android.material.card.MaterialCardView>
-
-                    <ImageView
-                        android:id="@+id/swap_fields"
-                        android:src="@drawable/outline_swap_vert_24"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:contextClickable="true"
-                        android:longClickable="true"
-                        android:background="?attr/actionBarItemBackground"
-                        app:layout_constraintLeft_toRightOf="@id/text2"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/text2"
-                        app:layout_constraintBottom_toBottomOf="@id/text2" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -147,7 +169,7 @@
     <TextView
         android:id="@+id/info_empty"
         android:text="Swipe to refresh"
-        android:textSize="36sp"
+        android:textSize="44sp"
         android:textColor="#C0C0C0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

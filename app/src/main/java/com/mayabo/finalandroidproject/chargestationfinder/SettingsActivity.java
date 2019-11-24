@@ -3,6 +3,7 @@ package com.mayabo.finalandroidproject.chargestationfinder;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import com.mayabo.finalandroidproject.R;
 
@@ -47,10 +48,15 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void restoreNavigationBarColor() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().setNavigationBarColor(mOrigNavigationBarColor);
     }
 
     private void setupNavigationBarColor() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(getColor(R.color.colorPrimary));
         getWindow().setNavigationBarColor(getWindow().getDecorView().getRootView().getSolidColor());
         getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
     }
