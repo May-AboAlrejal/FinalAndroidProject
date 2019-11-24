@@ -22,12 +22,12 @@ public class RecordOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + TABLE_NAME + "(" +
-                        COLUMN_ID        + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        COLUMN_TITLE     + " TEXT, " +
-                        COLUMN_LONGITUDE + " TEXT, " +
-                        COLUMN_LATITUDE  + " TEXT" +
-                        ");"
+            "CREATE TABLE " + TABLE_NAME + "(" +
+                COLUMN_ID        + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_TITLE     + " TEXT, " +
+                COLUMN_LONGITUDE + " TEXT, " +
+                COLUMN_LATITUDE  + " TEXT" +
+            ");"
         );
     }
 
@@ -43,48 +43,84 @@ public class RecordOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertData(String title, String longitude, String latitude) {
+    public long insert(Record record) {
         Cursor cursor = getAll();
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
             if (
-                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)).equalsIgnoreCase(title) &&
-                            cursor.getString(cursor.getColumnIndex(COLUMN_LONGITUDE)).equalsIgnoreCase(longitude) &&
-                            cursor.getString(cursor.getColumnIndex(COLUMN_LATITUDE)).equalsIgnoreCase(latitude)
+        cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)).equalsIgnoreCase(record.getTitle()) &&
+        cursor.getString(cursor.getColumnIndex(COLUMN_LONGITUDE)).equalsIgnoreCase(record.getLongitude()) &&
+        cursor.getString(cursor.getColumnIndex(COLUMN_LATITUDE)).equalsIgnoreCase(record.getLatitude())
             ) return -1;
         }
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_TITLE, title);
-        values.put(COLUMN_LONGITUDE, longitude);
-        values.put(COLUMN_LATITUDE, latitude);
+        values.put(COLUMN_TITLE, record.getTitle());
+        values.put(COLUMN_LONGITUDE, record.getLongitude());
+        values.put(COLUMN_LATITUDE, record.getLatitude());
         return db.insert(TABLE_NAME, null, values);
+    }
+
+    public boolean contains(Record record) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(
+            TABLE_NAME,
+            new String[] {
+                COLUMN_TITLE,
+                COLUMN_LONGITUDE,
+                COLUMN_LATITUDE
+            },
+            COLUMN_TITLE + " == ? AND " + COLUMN_LATITUDE + " == ? AND " + COLUMN_LONGITUDE + " == ?",
+            new String[] {
+                record.getTitle(),
+                record.getLatitude(),
+                record.getLongitude()
+            },
+            null,
+            null,
+            null
+        );
+        return cursor.getCount() > 0;
+    }
+
+    public int remove(Record record) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(
+            TABLE_NAME,
+    COLUMN_TITLE + " == ? AND " + COLUMN_LATITUDE + " == ? AND " + COLUMN_LONGITUDE + " == ?",
+            new String[] {
+                record.getTitle(),
+                record.getLatitude(),
+                record.getLongitude()
+            }
+        );
     }
 
     public Record removeById(long id) {
         Record record = null;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(
-                TABLE_NAME,
-                new String[] {
-                        COLUMN_TITLE,
-                        COLUMN_LONGITUDE,
-                        COLUMN_LATITUDE
-                },
-                "ID == ?",
-                new String[] {String.valueOf(id)},
-                null,
-                null,
-                null
+            TABLE_NAME,
+            new String[] {
+                COLUMN_TITLE,
+                COLUMN_LONGITUDE,
+                COLUMN_LATITUDE
+            },
+            "ID == ?",
+            new String[] {String.valueOf(id)},
+            null,
+            null,
+            null
         );
         if (cursor.getCount() > 0) {
             db.delete(TABLE_NAME, "ID == ?", new String[]{String.valueOf(id)});
             cursor.moveToFirst();
             record = new Record(
-                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
-                    "",
-                    cursor.getString(cursor.getColumnIndex(COLUMN_LATITUDE)),
-                    cursor.getString(cursor.getColumnIndex(COLUMN_LONGITUDE))
+                cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                "",
+                cursor.getString(cursor.getColumnIndex(COLUMN_LATITUDE)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_LONGITUDE)),
+                false
             );
         }
         return record;
@@ -92,20 +128,20 @@ public class RecordOpenHelper extends SQLiteOpenHelper {
 
     public Cursor getAll() {
         return this.getWritableDatabase().query(
-                false,
-                TABLE_NAME,
-                new String[] {
-                        COLUMN_ID,
-                        COLUMN_TITLE,
-                        COLUMN_LONGITUDE,
-                        COLUMN_LATITUDE
-                },
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
+            false,
+            TABLE_NAME,
+            new String[] {
+                COLUMN_ID,
+                COLUMN_TITLE,
+                COLUMN_LONGITUDE,
+                COLUMN_LATITUDE
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
         );
     }
 }
