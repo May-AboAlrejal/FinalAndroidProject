@@ -63,6 +63,8 @@ public class RecipeSingle extends AppCompatActivity {
     Button savebtn;
     DatabaseHandler db;
 
+    String activityName;
+
 
     List<Recipe> recipes;
 
@@ -79,7 +81,7 @@ public class RecipeSingle extends AppCompatActivity {
 
         Intent dataFromPreviousPage = getIntent();
 
-        String activityName = dataFromPreviousPage.getStringExtra("ActivityName");
+        activityName = dataFromPreviousPage.getStringExtra("ActivityName");
 
         titleStr = dataFromPreviousPage.getStringExtra("title");
         urlFood = dataFromPreviousPage.getStringExtra("url");
@@ -114,8 +116,9 @@ public class RecipeSingle extends AppCompatActivity {
             if (activityName.equals("ListFavouriteActivity")) {
                 db.deleteRecipe(rep);
                 Intent intent = new Intent(this, ListFavouriteActivity.class);
-                startActivityForResult(intent, 30);
-                Toast.makeText(this, "Deleted", Toast.LENGTH_LONG).show();
+                finish();
+                startActivity(intent);
+                Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT).show();
             } else {
                 recipes = db.getAllRecipes();
                 //checking duplicate value
@@ -124,9 +127,12 @@ public class RecipeSingle extends AppCompatActivity {
                 }
                 if (!duplicate) {
                     db.addRecipe(rep);
-                    Toast.makeText(this, "Added", Toast.LENGTH_LONG).show();
+//                    Intent intent = new Intent(this, SearchingActivity.class);
+//                    startActivityForResult(intent, 30);
+                    finish();
+                    Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "Can't add duplicate", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Can't add duplicate", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -134,6 +140,24 @@ public class RecipeSingle extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        switch (activityName) {
+            case "ListFavouriteActivity":
+                Intent intent = new Intent(this, ListFavouriteActivity.class);
+                finish();
+                startActivity(intent);
+                break;
+            case "SearchingActivity":
+                finish();
+                break;
+
+        }
+
+
+    }
 
     public boolean fileExistance(String fileName) {
         Log.i(ACTIVITY_NAME, getBaseContext().getFileStreamPath(fileName).toString());

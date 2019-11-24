@@ -12,12 +12,20 @@
         android:background="@color/colorPrimary"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
         <ListView
             android:id="@+id/list_favourite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:transcriptMode="alwaysScroll"
-            android:layout_below="@id/toolbar"
             />
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

@@ -7,6 +7,14 @@
     >
 <!-- Layout weight is important-->
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        />
+
     <ListView
             android:id="@+id/list_search"
             android:layout_width="match_parent"

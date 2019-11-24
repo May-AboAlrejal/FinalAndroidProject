@@ -3,11 +3,17 @@ package com.mayabo.finalandroidproject.recipe;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.mayabo.finalandroidproject.CarStationFinderActivity;
+import com.mayabo.finalandroidproject.CurrencyConversionActivity;
+import com.mayabo.finalandroidproject.NewsHeadlinesActivity;
 import com.mayabo.finalandroidproject.R;
 
 import java.lang.reflect.Array;
@@ -31,6 +37,9 @@ public class ListFavouriteActivity extends AppCompatActivity {
     CustomListAdapter adapter;
     ArrayList<Recipe> savedList;
     Toolbar tbar;
+    Menu menu;
+
+    int numberRecipe;
     public static final String ACTIVITY_NAME = "ListFavouriteActivity";
 
     @Override
@@ -38,21 +47,22 @@ public class ListFavouriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_favourite_acvitity);
         tbar = (Toolbar) findViewById(R.id.toolbar);
-        tbar.setTitle("Your Favourite List");
-        setSupportActionBar(tbar);
+
+
 
         theList = (ListView) findViewById(R.id.list_favourite);
 
         DatabaseHandler db = new DatabaseHandler(this);
 
         savedList = new ArrayList<Recipe>(db.getAllRecipes());
+        numberRecipe = savedList.size();
+        tbar.setTitle("Favourite List: "+numberRecipe);
+        setSupportActionBar(tbar);
+
 
         adapter = new CustomListAdapter(this, savedList);
         theList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
-
-
 
 
             theList.setOnItemClickListener((parent, view, position, id) -> {
@@ -67,8 +77,41 @@ public class ListFavouriteActivity extends AppCompatActivity {
                 startActivity(singlePage);
             });
 
+    }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+                Intent intent = new Intent(this, RecipeSearchActivity.class);
+                finish();
+                startActivity(intent);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId())
+
+        {
+            case R.id.exit:
+                Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
+                Intent goToRecipeSearchActivity= new Intent(this, RecipeSearchActivity.class);
+                startActivity(goToRecipeSearchActivity);
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.exit_to_home, menu);
+        this.menu = menu;
+        return true;
     }
 
 

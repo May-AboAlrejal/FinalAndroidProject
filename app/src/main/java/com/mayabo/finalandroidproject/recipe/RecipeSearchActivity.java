@@ -1,6 +1,7 @@
 package com.mayabo.finalandroidproject.recipe;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -44,8 +45,8 @@ public class RecipeSearchActivity extends AppCompatActivity {
     public static final String VERSION = "10.1v";
     Menu menu;
     Toolbar tbar;
-
-
+    private static final String FILTER_KEY = "User_Filter";
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,11 @@ public class RecipeSearchActivity extends AppCompatActivity {
         EditText filter = findViewById(R.id.search_edit);
         Button searchButton = findViewById(R.id.view_search);
         Button viewFavourite = findViewById(R.id.view_favourite);
+
+        //Using sharePreference to store data in the form of key-value pair
+        prefs = getSharedPreferences(FILTER_KEY, MODE_PRIVATE);
+        String filterPrev = prefs.getString(FILTER_KEY, "");
+        filter.setText(filterPrev);
 
 
 
@@ -86,6 +92,24 @@ public class RecipeSearchActivity extends AppCompatActivity {
         }
 
     }
+
+    /**
+     * Using SharePreference to save the User type in data
+     * Get the value input
+     * save the value and commit in onPause method
+     * */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EditText filter = findViewById(R.id.search_edit);
+        prefs = getSharedPreferences(FILTER_KEY, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(FILTER_KEY, filter.getText().toString());
+        editor.commit();
+
+    }
+
+
     /**
      * This is onOptionItemSelected method will work with any item in the toolbar that is clicked
      * @Param item

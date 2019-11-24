@@ -8,6 +8,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.mayabo.finalandroidproject.R;
@@ -57,6 +61,8 @@ public class SearchingActivity extends AppCompatActivity {
     ListView theList;
     String userFilter;
     CustomListAdapter adapter;
+    Menu menu;
+    Toolbar tbar;
 
 
     /**
@@ -76,6 +82,10 @@ public class SearchingActivity extends AppCompatActivity {
 
         Intent dataFromPreviousPage = getIntent();
         userFilter = dataFromPreviousPage.getStringExtra("searchFilter");
+
+        tbar = (Toolbar) findViewById(R.id.toolbar);
+        tbar.setTitle("Recipe Of "+userFilter);
+        setSupportActionBar(tbar);
 
 
         linearLayout = findViewById(R.id.linear_layout);
@@ -123,6 +133,30 @@ public class SearchingActivity extends AppCompatActivity {
             startActivity(singlePage);
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId())
+
+        {
+            case R.id.exit:
+                Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
+                Intent goToRecipeSearchActivity= new Intent(this, RecipeSearchActivity.class);
+                startActivity(goToRecipeSearchActivity);
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.exit_to_home, menu);
+        this.menu = menu;
+        return true;
     }
 
 
@@ -175,7 +209,6 @@ public class SearchingActivity extends AppCompatActivity {
         String result = null;
         Context context;
 
-
         public RecipeQuery(Context context) {
             this.context = context;
         }
@@ -206,13 +239,6 @@ public class SearchingActivity extends AppCompatActivity {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"), 8);
                 StringBuilder sb = new StringBuilder();
 
-                publishProgress(50);
-                try {
-                    Thread.sleep(10);
-                } catch (Exception e) {
-                }
-
-
                 String line = null;
                 while ((line = reader.readLine()) != null) {
                     sb.append(line + "\n");
@@ -223,13 +249,7 @@ public class SearchingActivity extends AppCompatActivity {
                     JSONObject jObject = new JSONObject(sb.toString());
                     JSONArray recipesJArray = jObject.getJSONArray("recipes");
 
-//                    for (int j = 0; j < 100; j++) {
-//                        publishProgress(j);
-//                        try {
-//                            Thread.sleep(10);
-//                        } catch (Exception e) {
-//                        }
-//                    }
+
 
                     for (int i = 0; i < recipesJArray.length(); i++) {
                         JSONObject recipeJSON = recipesJArray.getJSONObject(i);
@@ -239,6 +259,14 @@ public class SearchingActivity extends AppCompatActivity {
                         imageID = recipeJSON.getString("recipe_id");
                         recipe = new Recipe(title, imageID, imageUrl, foodUrl);
                         foodList.add(recipe);
+                    }
+
+                    for (int j = 0; j < 85; j++) {
+                        publishProgress(j);
+                        try {
+                            Thread.sleep(20);
+                        } catch (Exception e) {
+                        }
                     }
                 } catch (org.json.JSONException e) {
                     e.printStackTrace();
@@ -255,13 +283,13 @@ public class SearchingActivity extends AppCompatActivity {
             } catch (IOException ioe) {
                 result = "IO Exception. Is the Wifi connected?";
             }
-            publishProgress(100);
+
+            publishProgress(90);
             try {
-                Thread.sleep(10);
+                Thread.sleep(500);
             } catch (Exception e) {
             }
-
-
+//
             return result;
 
         }
@@ -292,6 +320,8 @@ public class SearchingActivity extends AppCompatActivity {
         }
 
     }
+
+
 
 
 }
