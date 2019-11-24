@@ -7,6 +7,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -192,8 +193,12 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
 
         mGetLocationView.setOnClickListener(view -> {
             LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                new AlertDialog.Builder(ChargeStationFinderActivity.this)
+                    .setIcon(mPrimaryIconInfo)
+                    .setTitle(Manifest.permission.ACCESS_FINE_LOCATION)
+                    .setPositiveButton("Ok", (dialogInterface, i) -> requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 0))
+                    .create().show();
             }
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
