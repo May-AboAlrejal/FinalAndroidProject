@@ -1,20 +1,18 @@
 package com.mayabo.finalandroidproject.chargestationfinder;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -67,11 +65,13 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshView;
     private ImageView mSwapFieldsView;
     private ImageView mGetLocationView;
+    private ConstraintLayout mSearchBarView;
     private List<Record> mSearchResults;
     private MyAdapter mSearchResultAdapter;
     private Drawable mPrimaryIconInfo;
     private Drawable mPrimaryIconFavorite;
     private int mOrigNavigationBarColor;
+    private boolean mIsSearchExpanded;
 
     public static List<Record> favorites;
 
@@ -129,6 +129,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mSwipeRefreshView = findViewById(R.id.swipe_to_refresh);
         mSwapFieldsView = findViewById(R.id.swap_fields);
         mGetLocationView = findViewById(R.id.my_location);
+        mSearchBarView = findViewById(R.id.search_bar);
 
         mLatitudeView.setOnKeyListener((view, i, keyEvent) -> false);
 
@@ -141,8 +142,12 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mLatitudeView.setOnFocusChangeListener((view, b) -> {
             if (b) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                mGetLocationView.setVisibility(View.GONE);
+                mSwapFieldsView.setVisibility(View.GONE);
             } else {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                mGetLocationView.setVisibility(View.VISIBLE);
+                mSwapFieldsView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -156,8 +161,12 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mLongitudeView.setOnFocusChangeListener((view, b) -> {
             if (b) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                mGetLocationView.setVisibility(View.GONE);
+                mSwapFieldsView.setVisibility(View.GONE);
             } else {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                mGetLocationView.setVisibility(View.VISIBLE);
+                mSwapFieldsView.setVisibility(View.VISIBLE);
                 InputMethodManager imm =  (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(findViewById(R.id.longitude).getRootView().getWindowToken(), 0);
             }
@@ -289,8 +298,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         inflater.inflate(R.menu.charge_station_finder_main_menu, menu);
         if (menu != null) {
             for(int i = 0; i < menu.size(); i++){
-                Drawable drawable = menu.getItem(i).getIcon();
-                if(drawable != null) {
+                MenuItem item = menu.getItem(i);
+                Drawable drawable = item.getIcon();
+                if(drawable != null && item.getItemId() != R.id.item_toggle_search) {
                     drawable.mutate();
                     drawable.setColorFilter(new BlendModeColorFilter(getColor(R.color.colorPrimary), BlendMode.SRC_ATOP));
                 }
@@ -329,6 +339,16 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 return true;
             case R.id.item_exit:
                 finish();
+                break;
+            case R.id.item_toggle_search:
+                if (mIsSearchExpanded) {
+                    mIsSearchExpanded = false;
+                    mSearchBarView.setVisibility(View.GONE);
+                } else {
+                    mIsSearchExpanded = true;
+                    mSearchBarView.setVisibility(View.VISIBLE);
+                }
+                break;
             default:
         }
         return super.onOptionsItemSelected(item);
@@ -517,7 +537,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             if (mSearchResults.isEmpty()) {
                 mSearchResultsView.setVisibility(View.GONE);
                 mEmptyInfoView.setVisibility(View.VISIBLE);
-                mEmptyInfoView.setText("Nothing here...");
+                mEmptyInfoView.setText("Nothing here");
             } else {
                 mEmptyInfoView.setVisibility(View.GONE);
                 mSearchResultsView.setVisibility(View.VISIBLE);

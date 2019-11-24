@@ -26,4 +26,9 @@
         android:orderInCategory="400"
         app:showAsAction="never" />
 
+    <item android:id="@+id/item_toggle_search"
+        android:icon="@drawable/baseline_search_24"
+        android:orderInCategory="900"
+        app:showAsAction="ifRoom" />
+
 </menu>
