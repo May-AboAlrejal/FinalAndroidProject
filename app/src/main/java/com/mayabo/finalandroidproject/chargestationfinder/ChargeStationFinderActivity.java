@@ -246,7 +246,6 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             ChargeStationFinderActivity.this.mLatitudeView.getText().toString(),
             ChargeStationFinderActivity.this.mLongitudeView.getText().toString()
         ));
-        sortResultWithFavorite();
     }
 
     private void sortResultWithFavorite() {
@@ -486,8 +485,12 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                     String latitude = String.valueOf(jObject.getDouble("Latitude"));
                     String longitude = String.valueOf(jObject.getDouble("Longitude"));
                     Record record = new Record(title, contact, latitude, longitude, false);
-                    record.setIsFavorite(favorites.contains(record));
-                    this.publishProgress(record);
+                    int index = favorites.indexOf(record);
+                    if (index >= 0) {
+                        this.publishProgress(favorites.get(index));
+                    } else {
+                        this.publishProgress(record);
+                    }
                 }
             }
             catch (MalformedURLException e) {
@@ -518,6 +521,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             } else {
                 mEmptyInfoView.setVisibility(View.GONE);
                 mSearchResultsView.setVisibility(View.VISIBLE);
+                sortResultWithFavorite();
             }
         }
     }
