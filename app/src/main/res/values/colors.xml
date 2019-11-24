@@ -6,5 +6,7 @@
     <color name="colorSecondaryDark">#a2000f</color>
     <color name="colorAccent">#F4B400</color>
     <color name="colorAccentDark">#bc8500</color>
-    <color name="error">#B00020</color>
+    <color name="colorError">#B00020</color>
+    <color name="colorPrimaryTextLight">#3C4043</color>
+    <color name="colorSecondaryTextLight">#666666</color>
 </resources>

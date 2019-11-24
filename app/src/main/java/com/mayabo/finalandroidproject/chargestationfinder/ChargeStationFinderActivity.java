@@ -131,6 +131,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mGetLocationView = findViewById(R.id.my_location);
         mSearchBarView = findViewById(R.id.search_bar);
 
+        mSwapFieldsView.setImageDrawable(fillIconWithColor(R.drawable.outline_swap_vert_24, getColor(R.color.colorPrimaryTextLight)));
+        mGetLocationView.setImageDrawable(fillIconWithColor(R.drawable.outline_my_location_24, getColor(R.color.colorPrimaryTextLight)));
+
         mLatitudeView.setOnKeyListener((view, i, keyEvent) -> false);
 
         mLatitudeView.setOnTouchListener((view, motionEvent) -> {
