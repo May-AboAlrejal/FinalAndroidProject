@@ -5,14 +5,18 @@ public class Record {
     private String longitude;
     private String latitude;
     private String contact;
+    private String address;
+    private Double distance;
     private boolean isFavorite;
 
-    public Record(String title, String contact, String latitude, String longitude, boolean isFavorite) {
+    public Record(String title, String contact, String address, String latitude, String longitude, boolean isFavorite) {
         setTitle(title);
         setContact(contact);
+        setAddress(address);
         setLatitude(latitude);
         setLongitude(longitude);
         setIsFavorite(isFavorite);
+        setDistance(null);
     }
 
     public String getTitle() {
@@ -40,7 +44,7 @@ public class Record {
     }
 
     public String getContact() {
-        return contact.equals("null") ? "unavailable" : contact;
+        return contact.equals("null") ? null : contact;
     }
 
     public void setContact(String contact) {
@@ -55,6 +59,22 @@ public class Record {
         isFavorite = favorite;
     }
 
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -65,7 +85,7 @@ public class Record {
         }
         Record record = (Record) other;
         return this.title.equals(record.title) &&
-                this.latitude.equals(record.latitude) &&
-                this.longitude.equals(record.longitude);
+            this.latitude.equals(record.latitude) &&
+            this.longitude.equals(record.longitude);
     }
 }

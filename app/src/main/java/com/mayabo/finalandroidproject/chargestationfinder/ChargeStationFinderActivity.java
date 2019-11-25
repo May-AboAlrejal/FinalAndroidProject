@@ -54,6 +54,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
 import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
@@ -98,27 +99,13 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             }
         });
 
-        favorites = new ArrayList<>();
+        favorites = new RecordOpenHelper(this).getAllRecords();
         mSearchResults = new ArrayList<>();
         mIsSearchExpanded = true;
         mPrimaryIconInfo = fillIconWithColor(R.drawable.outline_info_24, getColor(R.color.colorPrimary));
         mPrimaryIconFavorite = fillIconWithColor(R.drawable.outline_favorite_24, getColor(R.color.colorSecondary));
 
-        Cursor cursor = new RecordOpenHelper(this).getAll();
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            do {
-                Record record = new Record(
-                    cursor.getString(cursor.getColumnIndex(RecordOpenHelper.COLUMN_TITLE)),
-                    "",
-                    cursor.getString(cursor.getColumnIndex(RecordOpenHelper.COLUMN_LATITUDE)),
-                    cursor.getString(cursor.getColumnIndex(RecordOpenHelper.COLUMN_LONGITUDE)),
-                    true
-                );
-                if (!ChargeStationFinderActivity.favorites.contains(record))
-                    ChargeStationFinderActivity.favorites.add(record);
-            } while (cursor.moveToNext());
-        }
+
 
         mSearchResultAdapter = new MyAdapter();
 
@@ -131,8 +118,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mGetLocationView = findViewById(R.id.my_location);
         mSearchBarView = findViewById(R.id.search_bar);
 
-        mSwapFieldsView.setImageDrawable(fillIconWithColor(R.drawable.outline_swap_vert_24, getColor(R.color.colorPrimaryTextLight)));
-        mGetLocationView.setImageDrawable(fillIconWithColor(R.drawable.outline_my_location_24, getColor(R.color.colorPrimaryTextLight)));
+        mSwapFieldsView.setImageDrawable(fillIconWithColor(R.drawable.outline_swap_vert_24, getColor(R.color.colorSecondaryTextLight)));
+        mGetLocationView.setImageDrawable(fillIconWithColor(R.drawable.outline_my_location_24, getColor(R.color.colorSecondaryTextLight)));
 
         mLatitudeView.setOnKeyListener((view, i, keyEvent) -> false);
 
@@ -409,10 +396,18 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             Record record = this.getItem(position);
             convertView = getLayoutInflater().inflate(R.layout.charge_station_brief, parent, false);
             TextView title = convertView.findViewById(R.id.title);
-            TextView contact = convertView.findViewById(R.id.contact);
+            TextView distance = convertView.findViewById(R.id.distance);
             ImageView favorite = convertView.findViewById(R.id.ic_favorite);
             title.setText(record.getTitle());
-            contact.setText(record.getContact());
+            distance.setText(String.format(Locale.getDefault(), "%f", record.getDistance()));
+            if (record.getAddress() != null) {
+                TextView address = convertView.findViewById(R.id.address);
+                address.setText(record.getAddress());
+            }
+            if (record.getContact() != null) {
+                TextView contact = convertView.findViewById(R.id.contact);
+                contact.setText(record.getContact());
+            }
             favorite.setOnClickListener(view -> {
                 ImageView imageView = view.findViewById(R.id.ic_favorite);
                 RecordOpenHelper db = new RecordOpenHelper(ChargeStationFinderActivity.this);
@@ -447,12 +442,14 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         }
 
         private String buildQueryStatement() {
-            if (this.getLatitude() == null && this.getLongitude() == null) {
-                return baseUrl;
+            StringBuilder url = new StringBuilder(baseUrl);
+            if (this.getLatitude() != null) {
+                url.append("&latitude=").append(this.getLatitude());
             }
-            return baseUrl +
-                "&latitude=" + this.getLatitude() +
-                "&longitude=" + this.getLongitude();
+            if (this.getLongitude() != null) {
+                url.append("&longitude=").append(this.getLongitude());
+            }
+            return url.toString();
         }
 
         private String getLatitude() {
@@ -513,13 +510,24 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                     String contact = jObject.getString("ContactTelephone1");
                     String latitude = String.valueOf(jObject.getDouble("Latitude"));
                     String longitude = String.valueOf(jObject.getDouble("Longitude"));
-                    Record record = new Record(title, contact, latitude, longitude, false);
+                    String address1 = jObject.getString("AddressLine1");
+                    String address2 = jObject.getString("AddressLine2");
+                    String address = null;
+                    if (!address1.contentEquals("null")) {
+                        address = address1;
+                    }
+                    if (!address2.contentEquals("null")) {
+                        address += address2;
+                    }
+                    double distance = jObject.getDouble("Distance");
+                    Record record = new Record(title, contact, address, latitude, longitude, false);
+                    record.setDistance(distance);
                     int index = favorites.indexOf(record);
                     if (index >= 0) {
-                        this.publishProgress(favorites.get(index));
-                    } else {
-                        this.publishProgress(record);
+                        favorites.remove(index);
+                        favorites.add(index, record);
                     }
+                    this.publishProgress(record);
                 }
             }
             catch (MalformedURLException e) {

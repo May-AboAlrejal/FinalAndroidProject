@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -47,30 +50,7 @@ public class ActivityFavorites extends AppCompatActivity {
         mEmptyInfoView = findViewById(R.id.info_empty);
         mFavoritesView.setAdapter(mFavoritesAdapter);
         mFavoritesView.setLayoutManager(new LinearLayoutManager(this));
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
-                Record record = ChargeStationFinderActivity.favorites.get(position);
-                RecordOpenHelper db = new RecordOpenHelper(ActivityFavorites.this);
-                db.remove(record);
-                ChargeStationFinderActivity.favorites.remove(position);
-                mFavoritesAdapter.notifyItemRemoved(position);
-                record.setIsFavorite(false);
-                Snackbar.make(findViewById(R.id.root), record.getTitle() + " removed", Snackbar.LENGTH_LONG)
-                    .setAction("Undo", view -> {
-                        db.insert(record);
-                        ChargeStationFinderActivity.favorites.add(position, record);
-                        mFavoritesAdapter.notifyDataSetChanged();
-                        record.setIsFavorite(true);
-                    })
-                    .show();
-            }
-        });
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback());
         itemTouchHelper.attachToRecyclerView(mFavoritesView);
 
         if (!ChargeStationFinderActivity.favorites.isEmpty()) {
@@ -122,6 +102,94 @@ public class ActivityFavorites extends AppCompatActivity {
         return icon;
     }
 
+    public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
+        private Drawable icon;
+        private final ColorDrawable background;
+        private final ColorDrawable divider;
+        private final ColorDrawable clearDivider;
+
+        public SwipeToDeleteCallback() {
+            super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+            icon = fillIconWithColor(R.drawable.outline_delete_outline_24, Color.parseColor("#ffffff"));
+            background = new ColorDrawable(getColor(R.color.colorSecondaryDark));
+            divider = new ColorDrawable(Color.parseColor("#D0D0D0"));
+            clearDivider = new ColorDrawable(Color.parseColor("#ffffff"));
+        }
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            Record record = ChargeStationFinderActivity.favorites.get(position);
+            RecordOpenHelper db = new RecordOpenHelper(ActivityFavorites.this);
+            db.remove(record);
+            ChargeStationFinderActivity.favorites.remove(position);
+            mFavoritesAdapter.notifyItemRemoved(position);
+            record.setIsFavorite(false);
+            Snackbar.make(findViewById(R.id.root), record.getTitle() + " removed", Snackbar.LENGTH_LONG)
+                .setAction("Undo", view -> {
+                    db.insert(record);
+                    ChargeStationFinderActivity.favorites.add(position, record);
+                    mFavoritesAdapter.notifyItemInserted(position);
+                    record.setIsFavorite(true);
+                })
+                .show();
+        }
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            View itemView = viewHolder.itemView;
+            int backgroundCornerOffset = 20;
+            int iconMargin = 40;
+            int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
+            int iconBottom = iconTop + icon.getIntrinsicHeight();
+
+            if (dX > 0) { // Swiping to the right
+                int iconLeft = itemView.getLeft() + iconMargin;
+                int iconRight = itemView.getLeft() + iconMargin + icon.getIntrinsicWidth();
+                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                background.setBounds(
+                    itemView.getLeft(),
+                    itemView.getTop(),
+                    itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
+                    itemView.getBottom()
+                );
+            } else if (dX < 0) { // Swiping to the left
+                int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
+                int iconRight = itemView.getRight() - iconMargin;
+                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                background.setBounds(
+                    itemView.getRight() + ((int) dX) - backgroundCornerOffset,
+                    itemView.getTop(),
+                    itemView.getRight(),
+                    itemView.getBottom()
+                );
+            } else { // view is unSwiped
+                background.setBounds(0, 0, 0, 0);
+            }
+
+            ColorDrawable whichDivider;
+
+            if (dX != 0) {
+                whichDivider = divider;
+            } else {
+                whichDivider = clearDivider;
+            }
+            whichDivider.setBounds(
+                itemView.getLeft(),
+                itemView.getBottom(),
+                itemView.getRight(),
+                itemView.getBottom() + 1
+            );
+
+            background.draw(c);
+            icon.draw(c);
+            whichDivider.draw(c);
+        }
+    }
+
     private class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         @NonNull
@@ -136,7 +204,13 @@ public class ActivityFavorites extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Record record = ChargeStationFinderActivity.favorites.get(position);
             holder.title.setText(record.getTitle());
-            holder.contact.setText(record.getContact());
+            if (record.getContact() != null) {
+                holder.contact.setText(record.getContact());
+            }
+            if (record.getAddress() != null) {
+                holder.address.setText(record.getAddress());
+            }
+            holder.distance.setVisibility(View.GONE);
             holder.isFavorite.setVisibility(View.GONE);
         }
 
@@ -148,12 +222,16 @@ public class ActivityFavorites extends AppCompatActivity {
         private class ViewHolder extends RecyclerView.ViewHolder {
             public TextView title;
             public TextView contact;
+            public TextView address;
+            public TextView distance;
             public ImageView isFavorite;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 title = itemView.findViewById(R.id.title);
                 contact = itemView.findViewById(R.id.contact);
+                address = itemView.findViewById(R.id.address);
+                distance = itemView.findViewById(R.id.distance);
                 isFavorite = itemView.findViewById(R.id.ic_favorite);
             }
         }

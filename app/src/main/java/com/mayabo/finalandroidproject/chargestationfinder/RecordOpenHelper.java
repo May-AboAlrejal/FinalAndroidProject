@@ -6,14 +6,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RecordOpenHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Favorites";
     public static final String TABLE_NAME = "FAVORITES";
     public static final String COLUMN_ID = "ID";
     public static final String COLUMN_TITLE = "TITLE";
     public static final String COLUMN_LONGITUDE = "LONGITUDE";
     public static final String COLUMN_LATITUDE = "LATITUDE";
+    public static final String COLUMN_CONTACT = "CONTACT";
+    public static final String COLUMN_ADDRESS = "ADDRESS";
 
     public RecordOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,7 +31,9 @@ public class RecordOpenHelper extends SQLiteOpenHelper {
                 COLUMN_ID        + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TITLE     + " TEXT, " +
                 COLUMN_LONGITUDE + " TEXT, " +
-                COLUMN_LATITUDE  + " TEXT" +
+                COLUMN_LATITUDE  + " TEXT, " +
+                COLUMN_CONTACT   + " TEXT, " +
+                COLUMN_ADDRESS   + " TEXT" +
             ");"
         );
     }
@@ -48,9 +55,9 @@ public class RecordOpenHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
             if (
-        cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)).equalsIgnoreCase(record.getTitle()) &&
-        cursor.getString(cursor.getColumnIndex(COLUMN_LONGITUDE)).equalsIgnoreCase(record.getLongitude()) &&
-        cursor.getString(cursor.getColumnIndex(COLUMN_LATITUDE)).equalsIgnoreCase(record.getLatitude())
+        cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)).contentEquals(record.getTitle()) &&
+        cursor.getString(cursor.getColumnIndex(COLUMN_LONGITUDE)).contentEquals(record.getLongitude()) &&
+        cursor.getString(cursor.getColumnIndex(COLUMN_LATITUDE)).contentEquals(record.getLatitude())
             ) return -1;
         }
         SQLiteDatabase db = this.getWritableDatabase();
@@ -58,72 +65,24 @@ public class RecordOpenHelper extends SQLiteOpenHelper {
         values.put(COLUMN_TITLE, record.getTitle());
         values.put(COLUMN_LONGITUDE, record.getLongitude());
         values.put(COLUMN_LATITUDE, record.getLatitude());
+        values.put(COLUMN_CONTACT, record.getContact());
+        values.put(COLUMN_ADDRESS, record.getAddress());
         return db.insert(TABLE_NAME, null, values);
-    }
-
-    public boolean contains(Record record) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(
-            TABLE_NAME,
-            new String[] {
-                COLUMN_TITLE,
-                COLUMN_LONGITUDE,
-                COLUMN_LATITUDE
-            },
-            COLUMN_TITLE + " == ? AND " + COLUMN_LATITUDE + " == ? AND " + COLUMN_LONGITUDE + " == ?",
-            new String[] {
-                record.getTitle(),
-                record.getLatitude(),
-                record.getLongitude()
-            },
-            null,
-            null,
-            null
-        );
-        return cursor.getCount() > 0;
     }
 
     public int remove(Record record) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(
             TABLE_NAME,
-    COLUMN_TITLE + " == ? AND " + COLUMN_LATITUDE + " == ? AND " + COLUMN_LONGITUDE + " == ?",
+            COLUMN_TITLE + " == ? AND " +
+            COLUMN_LATITUDE + " == ? AND " +
+            COLUMN_LONGITUDE + " == ?",
             new String[] {
                 record.getTitle(),
                 record.getLatitude(),
                 record.getLongitude()
             }
         );
-    }
-
-    public Record removeById(long id) {
-        Record record = null;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(
-            TABLE_NAME,
-            new String[] {
-                COLUMN_TITLE,
-                COLUMN_LONGITUDE,
-                COLUMN_LATITUDE
-            },
-            "ID == ?",
-            new String[] {String.valueOf(id)},
-            null,
-            null,
-            null
-        );
-        if (cursor.getCount() > 0) {
-            db.delete(TABLE_NAME, "ID == ?", new String[]{String.valueOf(id)});
-            cursor.moveToFirst();
-            record = new Record(
-                cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
-                "",
-                cursor.getString(cursor.getColumnIndex(COLUMN_LATITUDE)),
-                cursor.getString(cursor.getColumnIndex(COLUMN_LONGITUDE)),
-                false
-            );
-        }
-        return record;
     }
 
     public Cursor getAll() {
@@ -134,7 +93,9 @@ public class RecordOpenHelper extends SQLiteOpenHelper {
                 COLUMN_ID,
                 COLUMN_TITLE,
                 COLUMN_LONGITUDE,
-                COLUMN_LATITUDE
+                COLUMN_LATITUDE,
+                COLUMN_CONTACT,
+                COLUMN_ADDRESS
             },
             null,
             null,
@@ -143,5 +104,26 @@ public class RecordOpenHelper extends SQLiteOpenHelper {
             null,
             null
         );
+    }
+
+    public List<Record> getAllRecords() {
+        return new ArrayList<Record>() {{
+            Cursor cursor = getAll();
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                do {
+                    Record record = new Record(
+                        cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_CONTACT)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_LATITUDE)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_LONGITUDE)),
+                        true
+                    );
+                    if (!contains(record))
+                        add(record);
+                } while (cursor.moveToNext());
+            }
+        }};
     }
 }
