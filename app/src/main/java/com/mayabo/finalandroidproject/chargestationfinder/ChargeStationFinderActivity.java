@@ -472,14 +472,12 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     }
 
     public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
-        private Drawable icon;
         private final ColorDrawable background;
         private final ColorDrawable divider;
         private final ColorDrawable clearDivider;
 
         public SwipeToDeleteCallback() {
             super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-            icon = fillIconWithColor(R.drawable.outline_star_border_24, Color.parseColor("#ffffff"));
             background = new ColorDrawable(getColor(R.color.colorAccentDark));
             divider = new ColorDrawable(Color.parseColor("#D0D0D0"));
             clearDivider = new ColorDrawable(Color.parseColor("#ffffff"));
@@ -496,50 +494,37 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             super.onChildDraw(c, recyclerView, viewHolder, dX / 4, dY, actionState, isCurrentlyActive);
             View itemView = viewHolder.itemView;
             int backgroundCornerOffset = 20;
-            int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
-            int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
-            int iconBottom = iconTop + icon.getIntrinsicHeight();
-
-            if (dX > 0) { // Swiping to the right
-                int iconLeft = itemView.getLeft() + iconMargin;
-                int iconRight = itemView.getLeft() + iconMargin + icon.getIntrinsicWidth();
-                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-                background.setBounds(
-                        itemView.getLeft(),
-                        itemView.getTop(),
-                        itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
-                        itemView.getBottom()
-                );
-            } else if (dX < 0) { // Swiping to the left
-                int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
-                int iconRight = itemView.getRight() - iconMargin;
-                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-                background.setBounds(
-                        itemView.getRight() + ((int) dX) - backgroundCornerOffset,
-                        itemView.getTop(),
-                        itemView.getRight(),
-                        itemView.getBottom()
-                );
-            } else { // view is unSwiped
-                background.setBounds(0, 0, 0, 0);
-            }
-
             ColorDrawable whichDivider;
 
-            if (dX != 0) {
+            if (dX > 0) { // Swiping to the right
+                background.setBounds(
+                    itemView.getLeft(),
+                    itemView.getTop(),
+                    itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
+                    itemView.getBottom()
+                );
                 whichDivider = divider;
-            } else {
+            } else if (dX < 0) { // Swiping to the left
+                background.setBounds(
+                    itemView.getRight() + ((int) dX) - backgroundCornerOffset,
+                    itemView.getTop(),
+                    itemView.getRight(),
+                    itemView.getBottom()
+                );
+                whichDivider = divider;
+            } else { // view is unSwiped
+                background.setBounds(0, 0, 0, 0);
                 whichDivider = clearDivider;
             }
+
             whichDivider.setBounds(
-                    itemView.getLeft(),
-                    itemView.getBottom(),
-                    itemView.getRight(),
-                    itemView.getBottom() + 1
+                itemView.getLeft(),
+                itemView.getBottom(),
+                itemView.getRight(),
+                itemView.getBottom() + 1
             );
 
             background.draw(c);
-            icon.draw(c);
             whichDivider.draw(c);
         }
     }
