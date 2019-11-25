@@ -27,8 +27,15 @@
         app:showAsAction="never" />
 
     <item android:id="@+id/item_toggle_search"
+        android:title="Search"
         android:icon="@drawable/baseline_search_24"
         android:orderInCategory="900"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/item_info"
+        android:title="Help"
+        android:icon="@drawable/outline_help_outline_24"
+        android:orderInCategory="1000"
         app:showAsAction="ifRoom" />
 
 </menu>

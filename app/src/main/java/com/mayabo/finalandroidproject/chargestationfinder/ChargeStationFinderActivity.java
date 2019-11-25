@@ -1,7 +1,11 @@
 package com.mayabo.finalandroidproject.chargestationfinder;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -9,18 +13,21 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,9 +37,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,7 +68,7 @@ import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACK
 public class ChargeStationFinderActivity extends AppCompatActivity {
     private TextView mLatitudeView;
     private TextView mLongitudeView;
-    private ListView mSearchResultsView;
+    private RecyclerView mSearchResultsView;
     private TextView mEmptyInfoView;
     private SwipeRefreshLayout mSwipeRefreshView;
     private ImageView mSwapFieldsView;
@@ -70,8 +76,10 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     private ConstraintLayout mSearchBarView;
     private List<Record> mSearchResults;
     private MyAdapter mSearchResultAdapter;
-    private Drawable mPrimaryIconInfo;
-    private Drawable mPrimaryIconFavorite;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private Drawable mColoredIconInfo;
+    private Drawable mColoredIconFavorite;
+    private Drawable mPlainIconFavorite;
     private int mOrigNavigationBarColor;
     private boolean mIsSearchExpanded;
 
@@ -102,12 +110,13 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         favorites = new RecordOpenHelper(this).getAllRecords();
         mSearchResults = new ArrayList<>();
         mIsSearchExpanded = true;
-        mPrimaryIconInfo = fillIconWithColor(R.drawable.outline_info_24, getColor(R.color.colorPrimary));
-        mPrimaryIconFavorite = fillIconWithColor(R.drawable.outline_favorite_24, getColor(R.color.colorSecondary));
-
+        mColoredIconInfo = fillIconWithColor(R.drawable.outline_info_24, getColor(R.color.colorPrimary));
+        mColoredIconFavorite = fillIconWithColor(R.drawable.outline_star_24, getColor(R.color.colorAccent));
+        mPlainIconFavorite = getResources().getDrawable(R.drawable.outline_star_border_24, getTheme());
 
 
         mSearchResultAdapter = new MyAdapter();
+        mLayoutManager = new LinearLayoutManager(this);
 
         mLatitudeView = findViewById(R.id.latitude);
         mLongitudeView = findViewById(R.id.longitude);
@@ -169,20 +178,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         });
 
         mSearchResultsView.setAdapter(mSearchResultAdapter);
-        mSearchResultsView.setOnItemClickListener((parent, item, position, id) -> {
-            Record record = mSearchResultAdapter.getItem(position);
-            View content = getLayoutInflater().inflate(R.layout.charge_station_detail, parent, false);
-            ((TextView) content.findViewById(R.id.title)).setText(record.getTitle());
-            ((TextView) content.findViewById(R.id.latitude)).setText(record.getLatitude());
-            ((TextView) content.findViewById(R.id.longitude)).setText(record.getLongitude());
-            ((TextView) content.findViewById(R.id.contact)).setText(record.getContact());
-            new AlertDialog.Builder(this)
-                .setIcon(mPrimaryIconInfo)
-                .setTitle(record.getTitle())
-                .setView(content)
-                .setNegativeButton("Cancel", (dialogInterface, i) -> {})
-                .create().show();
-        });
+        mSearchResultsView.setLayoutManager(mLayoutManager);
+        new ItemTouchHelper(new SwipeToDeleteCallback()).attachToRecyclerView(mSearchResultsView);
 
         mSwapFieldsView.setOnClickListener(view -> {
             CharSequence s = mLatitudeView.getText();
@@ -194,7 +191,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 new AlertDialog.Builder(ChargeStationFinderActivity.this)
-                    .setIcon(mPrimaryIconInfo)
+                    .setIcon(mColoredIconInfo)
                     .setTitle(Manifest.permission.ACCESS_FINE_LOCATION)
                     .setPositiveButton("Ok", (dialogInterface, i) -> requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 0))
                     .create().show();
@@ -214,7 +211,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         setupNavigationBarColor();
-        sortResultWithFavorite();
+        sortResults();
+        mSearchResultAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -249,15 +247,16 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mSearchResultAdapter.notifyDataSetChanged();
         new MyQuery().execute(new QueryParams(
             ChargeStationFinderActivity.this.mLatitudeView.getText().toString(),
-            ChargeStationFinderActivity.this.mLongitudeView.getText().toString()
+            ChargeStationFinderActivity.this.mLongitudeView.getText().toString(),
+            1000
         ));
     }
 
-    private void sortResultWithFavorite() {
+    private void sortResults() {
         Collections.sort(mSearchResults, (left, right) -> {
             if (left.isFavorite() || favorites.contains(left)) {
                 if (right.isFavorite() || favorites.contains(right)) {
-                    return 0;
+                    return left.getDistance().compareTo(right.getDistance());
                 } else {
                     return -1;
                 }
@@ -265,11 +264,10 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 if (right.isFavorite() || favorites.contains(right)) {
                     return 1;
                 } else {
-                    return 0;
+                    return left.getDistance().compareTo(right.getDistance());
                 }
             }
         });
-        mSearchResultAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -296,7 +294,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             for(int i = 0; i < menu.size(); i++){
                 MenuItem item = menu.getItem(i);
                 Drawable drawable = item.getIcon();
-                if(drawable != null && item.getItemId() != R.id.item_toggle_search) {
+                if(drawable != null && item.getOrder() < 900) {
                     drawable.mutate();
                     drawable.setColorFilter(new BlendModeColorFilter(getColor(R.color.colorPrimary), BlendMode.SRC_ATOP));
                 }
@@ -322,7 +320,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 return true;
             case R.id.item_about:
                 new AlertDialog.Builder(this)
-                    .setIcon(mPrimaryIconInfo)
+                    .setIcon(mColoredIconInfo)
                     .setTitle("About")
                     .setView(getLayoutInflater().inflate(
                         R.layout.about_charge_station_finder_dialog,
@@ -375,59 +373,174 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         return icon;
     }
 
-    private class MyAdapter extends BaseAdapter {
+    private class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+        @NonNull
         @Override
-        public int getCount() {
-            return ChargeStationFinderActivity.this.mSearchResults.size();
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View content = inflater.inflate(R.layout.charge_station_brief, parent, false);
+            return new ViewHolder(content);
         }
 
         @Override
-        public Record getItem(int position) {
-            return ChargeStationFinderActivity.this.mSearchResults.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Record record = this.getItem(position);
-            convertView = getLayoutInflater().inflate(R.layout.charge_station_brief, parent, false);
-            TextView title = convertView.findViewById(R.id.title);
-            TextView distance = convertView.findViewById(R.id.distance);
-            ImageView favorite = convertView.findViewById(R.id.ic_favorite);
-            title.setText(record.getTitle());
-            distance.setText(String.format(Locale.getDefault(), "%f", record.getDistance()));
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            Record record = mSearchResults.get(position);
+            holder.title.setText(record.getTitle());
+            holder.distance.setText(String.format(Locale.getDefault(), "%.2f %s", record.getDistance(), "miles"));
             if (record.getAddress() != null) {
-                TextView address = convertView.findViewById(R.id.address);
-                address.setText(record.getAddress());
+                holder.address.setText(record.getAddress());
             }
             if (record.getContact() != null) {
-                TextView contact = convertView.findViewById(R.id.contact);
-                contact.setText(record.getContact());
+                holder.contact.setText(record.getContact());
             }
-            favorite.setOnClickListener(view -> {
-                ImageView imageView = view.findViewById(R.id.ic_favorite);
+            if (record.isFavorite() || favorites.contains(record)) {
+                record.setIsFavorite(true);
+                holder.isFavorite.setImageDrawable(mColoredIconFavorite);
+            } else {
+                holder.isFavorite.setImageDrawable(mPlainIconFavorite);
+            }
+            holder.isFavorite.setOnClickListener(view -> {
                 RecordOpenHelper db = new RecordOpenHelper(ChargeStationFinderActivity.this);
                 if (record.isFavorite()) {
-                    imageView.setImageDrawable(getResources().getDrawable(R.drawable.outline_favorite_border_24, getTheme()));
+                    holder.isFavorite.setImageDrawable(mPlainIconFavorite);
                     record.setIsFavorite(false);
                     favorites.remove(record);
                     db.remove(record);
                 } else {
-                    imageView.setImageDrawable(mPrimaryIconFavorite);
+                    holder.isFavorite.setImageDrawable(mColoredIconFavorite);
                     record.setIsFavorite(true);
                     favorites.add(record);
                     db.insert(record);
                 }
+                int index = mSearchResults.indexOf(record);
+                mSearchResults.remove(index);
+                mSearchResultAdapter.notifyItemRemoved(index);
+                mSearchResults.add(record);
+                sortResults();
+                index = mSearchResults.indexOf(record);
+                mSearchResultAdapter.notifyItemInserted(index);
+                if (record.isFavorite()) {
+                    if (index < 1) {
+                        mLayoutManager.scrollToPosition(0);
+                    } else {
+                        mLayoutManager.scrollToPosition(index - 1);
+                    }
+                }
             });
-            if (record.isFavorite() || favorites.contains(record)) {
-                record.setIsFavorite(true);
-                favorite.setImageDrawable(mPrimaryIconFavorite);
+            holder.itemView.setOnClickListener(view -> {
+                View content = getLayoutInflater().inflate(R.layout.charge_station_detail, null, false);
+                ((TextView) content.findViewById(R.id.title)).setText(record.getTitle());
+                ((TextView) content.findViewById(R.id.latitude)).setText(record.getLatitude());
+                ((TextView) content.findViewById(R.id.longitude)).setText(record.getLongitude());
+                ((TextView) content.findViewById(R.id.contact)).setText(record.getContact());
+                new AlertDialog.Builder(ChargeStationFinderActivity.this)
+                    .setIcon(mColoredIconInfo)
+                    .setTitle(record.getTitle())
+                    .setView(content)
+                    .setPositiveButton("Open map", (dialogInterface, i) -> {
+                        Uri gmmIntentUri = Uri.parse("geo:" + record.getLatitude() + "," + record.getLongitude() + "?q=" + record.getAddress());
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
+                    })
+                    .setNegativeButton("Cancel", (dialogInterface, i) -> {})
+                    .create().show();
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mSearchResults.size();
+        }
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public TextView title;
+            public TextView contact;
+            public TextView address;
+            public TextView distance;
+            public ImageView isFavorite;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                title = itemView.findViewById(R.id.title);
+                contact = itemView.findViewById(R.id.contact);
+                address = itemView.findViewById(R.id.address);
+                distance = itemView.findViewById(R.id.distance);
+                isFavorite = itemView.findViewById(R.id.ic_favorite);
             }
-            return convertView;
+        }
+    }
+
+    public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
+        private Drawable icon;
+        private final ColorDrawable background;
+        private final ColorDrawable divider;
+        private final ColorDrawable clearDivider;
+
+        public SwipeToDeleteCallback() {
+            super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+            icon = fillIconWithColor(R.drawable.outline_star_border_24, Color.parseColor("#ffffff"));
+            background = new ColorDrawable(getColor(R.color.colorAccentDark));
+            divider = new ColorDrawable(Color.parseColor("#D0D0D0"));
+            clearDivider = new ColorDrawable(Color.parseColor("#ffffff"));
+        }
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+        }
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX / 4, dY, actionState, isCurrentlyActive);
+            View itemView = viewHolder.itemView;
+            int backgroundCornerOffset = 20;
+            int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
+            int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
+            int iconBottom = iconTop + icon.getIntrinsicHeight();
+
+            if (dX > 0) { // Swiping to the right
+                int iconLeft = itemView.getLeft() + iconMargin;
+                int iconRight = itemView.getLeft() + iconMargin + icon.getIntrinsicWidth();
+                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                background.setBounds(
+                        itemView.getLeft(),
+                        itemView.getTop(),
+                        itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
+                        itemView.getBottom()
+                );
+            } else if (dX < 0) { // Swiping to the left
+                int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
+                int iconRight = itemView.getRight() - iconMargin;
+                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                background.setBounds(
+                        itemView.getRight() + ((int) dX) - backgroundCornerOffset,
+                        itemView.getTop(),
+                        itemView.getRight(),
+                        itemView.getBottom()
+                );
+            } else { // view is unSwiped
+                background.setBounds(0, 0, 0, 0);
+            }
+
+            ColorDrawable whichDivider;
+
+            if (dX != 0) {
+                whichDivider = divider;
+            } else {
+                whichDivider = clearDivider;
+            }
+            whichDivider.setBounds(
+                    itemView.getLeft(),
+                    itemView.getBottom(),
+                    itemView.getRight(),
+                    itemView.getBottom() + 1
+            );
+
+            background.draw(c);
+            icon.draw(c);
+            whichDivider.draw(c);
         }
     }
 
@@ -435,10 +548,12 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         private static final String baseUrl = "https://api.openchargemap.io/v3/poi/?output=json";
         private String latitude;
         private String longitude;
+        private int maxResult;
 
-        private QueryParams(String latitude, String longitude) {
+        private QueryParams(String latitude, String longitude, int maxResult) {
             this.setLatitude(latitude);
             this.setLongitude(longitude);
+            this.setMaxResult(maxResult);
         }
 
         private String buildQueryStatement() {
@@ -449,7 +564,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             if (this.getLongitude() != null) {
                 url.append("&longitude=").append(this.getLongitude());
             }
-            return url.toString();
+            return url.append("&maxresults=").append(maxResult).toString();
         }
 
         private String getLatitude() {
@@ -492,6 +607,14 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 "Invalid longitude: \"" + longitude + "\", ignoring",
                 Toast.LENGTH_SHORT
             ).show();
+        }
+
+        public int getMaxResult() {
+            return maxResult;
+        }
+
+        public void setMaxResult(int maxResult) {
+            this.maxResult = maxResult;
         }
     }
 
@@ -558,7 +681,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             } else {
                 mEmptyInfoView.setVisibility(View.GONE);
                 mSearchResultsView.setVisibility(View.VISIBLE);
-                sortResultWithFavorite();
+                sortResults();
+                mSearchResultAdapter.notifyDataSetChanged();
             }
         }
     }

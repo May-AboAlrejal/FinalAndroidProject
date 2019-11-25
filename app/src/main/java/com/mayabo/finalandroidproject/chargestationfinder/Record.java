@@ -20,6 +20,9 @@ public class Record {
     }
 
     public String getTitle() {
+        if (title == null) {
+            return null;
+        }
         return title.equals("null") ? "unavailable" : title;
     }
 
@@ -44,6 +47,9 @@ public class Record {
     }
 
     public String getContact() {
+        if (contact == null) {
+            return null;
+        }
         return contact.equals("null") ? null : contact;
     }
 

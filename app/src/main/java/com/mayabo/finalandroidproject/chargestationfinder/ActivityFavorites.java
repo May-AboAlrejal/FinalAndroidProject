@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +33,6 @@ public class ActivityFavorites extends AppCompatActivity {
     private TextView mEmptyInfoView;
     private MyAdapter mFavoritesAdapter;
     private int mOrigNavigationBarColor;
-    private Drawable mPrimaryIconFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +44,6 @@ public class ActivityFavorites extends AppCompatActivity {
 
         backupNavigationBarColor();
         setupNavigationBarColor();
-
-        mPrimaryIconFavorite = fillIconWithColor(R.drawable.outline_favorite_24, getColor(R.color.colorSecondary));
 
         mFavoritesAdapter = new MyAdapter();
 
@@ -142,7 +143,7 @@ public class ActivityFavorites extends AppCompatActivity {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             View itemView = viewHolder.itemView;
             int backgroundCornerOffset = 20;
-            int iconMargin = 40;
+            int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
             int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
             int iconBottom = iconTop + icon.getIntrinsicHeight();
 
@@ -212,6 +213,25 @@ public class ActivityFavorites extends AppCompatActivity {
             }
             holder.distance.setVisibility(View.GONE);
             holder.isFavorite.setVisibility(View.GONE);
+            holder.itemView.setOnClickListener(view -> {
+                View content = getLayoutInflater().inflate(R.layout.charge_station_detail, null, false);
+                ((TextView) content.findViewById(R.id.title)).setText(record.getTitle());
+                ((TextView) content.findViewById(R.id.latitude)).setText(record.getLatitude());
+                ((TextView) content.findViewById(R.id.longitude)).setText(record.getLongitude());
+                ((TextView) content.findViewById(R.id.contact)).setText(record.getContact());
+                new AlertDialog.Builder(ActivityFavorites.this)
+                    .setIcon(fillIconWithColor(R.drawable.outline_info_24, getColor(R.color.colorPrimary)))
+                    .setTitle(record.getTitle())
+                    .setView(content)
+                    .setPositiveButton("Open map", (dialogInterface, i) -> {
+                        Uri gmmIntentUri = Uri.parse("geo:" + record.getLatitude() + "," + record.getLongitude() + "?q=" + record.getAddress());
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
+                    })
+                    .setNegativeButton("Cancel", (dialogInterface, i) -> {})
+                    .create().show();
+            });
         }
 
         @Override
