@@ -5,7 +5,6 @@
     <item android:id="@+id/news"
         android:title="@string/newsIcon"
         android:icon="@drawable/news"
-        android:tooltipText="@string/newsIcon"
         android:orderInCategory="100"
         app:showAsAction="never"/>
 

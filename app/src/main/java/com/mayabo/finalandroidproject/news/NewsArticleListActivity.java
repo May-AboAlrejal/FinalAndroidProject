@@ -70,7 +70,6 @@ public class NewsArticleListActivity extends AppCompatActivity {
 
             TextView titleText = thisRow.findViewById(R.id.titleText);
             TextView descriptionText = thisRow.findViewById(R.id.descriptionText);
-            ImageView articleImage = thisRow.findViewById(R.id.articleImage);
 
             Button viewArticleButton = thisRow.findViewById(R.id.viewArticleButton);
 
@@ -82,44 +81,8 @@ public class NewsArticleListActivity extends AppCompatActivity {
 
             titleText.setText(newsApiResponse.getTitle());
             descriptionText.setText(newsApiResponse.getDescription());
-            articleImage.setImageBitmap(newsApiResponse.getImage());
 
             return thisRow;
         }
     }
-
-    private class ImageAsyncTask extends AsyncTask<String , Integer, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String ret = null;
-            Bitmap image = null;
-            try {
-                URL url = new URL(strings[0]);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-                int responseCode = connection.getResponseCode();
-                if (responseCode == 200) {
-                    image = BitmapFactory.decodeStream(connection.getInputStream());
-                }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return ret;
-        }
-
-        @Override                       //Type 2
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override                   //Type 3
-        protected void onPostExecute(String sentFromDoInBackground) {
-            super.onPostExecute(sentFromDoInBackground);
-
-        }
-    }
-
 }

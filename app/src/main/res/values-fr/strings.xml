@@ -32,4 +32,6 @@
     <string name="newsVersionText">1</string>
     <string name="newsInstructions">Instructions sur l\'utilisation de NewsApi: </string>
     <string name="newsInstructionsText">Test me</string>
+
+    <string name="newsImageDescription">L\'image arctique</string>
 </resources>

@@ -30,4 +30,6 @@
     <string name="newsVersionText">1</string>
     <string name="newsInstructions">Instructions on how to use NewsApi: </string>
     <string name="newsInstructionsText">Test me</string>
+
+    <string name="newsImageDescription">The arctic image</string>
 </resources>

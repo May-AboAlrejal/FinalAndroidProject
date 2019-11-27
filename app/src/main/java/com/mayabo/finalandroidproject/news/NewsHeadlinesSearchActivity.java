@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -192,10 +194,7 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
      * @return boolean false if the two EditText are empty, true if one of them has value
      */
     private boolean checkUserInput(String title, String body) {
-        if(title.length() == 0 && body.length() == 0){
-            return false;
-        }
-        return true;
+        return title.length() != 0 || body.length() != 0;
     }
 
     /**
@@ -212,7 +211,7 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
                 HttpURLConnection urlConnection = (HttpURLConnection) newsURL.openConnection();
                 InputStream inStream = urlConnection.getInputStream();
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"), 8);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, StandardCharsets.UTF_8), 8);
                 StringBuilder sb = new StringBuilder();
 
                 String line = null;
@@ -283,7 +282,7 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
         }
 
         /**
-         * Check the number of articles and display a Toast message for no results or a Sncakbar for results
+         * Check the number of articles and display a Toast message for no results or a Snackbar for results
          * If articles found start a new activity to display the results
          * @param sentFromDoInBackground a string object coming as a return value from {@link #doInBackground(String...)}
          */

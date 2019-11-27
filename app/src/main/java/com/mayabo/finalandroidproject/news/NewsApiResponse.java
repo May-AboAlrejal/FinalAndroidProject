@@ -13,7 +13,7 @@ public class NewsApiResponse implements Serializable {
     private String publishedAt;
     private String content;
     private String source;
-    private Bitmap image;
+    private String imageName;
 
     public static final String STATUS = "status";
     public static final String ARTICLES = "articles";
@@ -26,6 +26,7 @@ public class NewsApiResponse implements Serializable {
     public static final String CONTENT = "content";
     public static final String SOURCE = "source";
     public static final String NAME = "name";
+    public static final String IMAGE_NAME = "imageName";
 
 
     public NewsApiResponse() {
@@ -106,13 +107,9 @@ public class NewsApiResponse implements Serializable {
         this.source = source;
     }
 
-    public Bitmap getImage() {
-        return image;
-    }
+    public String getImageName() { return imageName; }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
-    }
+    public void setImageName(String imageName) { this.imageName = imageName; }
 
     @Override
     public boolean equals(Object o) {
@@ -126,13 +123,12 @@ public class NewsApiResponse implements Serializable {
                 Objects.equals(urlToImage, that.urlToImage) &&
                 Objects.equals(publishedAt, that.publishedAt) &&
                 Objects.equals(content, that.content) &&
-                Objects.equals(source, that.source) &&
-                Objects.equals(image, that.image);
+                Objects.equals(source, that.source);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(author, title, description, url, urlToImage, publishedAt, content, source, image);
+        return Objects.hash(author, title, description, url, urlToImage, publishedAt, content, source);
     }
 }
 
