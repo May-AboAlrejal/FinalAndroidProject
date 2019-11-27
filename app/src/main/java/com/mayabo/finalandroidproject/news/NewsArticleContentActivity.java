@@ -43,7 +43,7 @@ public class NewsArticleContentActivity extends AppCompatActivity {
         dFragment.setTablet(false);
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragmentLocation, dFragment)
+                .replace(R.id.fragmentLocation, dFragment)
                 .addToBackStack("AnyName")
                 .commit();
     }

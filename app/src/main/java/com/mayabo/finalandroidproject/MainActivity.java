@@ -12,6 +12,8 @@ import com.mayabo.finalandroidproject.news.NewsHeadlinesSearchActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mayabo.finalandroidproject.recipe.RecipeSearchActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

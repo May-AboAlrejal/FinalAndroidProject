@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="to_search">Rechercher une recette</string>
+    <string name="to_favourite">Liste de favoris</string>
+    <string name="search_edit">Que veux-tu cuisiner?</string>
+    <string name="title_item">Titre:</string>
+    <string name="url_item">Cliquez sur le lien ci-dessous pour plus de détails \n</string>
+    <string name="search_btn">Chercher</string>
+    <string name="intro">L\'API s\'est arrêté \ n
+     Veuillez rechercher une poitrine de poulet ou une lasagne \ n
+    </string>
+    <string name="coin_tbar">Pièce de monnaie</string>
+    <string name="news_tbar">Nouvelles</string>
+    <string name="food_tbar">Nourriture</string>
+    <string name="station_tbar">Station</string>
+    <string name="intro_rec">Recette d\'instruction</string>
+
+    <string name="version">Une version de logiciel: </string>
+    <string name="instruction">Instruction: \ n
+         - Ceci est le moteur de recherche de recettes \ n
+         - Filtrez ce que vous voulez rechercher dans l\'espace vide \ n
+         - Uniquement disponible lasagne ou poitrine de poulet \ n
+         - Après la saisie, cliquez sur recherche pour voir les résultats \ n
+         - Cliquez sur un élément spécifique pour afficher les détails \ n
+         \ n
+         - Appuyez sur Cœur pour enregistrer \ n
+         - Pour voir et faire la monnaie, allez à Favoris \ n
+         - Le coeur vide indique que vous ne sauvegardez pas \ n
+         - Le cœur rempli indique que la recette est déjà enregistrée.
+    </string>
+    <string name="save_btn">sauver</string>
+    <string name="saved_title">Liste de favoris</string>
+    <string name="heart_instruction">Appuyez sur le coeur pour enregistrer \ n
+     Pour afficher et effectuer des modifications, accédez à Favoris \ n
+     Un cœur vide indique que vous ne sauvegardez pas \ n
+     Le cœur rempli indique que la recette est déjà enregistrée.</string>
     <string name="app_name">FinalAndroidProject</string>
     <string name="searchTitle">Titre de la recherche</string>
     <string name="searchContent">Rechercher un contenu</string>
