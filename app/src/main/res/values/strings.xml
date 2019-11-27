@@ -1,3 +1,51 @@
 <resources>
     <string name="app_name">FinalAndroidProject</string>
+
+    <string name="car_title">Charging Station Search</string>
+    <string name="news_title">News Search</string>
+    <string name="recipe_title">Recipe Search</string>
+    <string name="currency_title">Currency Search</string>
+
+
+    <string name="title_home">Recipe Search Engine</string>
+    <string name="to_search">Search Recipe</string>
+    <string name="to_favourite">List of Favourites</string>
+    <string name="search_edit">What do you want to cook?</string>
+    <string name="title_item">Title: </string>
+    <string name="url_item">Click the link below for more details \n</string>
+    <string name="search_btn">Search</string>
+
+    <string name="intro">The API has been shutting down\n
+    Please search for Lasagna or Chicken Breast\n
+    </string>
+
+
+    <string name="coin_tbar">Coin</string>
+    <string name="news_tbar">News</string>
+    <string name="food_tbar">Food</string>
+    <string name="station_tbar">Station</string>
+    <string name="intro_rec">Instruction Recipe</string>
+
+    <string name="author_name">Author: </string>
+    <string name="version">Software Version: </string>
+    <string name="instruction">Instruction:\n
+        - This is the Recipe Search Engine\n
+        - Filter what you want to search in the blank\n
+        - Available only Lasagna or Chicken Breast\n
+        - After type in, click on search to see results\n
+        - Clicking on specific item to see details\n
+        \n
+        - Tap On Heart To Save\n
+        - To view and make change go to Favourite\n
+        - Empty heart indicates not save\n
+        - Filled heart indicates recipe is already saved.
+    </string>
+
+    <string name="save_btn">Save</string>
+    <string name="saved_title">List of Favourite</string>
+    <string name="heart_instruction">Tap On Heart To Save\n
+    To view and make change go to Favourite\n
+    Empty heart indicates not save\n
+    Filled heart indicates recipe is already saved.</string>
+
 </resources>
