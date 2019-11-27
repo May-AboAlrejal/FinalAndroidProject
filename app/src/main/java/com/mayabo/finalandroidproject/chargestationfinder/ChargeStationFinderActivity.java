@@ -37,7 +37,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -239,6 +238,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
     }
 
+    /**
+     * Creates a new thread and fetch data from server. Updates ListView.
+     */
     private void search() {
         mEmptyInfoView.setText("Loading...");
         mEmptyInfoView.setVisibility(View.VISIBLE);
@@ -248,15 +250,30 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         new MyQuery().execute(new QueryParams(
             ChargeStationFinderActivity.this.mLatitudeView.getText().toString(),
             ChargeStationFinderActivity.this.mLongitudeView.getText().toString(),
-            1000
+            null
         ));
     }
 
+    /**
+     * Sorts elements in the ListView, puts favorites to top and orders by distance from near to far.
+     */
     private void sortResults() {
         Collections.sort(mSearchResults, (left, right) -> {
             if (left.isFavorite() || favorites.contains(left)) {
                 if (right.isFavorite() || favorites.contains(right)) {
-                    return left.getDistance().compareTo(right.getDistance());
+                    if (left.getDistance() == null) {
+                        if (right.getDistance() == null) {
+                            return 0;
+                        } else {
+                            return 1;
+                        }
+                    } else {
+                        if (right.getDistance() == null) {
+                            return -1;
+                        } else {
+                            return left.getDistance().compareTo(right.getDistance());
+                        }
+                    }
                 } else {
                     return -1;
                 }
@@ -264,7 +281,19 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 if (right.isFavorite() || favorites.contains(right)) {
                     return 1;
                 } else {
-                    return left.getDistance().compareTo(right.getDistance());
+                    if (left.getDistance() == null) {
+                        if (right.getDistance() == null) {
+                            return 0;
+                        } else {
+                            return 1;
+                        }
+                    } else {
+                        if (right.getDistance() == null) {
+                            return -1;
+                        } else {
+                            return left.getDistance().compareTo(right.getDistance());
+                        }
+                    }
                 }
             }
         });
@@ -366,6 +395,12 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(event);
     }
 
+    /**
+     * Creates a drawable icon from a drawable id and a color id.
+     * @param resId id of icon
+     * @param color id of color to use
+     * @return drawable icon with specified color
+     */
     private Drawable fillIconWithColor(int resId, int color) {
         Drawable icon = getResources().getDrawable(resId, getTheme());
         icon.mutate();
@@ -533,9 +568,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         private static final String baseUrl = "https://api.openchargemap.io/v3/poi/?output=json";
         private String latitude;
         private String longitude;
-        private int maxResult;
+        private Integer maxResult;
 
-        private QueryParams(String latitude, String longitude, int maxResult) {
+        private QueryParams(String latitude, String longitude, Integer maxResult) {
             this.setLatitude(latitude);
             this.setLongitude(longitude);
             this.setMaxResult(maxResult);
@@ -543,13 +578,16 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
 
         private String buildQueryStatement() {
             StringBuilder url = new StringBuilder(baseUrl);
-            if (this.getLatitude() != null) {
+            if (this.getLatitude() != null && !this.getLatitude().isEmpty()) {
                 url.append("&latitude=").append(this.getLatitude());
             }
-            if (this.getLongitude() != null) {
+            if (this.getLongitude() != null && !this.getLongitude().isEmpty()) {
                 url.append("&longitude=").append(this.getLongitude());
             }
-            return url.append("&maxresults=").append(maxResult).toString();
+            if (this.getMaxResult() != null && this.getMaxResult() > 0) {
+                url.append("&maxresults=").append(this.getMaxResult());
+            }
+            return url.toString();
         }
 
         private String getLatitude() {
@@ -561,16 +599,17 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 double value = Double.valueOf(latitude);
                 if (value <= 90 && value >= -90) {
                     this.latitude = latitude;
-                    return;
+                } else {
+                    throw new Exception();
                 }
             }
             catch (Exception e) {
+                Toast.makeText(
+                    ChargeStationFinderActivity.this,
+                    "Invalid latitude: \"" + latitude + "\"",
+                    Toast.LENGTH_SHORT
+                ).show();
             }
-            Toast.makeText(
-                ChargeStationFinderActivity.this,
-                "Invalid latitude: \"" + latitude + "\", ignoring",
-                Toast.LENGTH_SHORT
-            ).show();
         }
 
         private String getLongitude() {
@@ -582,23 +621,24 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 double value = Double.valueOf(longitude);
                 if (value <= 180 && value >= -180) {
                     this.longitude = longitude;
-                    return;
+                } else {
+                    throw new Exception();
                 }
             }
             catch (Exception e) {
+                Toast.makeText(
+                    ChargeStationFinderActivity.this,
+                    "Invalid longitude: \"" + longitude + "\"",
+                    Toast.LENGTH_SHORT
+                ).show();
             }
-            Toast.makeText(
-                ChargeStationFinderActivity.this,
-                "Invalid longitude: \"" + longitude + "\", ignoring",
-                Toast.LENGTH_SHORT
-            ).show();
         }
 
-        public int getMaxResult() {
+        public Integer getMaxResult() {
             return maxResult;
         }
 
-        public void setMaxResult(int maxResult) {
+        public void setMaxResult(Integer maxResult) {
             this.maxResult = maxResult;
         }
     }
@@ -627,7 +667,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                     if (!address2.contentEquals("null")) {
                         address += address2;
                     }
-                    double distance = jObject.getDouble("Distance");
+                    Double distance = jObject.getString("Distance").contentEquals("null") ? null : jObject.getDouble("Distance");
                     Record record = new Record(title, contact, address, latitude, longitude, false);
                     record.setDistance(distance);
                     int index = favorites.indexOf(record);
