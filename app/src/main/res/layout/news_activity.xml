@@ -6,11 +6,13 @@
     android:paddingLeft="16dp"
     android:paddingTop="16dp"
     android:paddingRight="16dp"
-    android:paddingBottom="16dp">
+    android:paddingBottom="16dp"
+    android:background="@color/newsColor">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/newsToolbarColor"
         android:id="@+id/toolbar"/>
 
     <LinearLayout
@@ -119,5 +121,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/searchButton" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <Button
+        android:id="@+id/viewSavedArticles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/viewSavedArticles" />
 
 </LinearLayout>

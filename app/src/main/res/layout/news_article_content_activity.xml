@@ -6,7 +6,8 @@
     android:paddingLeft="16dp"
     android:paddingTop="16dp"
     android:paddingRight="16dp"
-    android:paddingBottom="16dp">
+    android:paddingBottom="16dp"
+    android:background="@color/newsColor">
 
     <LinearLayout
         android:id="@+id/title"
@@ -133,7 +134,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/contentHeader"
-        android:layout_above="@+id/saveArticleButton"
+        android:layout_above="@+id/articleButton"
         android:scrollbars="vertical">
 
         <TextView
@@ -145,7 +146,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/saveArticleButton"
+        android:id="@+id/articleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

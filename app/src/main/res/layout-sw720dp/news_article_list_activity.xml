@@ -9,9 +9,17 @@
     android:paddingBottom="16dp"
     android:background="@color/newsColor">
 
+
     <ListView
         android:id="@+id/newsListView"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="match_parent"/>
+
+    <FrameLayout
+        android:id="@+id/fragmentLocation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        android:layout_toEndOf="@id/newsListView"/>
 
 </RelativeLayout>

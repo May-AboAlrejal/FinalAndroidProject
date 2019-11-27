@@ -2,34 +2,30 @@
     <string name="app_name">FinalAndroidProject</string>
     <string name="searchTitle">Search Title</string>
     <string name="searchContent">Search Content</string>
-
     <string name="selectLanguage">Select Language: </string>
     <string name="selectSortBy">Sort By: </string>
-
     <string name="searchButton">Search</string>
-
     <string name="author">Author: </string>
     <string name="source">Source: </string>
     <string name="url">URL: </string>
     <string name="publishedAt">At: </string>
     <string name="description">Description: </string>
-
-    <string name="viewArticle">View Article</string>
-    <string name="saveArticle">Save Article</string>
     <string name="title">Title: </string>
     <string name="content">Content: </string>
-
+    <string name="viewArticle">View Article</string>
+    <string name="saveArticle">Save Article</string>
+    <string name="deleteArticle">Delete article</string>
     <string name="carIcon">Electric Car Charging Station finder</string>
     <string name="foodIcon">Recipe search</string>
     <string name="moneyIcon">Foreign currency</string>
     <string name="newsIcon">News Headlines search</string>
-
+    <string name="viewSavedArticles">View saved articles</string>
     <string name="authorNewsName">Author’s name: </string>
     <string name="authorNewsNameText">May Abo-Alrejal</string>
     <string name="newsVersion">Activity version number: </string>
     <string name="newsVersionText">1</string>
     <string name="newsInstructions">Instructions on how to use NewsApi: </string>
-    <string name="newsInstructionsText">Test me</string>
-
+    <string name="newsInstructionsText">This API is used to search articles, to find an article please follow the instruction below:\n
+First, enter a word/phrase in title, content or both. Then, choose a language. After that, select how to sort the result. Last, click search.</string>
     <string name="newsImageDescription">The arctic image</string>
 </resources>

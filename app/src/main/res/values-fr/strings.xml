@@ -1,37 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FinalAndroidProject</string>
-    <string name="title">Titre: </string>
-    <string name="content">Contenu: </string>
-
-    <string name="carIcon">Moteur de recherche de voiture électrique</string>
-    <string name="foodIcon">Recherche de recette</string>
-    <string name="moneyIcon">Monnaie étrangère</string>
-    <string name="newsIcon">Recherche dans l\'actualité</string>
-
     <string name="searchTitle">Titre de la recherche</string>
     <string name="searchContent">Rechercher un contenu</string>
-
     <string name="selectLanguage">Choisir la langue: </string>
     <string name="selectSortBy">Trier par: </string>
-
     <string name="searchButton">Chercher</string>
-
     <string name="author">Author: </string>
     <string name="source">La source: </string>
     <string name="url">URL: </string>
     <string name="publishedAt">À: </string>
     <string name="description">La description: </string>
-
+    <string name="title">Titre: </string>
+    <string name="content">Contenu: </string>
     <string name="viewArticle">Voir l\'article</string>
     <string name="saveArticle">Enregistrer l\'article</string>
-
+    <string name="deleteArticle">Supprimer l\'article</string>
+    <string name="carIcon">Moteur de recherche de voiture électrique</string>
+    <string name="foodIcon">Recherche de recette</string>
+    <string name="moneyIcon">Monnaie étrangère</string>
+    <string name="newsIcon">Recherche dans l\'actualité</string>
+    <string name="viewSavedArticles">Voir les articles sauvegardés</string>
     <string name="authorNewsName">Le nom de l\'auteur: </string>
     <string name="authorNewsNameText">May Abo-Alrejal</string>
     <string name="newsVersion">Numéro de version de l\'activité: </string>
     <string name="newsVersionText">1</string>
     <string name="newsInstructions">Instructions sur l\'utilisation de NewsApi: </string>
-    <string name="newsInstructionsText">Test me</string>
-
+    <string name="newsInstructionsText">Cette API est utilisée pour rechercher des articles. Pour trouver un article, suivez les instructions ci-dessous:\n
+Commencez par entrer un mot / une phrase dans le titre, le contenu ou les deux. Ensuite, choisissez une langue. Après cela, sélectionnez comment trier le résultat. Enfin, cliquez sur Rechercher.</string>
     <string name="newsImageDescription">L\'image arctique</string>
 </resources>

@@ -14,6 +14,7 @@ public class NewsApiResponse implements Serializable {
     private String content;
     private String source;
     private String imageName;
+    private long id;
 
     public static final String STATUS = "status";
     public static final String ARTICLES = "articles";
@@ -110,6 +111,14 @@ public class NewsApiResponse implements Serializable {
     public String getImageName() { return imageName; }
 
     public void setImageName(String imageName) { this.imageName = imageName; }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     @Override
     public boolean equals(Object o) {

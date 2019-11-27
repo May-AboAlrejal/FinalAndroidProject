@@ -3,6 +3,7 @@ package com.mayabo.finalandroidproject.news;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,12 +48,20 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
     private Context thisApp;
     private EditText searchBody;
     private EditText searchTitle;
-
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
     private NewsApiRequest newsApiRequest;
     private Spinner spinnerSortBy;
     private Spinner spinnerLanguage;
     private URL newsURL;
     private ArrayList<NewsApiResponse> newsArticles = new ArrayList();
+
+    public static final String SEARCHED_ARTICLES = "NewsArticlesSearchedList";
+    public static final String SEARCHED_BUTTON = "goToSearched";
+    public static final String SAVED_BUTTON = "goToSaved";
+    public static final String NEWS_FILE = "newsFile";
+    public static final String PRE_TITLE = "previousTitle";
+    public static final String PRE_BODY = "previousBody";
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -86,11 +94,17 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
         spinnerSortBy.setAdapter(adapterSortBy);
         spinnerLanguage.setAdapter(adapterLanguage);
 
-        /**
-         * Get some element from XML
-         */
+        // check for any previous saved values in Shared Preferences
+        prefs = getSharedPreferences(NEWS_FILE, MODE_PRIVATE);
+        String previousTitle = prefs.getString(PRE_TITLE, "");
+        String previousBody = prefs.getString(PRE_BODY, "");
+        editor = prefs.edit();
+
+        // Get some element from XML and add previous saved values into them
         searchBody = findViewById(R.id.searchBody);
+        searchBody.setText(previousBody);
         searchTitle = findViewById(R.id.searchTitle);
+        searchTitle.setText(previousTitle);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -144,8 +158,25 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
             }
 
         });
+
+        Button viewSavedArticles = findViewById(R.id.viewSavedArticles);
+        viewSavedArticles.setOnClickListener( clik -> {
+            Intent goToNewsArticleListActivity = new Intent(NewsHeadlinesSearchActivity.this, NewsArticleListActivity.class);
+            goToNewsArticleListActivity.putExtra(SAVED_BUTTON, true);
+            startActivity(goToNewsArticleListActivity);
+        });
     }
 
+    /**
+     * Save user input for next time he uses the app
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        editor.putString(PRE_BODY, searchBody.getText().toString());
+        editor.putString(PRE_TITLE, searchTitle.getText().toString());
+        editor.commit();
+    }
 
     /**
      * This method specify the options menu for Toolbar
@@ -295,7 +326,8 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
                 Snackbar.make(searchTitle,newsArticles.size() + " articles found!", Snackbar.LENGTH_LONG).show();
 
                 Intent goToNewsArticleListActivity = new Intent(NewsHeadlinesSearchActivity.this, NewsArticleListActivity.class);
-                goToNewsArticleListActivity.putExtra("NewsArticlesList", newsArticles);
+                goToNewsArticleListActivity.putExtra(SEARCHED_ARTICLES, newsArticles);
+                goToNewsArticleListActivity.putExtra(SEARCHED_BUTTON, true);
                 startActivity(goToNewsArticleListActivity);
             } else {
                 Toast.makeText(thisApp, "Sorry! No articles found.", Toast.LENGTH_LONG).show();
