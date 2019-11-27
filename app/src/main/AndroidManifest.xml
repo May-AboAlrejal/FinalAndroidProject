@@ -17,15 +17,10 @@
 
         <activity android:name=".news.NewsArticleListActivity" />
         <activity android:name=".news.NewsArticleContentActivity" />
-        <activity android:name=".chargestationfinder.SettingsActivity"/>
-        <activity android:name=".chargestationfinder.ActivityFavorites" />
-        <activity
-            android:name=".chargestationfinder.ChargeStationFinderActivity"
-            android:label="Find Charge Stations"
-            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".RecipeSearchActivity" />
         <activity android:name=".news.NewsHeadlinesSearchActivity" />
         <activity android:name=".CurrencyConversionActivity" />
+        <activity android:name=".CarStationFinderActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,5 +29,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

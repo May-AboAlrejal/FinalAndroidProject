@@ -12,8 +12,6 @@ import com.mayabo.finalandroidproject.news.NewsHeadlinesSearchActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mayabo.finalandroidproject.chargestationfinder.ChargeStationFinderActivity;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -34,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         Button recipeSearch = findViewById(R.id.recipeSearch);
 
         carStationFinder.setOnClickListener( clk -> {
-            Intent goToCarStationFinderActivity = new Intent(MainActivity.this, ChargeStationFinderActivity.class);
+            Intent goToCarStationFinderActivity = new Intent(MainActivity.this, CarStationFinderActivity.class);
             startActivity(goToCarStationFinderActivity);
         });
 
@@ -70,14 +68,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method gets the selected item from the menu toolbar
      * each menu item will redirect the activity to a different page
-     * @param item
+     * @param item the item selected from the menu toolbar
      * @return boolean
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.car:
-                Intent goToCarStationFinderActivity = new Intent(MainActivity.this, ChargeStationFinderActivity.class);
+                Intent goToCarStationFinderActivity = new Intent(MainActivity.this, CarStationFinderActivity.class);
                 startActivity(goToCarStationFinderActivity);
                 break;
             case R.id.food:

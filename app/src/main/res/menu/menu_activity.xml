@@ -6,24 +6,24 @@
         android:title="@string/moneyIcon"
         android:icon="@drawable/money"
         android:orderInCategory="1"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/food"
         android:title="@string/foodIcon"
         android:icon="@drawable/food"
         android:orderInCategory="2"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/car"
         android:title="@string/carIcon"
         android:icon="@drawable/car"
         android:orderInCategory="3"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/news"
         android:title="@string/newsIcon"
         android:icon="@drawable/news"
         android:orderInCategory="100"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
 </menu>
