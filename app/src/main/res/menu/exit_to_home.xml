@@ -4,7 +4,8 @@
 
     <item android:id="@+id/exit"
         android:title="@string/food_tbar"
-        android:icon="@drawable/exit_icon"
-        app:showAsAction="always"/>
+        android:icon="@drawable/home_big"
+        app:showAsAction="always"
+        />
 
 </menu>

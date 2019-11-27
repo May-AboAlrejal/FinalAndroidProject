@@ -36,5 +36,6 @@
     <string name="food_tbar">Đồ ăn</string>
     <string name="save_btn">Lưu vô</string>
     <string name="saved_title">Công thức lưu</string>
+    <string name="heart_instruction"></string>
 
 </resources>

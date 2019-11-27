@@ -123,7 +123,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return recipe;
     }
 
-
     // Deleting single Recipe
     public void deleteRecipe(Recipe recipe) {
         SQLiteDatabase db = this.getWritableDatabase();

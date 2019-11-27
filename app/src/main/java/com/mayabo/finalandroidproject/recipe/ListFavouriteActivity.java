@@ -39,6 +39,7 @@ public class ListFavouriteActivity extends AppCompatActivity {
     Toolbar tbar;
     Menu menu;
 
+
     int numberRecipe;
     public static final String ACTIVITY_NAME = "ListFavouriteActivity";
 
@@ -50,6 +51,8 @@ public class ListFavouriteActivity extends AppCompatActivity {
 
 
 
+
+
         theList = (ListView) findViewById(R.id.list_favourite);
 
         DatabaseHandler db = new DatabaseHandler(this);
@@ -57,6 +60,7 @@ public class ListFavouriteActivity extends AppCompatActivity {
         savedList = new ArrayList<Recipe>(db.getAllRecipes());
         numberRecipe = savedList.size();
         tbar.setTitle("Favourite List: "+numberRecipe);
+        tbar.setTitleTextColor(getResources().getColor(R.color.titleColor));
         setSupportActionBar(tbar);
 
 
@@ -79,13 +83,16 @@ public class ListFavouriteActivity extends AppCompatActivity {
 
     }
 
+    protected void intentToMain() {
+        Intent goToMain = new Intent(this, RecipeSearchActivity.class);
+        startActivity(goToMain);
+    }
+
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-                Intent intent = new Intent(this, RecipeSearchActivity.class);
-                finish();
-                startActivity(intent);
+        this.intentToMain();
     }
 
 
@@ -98,8 +105,8 @@ public class ListFavouriteActivity extends AppCompatActivity {
         {
             case R.id.exit:
                 Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
-                Intent goToRecipeSearchActivity= new Intent(this, RecipeSearchActivity.class);
-                startActivity(goToRecipeSearchActivity);
+                this.intentToMain();
+                finish();
                 break;
         }
         return true;

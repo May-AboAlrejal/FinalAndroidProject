@@ -1,5 +1,7 @@
 package com.mayabo.finalandroidproject.recipe;
 
+import android.graphics.Bitmap;
+
 /**
  * This is the final project
  * Topic is specify to Recipe Search Engine
@@ -18,6 +20,8 @@ public class Recipe {
     protected String url;
     protected String imgUrl;
     protected String imageID;
+
+    protected Bitmap image;
 
 
     protected long id;

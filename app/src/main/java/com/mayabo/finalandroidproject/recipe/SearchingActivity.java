@@ -3,7 +3,10 @@ package com.mayabo.finalandroidproject.recipe;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +23,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.graphics.drawable.BitmapDrawable;
+
+import java.io.BufferedInputStream;
+
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +39,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,6 +49,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import android.graphics.PorterDuff;
 
 
 /**
@@ -63,6 +74,21 @@ public class SearchingActivity extends AppCompatActivity {
     CustomListAdapter adapter;
     Menu menu;
     Toolbar tbar;
+    Bitmap image;
+    Bitmap imageToSet;
+    public static ArrayList<Bitmap> imageList = new ArrayList<>();
+
+    public static ArrayList<String> imgUrls = new ArrayList<>();
+
+
+    //Fragment attributes:
+    public static final String ITEM_SELECTED = "ITEM";
+    public static final String ITEM_POSITION = "POSITION";
+    public static final String ITEM_ID = "ID";
+    public static final String WHO_SEND = "ISSEND";
+    public static final String ID_IN_DB = "DBID";
+    public static final int EMPTY_ACTIVITY = 123;
+
 
 
     /**
@@ -85,7 +111,13 @@ public class SearchingActivity extends AppCompatActivity {
 
         tbar = (Toolbar) findViewById(R.id.toolbar);
         tbar.setTitle("Recipe Of "+userFilter);
+        tbar.setTitleTextColor(getResources().getColor(R.color.titleColor));
+        tbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.titleColor), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(tbar);
+
+
+        //boolean isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
+
 
 
         linearLayout = findViewById(R.id.linear_layout);
@@ -133,6 +165,8 @@ public class SearchingActivity extends AppCompatActivity {
             startActivity(singlePage);
         });
 
+
+
     }
 
     @Override
@@ -143,8 +177,7 @@ public class SearchingActivity extends AppCompatActivity {
         {
             case R.id.exit:
                 Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
-                Intent goToRecipeSearchActivity= new Intent(this, RecipeSearchActivity.class);
-                startActivity(goToRecipeSearchActivity);
+                finish();
                 break;
         }
         return true;
@@ -257,7 +290,14 @@ public class SearchingActivity extends AppCompatActivity {
                         foodUrl = recipeJSON.getString("source_url");
                         imageUrl = recipeJSON.getString("image_url");
                         imageID = recipeJSON.getString("recipe_id");
+
+                        String imgUrl = imageUrl.substring(0, 4) + "s" + imageUrl.substring(4);
+                        String imageName = imageID + ".jpeg";
+
+//                        imageList.add(downloadImage(imgUrl, imageName));
+
                         recipe = new Recipe(title, imageID, imageUrl, foodUrl);
+
                         foodList.add(recipe);
                     }
 
@@ -289,10 +329,38 @@ public class SearchingActivity extends AppCompatActivity {
                 Thread.sleep(500);
             } catch (Exception e) {
             }
-//
+
             return result;
 
         }
+
+
+        protected Bitmap downloadImage(String imageUrl, String imageName) {
+            if (fileExistance(imageName)) {
+                FileInputStream inputStream = null;
+                try {
+                    inputStream = new FileInputStream(getBaseContext().getFileStreamPath(imageName));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                image = BitmapFactory.decodeStream(inputStream);
+                Log.i(ACTIVITY_NAME, "Image already exists");
+            } else {
+                try {
+
+                    URL url = new URL(imageUrl);
+                    image = getImage(url);
+                    FileOutputStream outputStream = openFileOutput(imageName, Context.MODE_PRIVATE);
+                    image.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
+                    Log.i(ACTIVITY_NAME, "Downloading new image");
+
+                    } catch (Exception e) { e.printStackTrace();}
+                }
+            return image;
+        }
+
 
         @Override
         protected void onPreExecute() {
@@ -310,6 +378,33 @@ public class SearchingActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             myProgressBar.setVisibility(View.INVISIBLE);
 
+        }
+
+        protected boolean fileExistance(String fileName) {
+            File file = getBaseContext().getFileStreamPath(fileName);
+            return file.exists();
+        }
+
+        protected Bitmap getImage(URL url) {
+
+            HttpURLConnection iconConn = null;
+            try {
+                iconConn = (HttpURLConnection) url.openConnection();
+                iconConn.connect();
+                int response = iconConn.getResponseCode();
+                if (response == 200) {
+                    return BitmapFactory.decodeStream(iconConn.getInputStream());
+                } else {
+                    return null;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            } finally {
+                if (iconConn != null) {
+                    iconConn.disconnect();
+                }
+            }
         }
 
         @Override

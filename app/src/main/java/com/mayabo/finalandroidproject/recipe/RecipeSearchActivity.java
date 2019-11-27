@@ -3,6 +3,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -13,6 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.view.Gravity;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
@@ -46,6 +50,9 @@ public class RecipeSearchActivity extends AppCompatActivity {
     Menu menu;
     Toolbar tbar;
     private static final String FILTER_KEY = "User_Filter";
+
+
+
     SharedPreferences prefs;
 
     @Override
@@ -54,6 +61,8 @@ public class RecipeSearchActivity extends AppCompatActivity {
         setContentView(R.layout.recipe_home);
         tbar = findViewById(R.id.toolbar);
         tbar.setTitle("Recipe");
+        tbar.setTitleTextColor(getResources().getColor(R.color.titleColor));
+        tbar.getOverflowIcon().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(tbar);
 
         EditText filter = findViewById(R.id.search_edit);
@@ -91,6 +100,20 @@ public class RecipeSearchActivity extends AppCompatActivity {
 
         }
 
+
+
+
+
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent goMain = new Intent(this, MainActivity.class);
+        finish();
+        startActivity(goMain);
     }
 
     /**
@@ -184,15 +207,35 @@ public class RecipeSearchActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //this is call the builder pattern, the order of calling function does not matter
 
+        builder.setTitle("Recipe Search Instruction");
+
+
         //positive and negative are the button
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // What to do on Accept
                     }
                 }).setView(middle);
         //can have third button as neutral button
         //showing stuff
-        builder.create().show();
+
+
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT); //create a new one
+        layoutParams.weight = 1.0f;
+        layoutParams.gravity = Gravity.CENTER; //this is layout_gravity
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setLayoutParams(layoutParams);
+
+
+
+
+
+
+
     }
 
 

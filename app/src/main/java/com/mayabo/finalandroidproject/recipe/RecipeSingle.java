@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,24 +17,25 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.mayabo.finalandroidproject.R;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
+
+import android.graphics.drawable.Drawable;
+
 
 /**
  * This is the final project
@@ -51,11 +55,13 @@ public class RecipeSingle extends AppCompatActivity {
 
     TextView title;
     TextView foodUrl;
+    TextView tapIn;
     String titleStr;
     String urlFood;
     String imageURL;
     Bitmap image = null;
     ImageView itemImage;
+    ImageView heart;
     ProgressBar itemProgress;
     String imageID;
     Recipe rep;
@@ -63,10 +69,17 @@ public class RecipeSingle extends AppCompatActivity {
     Button savebtn;
     DatabaseHandler db;
 
+    int heartSave = R.drawable.save;
+    int heartDelete = R.drawable.delete;
+
     String activityName;
 
 
     List<Recipe> recipes;
+
+    Toolbar tbar;
+
+    Menu menu;
 
 
     @Override
@@ -77,7 +90,14 @@ public class RecipeSingle extends AppCompatActivity {
         foodUrl = findViewById(R.id.url_single);
         itemProgress = findViewById(R.id.item_progress);
         itemImage = findViewById(R.id.image_single);
-        savebtn = (Button) findViewById(R.id.save_btn);
+//        savebtn = (Button) findViewById(R.id.save_btn);
+        heart = (ImageView) findViewById(R.id.heartAction);
+        tapIn = (TextView) findViewById(R.id.tapIn);
+
+        tbar = findViewById(R.id.toolbar);
+        tbar.setTitle("Recipe Details");
+        tbar.setTitleTextColor(getResources().getColor(R.color.titleColor));
+        setSupportActionBar(tbar);
 
         Intent dataFromPreviousPage = getIntent();
 
@@ -85,59 +105,98 @@ public class RecipeSingle extends AppCompatActivity {
 
         titleStr = dataFromPreviousPage.getStringExtra("title");
         urlFood = dataFromPreviousPage.getStringExtra("url");
-
         imageURL = dataFromPreviousPage.getStringExtra("imageUrl");
         imageID = dataFromPreviousPage.getStringExtra("imageID");
 
+        //Get a new object ready for any action
+        rep = new Recipe(titleStr, imageID, imageURL, urlFood);
+
         //Setting text
-        title.setText(title.getText() + titleStr);
+        title.setText(titleStr);
         foodUrl.setText(foodUrl.getText() + urlFood);
 
-        SingleQuery singlequery = new SingleQuery();
+        SingleQuery singlequery = new SingleQuery(this);
         singlequery.execute(imageURL, imageID);
         itemProgress.setVisibility(View.VISIBLE);
 
-
+        db = new DatabaseHandler(this);
+        recipes = db.getAllRecipes();
         switch (activityName) {
             case "ListFavouriteActivity":
-                savebtn.setText("Remove");
+                tapIn.setText("Tap Heart To Delete");
+                heart.setImageResource(heartSave);
                 break;
             case "SearchingActivity":
-                break;
 
+                for (int i = 0; i < recipes.size(); i++) {
+                    Log.e("DataID", recipes.get(i).getImageID());
+                    Log.e("DownloadID", rep.getImageID());
+                    if (recipes.get(i).getImageID().equals(rep.getImageID())) {
+                        heart.setImageResource(heartSave);
+
+                    }
+                }
+
+                break;
         }
 
-        //Get a new object ready for any action
-        rep = new Recipe(titleStr, imageID, imageURL, urlFood);
-        savebtn.setOnClickListener(clk -> {
-            boolean duplicate = false;
 
-            db = new DatabaseHandler(this);
+        heart.setOnClickListener(clk -> {
+            boolean duplicate = false;
             if (activityName.equals("ListFavouriteActivity")) {
                 db.deleteRecipe(rep);
+                heart.setImageResource(heartDelete);
                 Intent intent = new Intent(this, ListFavouriteActivity.class);
                 finish();
                 startActivity(intent);
                 Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT).show();
             } else {
-                recipes = db.getAllRecipes();
+
                 //checking duplicate value
                 for (Recipe r : recipes) {
                     if (r.getTitle().equals(rep.getTitle())) duplicate = true;
                 }
                 if (!duplicate) {
                     db.addRecipe(rep);
-//                    Intent intent = new Intent(this, SearchingActivity.class);
-//                    startActivityForResult(intent, 30);
+                    heart.setImageResource(heartSave);
                     finish();
-                    Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Saved In Favourite", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "Can't add duplicate", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "It's Already Saved", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.exit:
+                switch (activityName) {
+                    case "ListFavouriteActivity":
+                        Intent goToRecipeSearchActivity = new Intent(this, ListFavouriteActivity.class);
+                        startActivity(goToRecipeSearchActivity);
+                        break;
+                    case "SearchingActivity":
+                        goToRecipeSearchActivity = new Intent(this, RecipeSearchActivity.class);
+
+                        startActivity(goToRecipeSearchActivity);
+                        break;
+                }
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.exit_to_home, menu);
+        this.menu = menu;
+        return true;
     }
 
     @Override
@@ -146,16 +205,11 @@ public class RecipeSingle extends AppCompatActivity {
 
         switch (activityName) {
             case "ListFavouriteActivity":
-                Intent intent = new Intent(this, ListFavouriteActivity.class);
+                Intent goFavourite = new Intent(this, ListFavouriteActivity.class);
                 finish();
-                startActivity(intent);
+                startActivity(goFavourite);
                 break;
-            case "SearchingActivity":
-                finish();
-                break;
-
         }
-
 
     }
 
@@ -168,14 +222,21 @@ public class RecipeSingle extends AppCompatActivity {
 
     private class SingleQuery extends AsyncTask<String, Integer, String> {
 
+
+
         String result;
+        Context context;
+
+
+        public SingleQuery(Context context) {
+            this.context = context;
+        }
 
         @Override
         protected String doInBackground(String... strings) {
             result = null;
             String queryURL = strings[0].substring(0, 4) + "s" + strings[0].substring(4, strings[0].length());
             String imageName = strings[1] + ".jpeg";
-
 
             if (fileExistance(imageName)) {
                 FileInputStream inputStream = null;
@@ -188,20 +249,47 @@ public class RecipeSingle extends AppCompatActivity {
                 image = BitmapFactory.decodeStream(inputStream);
                 Log.i(ACTIVITY_NAME, "Image already exists");
 
+
+                for (int i = 60; i < 90; i++) {
+                    publishProgress(i);
+                    try {
+                        Thread.sleep(20);
+                    } catch (Exception e) {
+                    }
+                }
+
             } else {
                 try {
 
                     URL url = new URL(queryURL);
                     image = getImage(url);
-                    FileOutputStream outputStream = openFileOutput(imageName, Context.MODE_PRIVATE);
-                    image.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
-                    outputStream.flush();
-                    outputStream.close();
-                    Log.i(ACTIVITY_NAME, "Downloading new image");
+
+
+                    if (image != null ) {
+                        FileOutputStream outputStream = openFileOutput(imageName, Context.MODE_PRIVATE);
+                        image.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+                        outputStream.flush();
+                        outputStream.close();
+                        Log.i(ACTIVITY_NAME, "Downloading new image");
+                    }
+
+                    for (int i = 20; i < 90; i++) {
+                        publishProgress(i);
+                        try {
+                            Thread.sleep(20);
+                        } catch (Exception e) {
+                        }
+                    }
 
                 } catch (IOException ioe) {
                     result = "IO Exception. Is the Wifi Connected?";
                 }
+            }
+
+            publishProgress(95);
+            try {
+                Thread.sleep(200);
+            } catch (Exception e) {
             }
 
             return result;
@@ -211,7 +299,15 @@ public class RecipeSingle extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            itemImage.setImageBitmap(image);
+
+            if (image != null) {
+                itemImage.setImageBitmap(image);
+            } else {
+                Toast.makeText(context, "Image is not available for this Recipe", Toast.LENGTH_SHORT).show();
+                itemImage.setImageResource(R.drawable.food);
+            }
+
+
             itemProgress.setVisibility(View.INVISIBLE);
         }
 

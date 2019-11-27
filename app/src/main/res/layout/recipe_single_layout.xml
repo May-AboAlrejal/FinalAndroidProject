@@ -1,44 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
-    <TextView
-        android:id="@+id/title_single"
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title: "
-        android:textSize="20dp"/>
+        android:id="@+id/toolbar"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        />
 
-    <TextView
-        android:id="@+id/url_single"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:text="Link to recipe: "
-        android:textSize="20dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/toolbar"
+        >
 
-    <ImageView
-        android:id="@+id/image_single"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        tools:srcCompat="@tools:sample/avatars"
-        android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/title_single"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="23dp"
+            android:gravity="center"
+            />
 
-    <ProgressBar
-        android:id="@+id/item_progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"/>
+        <ImageView
+            android:id="@+id/image_single"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="10dp"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save_btn"
-        android:id="@+id/save_btn"/>
+        <ProgressBar
+            android:id="@+id/item_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/url_single"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:textSize="20dp"
+            android:text="@string/url_item"
+            android:gravity="center"/>
+
+
+        <TextView
+            android:id="@+id/tapIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/heart_instruction"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/heartAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/delete"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+</RelativeLayout>
