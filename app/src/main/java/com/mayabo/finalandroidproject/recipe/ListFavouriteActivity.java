@@ -11,9 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.mayabo.finalandroidproject.CarStationFinderActivity;
-import com.mayabo.finalandroidproject.CurrencyConversionActivity;
-import com.mayabo.finalandroidproject.NewsHeadlinesActivity;
 import com.mayabo.finalandroidproject.R;
 
 import java.lang.reflect.Array;

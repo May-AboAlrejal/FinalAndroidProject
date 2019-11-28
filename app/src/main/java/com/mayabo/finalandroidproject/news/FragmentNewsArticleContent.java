@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.mayabo.finalandroidproject.R;
 
 import java.io.File;
@@ -46,6 +46,8 @@ public class FragmentNewsArticleContent extends Fragment {
     private String imageFile;
     private NewsBaseHelper dbOpener;
     private SQLiteDatabase db;
+    private Button articleButton;
+    private int rowCount;
 
     public void setTablet(boolean tablet) {
         isTablet = tablet;
@@ -94,16 +96,27 @@ public class FragmentNewsArticleContent extends Fragment {
             image = BitmapFactory.decodeStream(fis);
             imageView.setImageBitmap(image);
         } else {
-            Toast.makeText(thisApp, "Downloading Image!", Toast.LENGTH_LONG).show();
+            Toast.makeText(thisApp, getString(R.string.downloadImage), Toast.LENGTH_LONG).show();
             ImageQuery imageQuery = new ImageQuery();
             imageQuery.execute(imageURL);
         }
 
+        // check if the article is saved in the database
+        dbOpener = new NewsBaseHelper(getActivity());
+        db = dbOpener.getWritableDatabase();
 
-        Button articleButton = result.findViewById(R.id.articleButton);
+        String checkURL = article.getUrl();
+
+        Cursor c = db.query(false, NewsBaseHelper.TABLE_NAME, new String[]{NewsApiResponse.URL}, NewsApiResponse.URL + " like ? ", new String[]{checkURL}, null, null, null, null);
+        rowCount = c.getCount();
+
+        articleButton = result.findViewById(R.id.articleButton);
         if (searchedArticleButton) {
-            articleButton.setText(getString(R.string.saveArticle));
-
+            if(rowCount == 0){
+                articleButton.setText(getString(R.string.saveArticle));
+            } else {
+                articleButton.setText(getString(R.string.saved));
+            }
         } else if (savedArticleButton) {
             articleButton.setText(getString(R.string.deleteArticle));
         }
@@ -128,29 +141,33 @@ public class FragmentNewsArticleContent extends Fragment {
      * @param article the article selected
      */
     private void saveArticle(NewsApiResponse article) {
-        dbOpener = new NewsBaseHelper(getActivity());
-         db = dbOpener.getWritableDatabase();
-        ContentValues newRowValues = new ContentValues();
+        if (rowCount == 0) {
+            ContentValues newRowValues = new ContentValues();
 
-        newRowValues.put(NewsApiResponse.AUTHOR, article.getAuthor());
-        newRowValues.put(NewsApiResponse.TITLE, article.getTitle());
-        newRowValues.put(NewsApiResponse.DESCRIPTION, article.getDescription());
-        newRowValues.put(NewsApiResponse.URL, article.getUrl());
-        newRowValues.put(NewsApiResponse.URL_TO_IMAGE, article.getUrlToImage());
+            newRowValues.put(NewsApiResponse.AUTHOR, article.getAuthor());
+            newRowValues.put(NewsApiResponse.TITLE, article.getTitle());
+            newRowValues.put(NewsApiResponse.DESCRIPTION, article.getDescription());
+            newRowValues.put(NewsApiResponse.URL, article.getUrl());
+            newRowValues.put(NewsApiResponse.URL_TO_IMAGE, article.getUrlToImage());
 
-        newRowValues.put(NewsApiResponse.PUBLISHED_AT, article.getPublishedAt());
-        newRowValues.put(NewsApiResponse.CONTENT, article.getContent());
-        newRowValues.put(NewsApiResponse.SOURCE, article.getSource());
+            newRowValues.put(NewsApiResponse.PUBLISHED_AT, article.getPublishedAt());
+            newRowValues.put(NewsApiResponse.CONTENT, article.getContent());
+            newRowValues.put(NewsApiResponse.SOURCE, article.getSource());
 
-        // extract image name from urlToImage remove file type
-        if (article.getUrlToImage().length() >= 4) {
-            //check if the image is in a file before downloading it
-            if (!fileExistence(imageFile)) {
-                saveImage(imageName, image);
-                newRowValues.put(NewsApiResponse.IMAGE_NAME, imageName);
+            // extract image name from urlToImage remove file type
+            if (article.getUrlToImage().length() >= 4) {
+                //check if the image is in a file before downloading it
+                if (!fileExistence(imageFile)) {
+                    saveImage(imageName, image);
+                    newRowValues.put(NewsApiResponse.IMAGE_NAME, imageName);
+                }
             }
+            db.insert(NewsBaseHelper.TABLE_NAME, NewsApiResponse.IMAGE_NAME, newRowValues);
+            Toast.makeText(thisApp, getString(R.string.articleSaved), Toast.LENGTH_LONG).show();
+            articleButton.setText(getString(R.string.saved));
+        } else {
+            Toast.makeText(thisApp, getString(R.string.canntSave), Toast.LENGTH_LONG).show();
         }
-        db.insert(NewsBaseHelper.TABLE_NAME, NewsApiResponse.IMAGE_NAME, newRowValues);
     }
 
     /**
@@ -236,7 +253,7 @@ public class FragmentNewsArticleContent extends Fragment {
         protected void onPostExecute(String sentFromDoInBackground) {
             super.onPostExecute(sentFromDoInBackground);
             imageView.setImageBitmap(image);
-            Toast.makeText(thisApp, "Image downloaded!", Toast.LENGTH_LONG).show();
+            Toast.makeText(thisApp, getString(R.string.imageDownloaded), Toast.LENGTH_LONG).show();
         }
     }
 

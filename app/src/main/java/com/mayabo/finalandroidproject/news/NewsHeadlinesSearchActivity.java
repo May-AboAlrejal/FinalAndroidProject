@@ -84,7 +84,7 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
          */
         spinnerSortBy = findViewById(R.id.spinnerSortBy);
         spinnerLanguage = findViewById(R.id.spinnerLanguage);
-        newsApiRequest = new NewsApiRequest();
+        newsApiRequest = new NewsApiRequest(thisApp);
         List<String> sortByValues = new ArrayList<>(newsApiRequest.sortByList.values());
         List<String> languages = new ArrayList<>(newsApiRequest.languageList.values());
 
@@ -144,14 +144,14 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
             if (checkUserInput(searchTitleText, searchBodyText)) {
                 newsURL = newsApiRequest.urlBuilder(urlParameters);
 
-                Snackbar.make(searchTitle,"Searching for related articles!", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(searchTitle,getString(R.string.searchArticle), Snackbar.LENGTH_LONG).show();
 
                 NewsQuery newsQuery = new NewsQuery();
                 newsQuery.execute();
             } else {
                 Builder b = new Builder(thisApp);
                 b.setTitle("Error:")
-                        .setMessage("Please fill at least one of the search text!")
+                        .setMessage(getString(R.string.articalError))
                         .setPositiveButton("OK", (clk, btn) -> { /* do this when clicked */ })
                         .create()
                         .show();
@@ -208,7 +208,7 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
                 View v = getLayoutInflater().inflate(R.layout.news_help_builder, null);
                 Builder builder = new Builder(thisApp);
                 builder.setView(v)
-                        .setNegativeButton("Got it!", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.gotIt), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                             }
                         }).create().show();
@@ -330,7 +330,7 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
                 goToNewsArticleListActivity.putExtra(SEARCHED_BUTTON, true);
                 startActivity(goToNewsArticleListActivity);
             } else {
-                Toast.makeText(thisApp, "Sorry! No articles found.", Toast.LENGTH_LONG).show();
+                Toast.makeText(thisApp, getString(R.string.noArticle), Toast.LENGTH_LONG).show();
             }
             progressBar.setProgress(0);
         }

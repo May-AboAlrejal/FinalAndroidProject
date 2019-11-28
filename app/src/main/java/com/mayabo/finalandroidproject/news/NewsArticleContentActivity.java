@@ -37,14 +37,12 @@ public class NewsArticleContentActivity extends AppCompatActivity {
 
         Bundle dataToPass = getIntent().getExtras();
 
-
         FragmentNewsArticleContent dFragment = new FragmentNewsArticleContent();
         dFragment.setArguments( dataToPass );
         dFragment.setTablet(false);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentLocation, dFragment)
-                .addToBackStack("AnyName")
                 .commit();
     }
 }
