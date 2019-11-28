@@ -1,8 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mayabo.finalandroidproject"
     >
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,12 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        >
+        android:usesCleartextTraffic="true">
         <activity android:name=".recipe.RecipeSingle" />
         <activity android:name=".recipe.SearchingActivity" />
         <activity android:name=".recipe.ListFavouriteActivity" />
         <activity android:name=".recipe.RecipeSearchActivity" />
-        <activity android:name=".NewsHeadlinesActivity" />
+
+        <activity android:name=".news.NewsArticleListActivity" />
+        <activity android:name=".news.NewsArticleContentActivity" />
+        <activity android:name=".news.NewsHeadlinesSearchActivity" />
         <activity android:name=".CurrencyConversionActivity" />
         <activity android:name=".CarStationFinderActivity" />
         <activity android:name=".MainActivity">

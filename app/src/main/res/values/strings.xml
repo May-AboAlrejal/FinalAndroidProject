@@ -1,32 +1,20 @@
 <resources>
     <string name="app_name">FinalAndroidProject</string>
 
-    <string name="car_title">Charging Station Search</string>
-    <string name="news_title">News Search</string>
-    <string name="recipe_title">Recipe Search</string>
-    <string name="currency_title">Currency Search</string>
-
-
-    <string name="title_home">Recipe Search Engine</string>
     <string name="to_search">Search Recipe</string>
     <string name="to_favourite">List of Favourites</string>
     <string name="search_edit">What do you want to cook?</string>
     <string name="title_item">Title: </string>
     <string name="url_item">Click the link below for more details \n</string>
     <string name="search_btn">Search</string>
-
     <string name="intro">The API has been shutting down\n
     Please search for Lasagna or Chicken Breast\n
     </string>
-
-
     <string name="coin_tbar">Coin</string>
     <string name="news_tbar">News</string>
     <string name="food_tbar">Food</string>
     <string name="station_tbar">Station</string>
     <string name="intro_rec">Instruction Recipe</string>
-
-    <string name="author_name">Author: </string>
     <string name="version">Software Version: </string>
     <string name="instruction">Instruction:\n
         - This is the Recipe Search Engine\n
@@ -40,12 +28,41 @@
         - Empty heart indicates not save\n
         - Filled heart indicates recipe is already saved.
     </string>
-
     <string name="save_btn">Save</string>
     <string name="saved_title">List of Favourite</string>
     <string name="heart_instruction">Tap On Heart To Save\n
     To view and make change go to Favourite\n
     Empty heart indicates not save\n
     Filled heart indicates recipe is already saved.</string>
+
+    <string name="searchTitle">Search Title</string>
+    <string name="searchContent">Search Content</string>
+    <string name="selectLanguage">Select Language: </string>
+    <string name="selectSortBy">Sort By: </string>
+    <string name="searchButton">Search</string>
+    <string name="author">Author: </string>
+    <string name="source">Source: </string>
+    <string name="url">URL: </string>
+    <string name="publishedAt">At: </string>
+    <string name="description">Description: </string>
+    <string name="title">Title: </string>
+    <string name="content">Content: </string>
+    <string name="viewArticle">View Article</string>
+    <string name="saveArticle">Save Article</string>
+    <string name="deleteArticle">Delete article</string>
+    <string name="carIcon">Electric Car Charging Station finder</string>
+    <string name="foodIcon">Recipe search</string>
+    <string name="moneyIcon">Foreign currency</string>
+    <string name="newsIcon">News Headlines search</string>
+    <string name="viewSavedArticles">View saved articles</string>
+    <string name="authorNewsName">Author’s name: </string>
+    <string name="authorNewsNameText">May Abo-Alrejal</string>
+    <string name="newsVersion">Activity version number: </string>
+    <string name="newsVersionText">1</string>
+    <string name="newsInstructions">Instructions on how to use NewsApi: </string>
+    <string name="newsInstructionsText">This API is used to search articles, to find an article please follow the instruction below:\n
+First, enter a word/phrase in title, content or both. Then, choose a language. After that, select how to sort the result. Last, click search.</string>
+    <string name="newsImageDescription">The arctic image</string>
+
 
 </resources>
