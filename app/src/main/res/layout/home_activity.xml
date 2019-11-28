@@ -17,23 +17,27 @@
         android:id="@+id/carStationFinder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
         android:text="@string/carIcon" />
 
     <Button
         android:id="@+id/recipeSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
         android:text="@string/foodIcon" />
 
     <Button
         android:id="@+id/currencyConversion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
         android:text="@string/moneyIcon" />
 
     <Button
         android:id="@+id/newsHeadlines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
         android:text="@string/newsIcon" />
 </LinearLayout>

@@ -1,7 +1,10 @@
 package com.mayabo.finalandroidproject.news;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
+
+import com.mayabo.finalandroidproject.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -24,9 +27,9 @@ public class NewsApiRequest {
     public static final String PAGE_SIZE = "pageSize";
     public static final String SIZE = "5";
     public static final String KEY = "0c64d719c28f4eb9b557ac89ad04b679";
-    public final Map<String, String> sortByList = getSortBy();
-    public final Map<String, String> languageList = getLanguage();
-
+    public Map<String, String> sortByList;
+    public Map<String, String> languageList;
+    private Context c;
     /**
      * From https://newsapi.org/docs/endpoints get a list of sortBy inputs
      *
@@ -34,31 +37,38 @@ public class NewsApiRequest {
      */
     private Map getSortBy() {
         Map<String, String> sortBy = new HashMap();
-        sortBy.put("relevancy", "Relevance");
-        sortBy.put("popularity", "Popularity");
-        sortBy.put("publishedAt", "Publish date");
+        sortBy.put("relevancy", c.getString(R.string.relevancy));
+        sortBy.put("popularity", c.getString(R.string.popularity));
+        sortBy.put("publishedAt", c.getString(R.string.published));
         return sortBy;
+    }
+
+    public NewsApiRequest() { }
+
+    public NewsApiRequest(Context c) {
+        this.c = c;
+        this.sortByList = getSortBy();
+        this.languageList = getLanguage();
     }
 
     /**
      * From https://newsapi.org/docs/endpoints get a list of languages inputs
-     *
      * @return a Map of preferred languages
      */
     private Map getLanguage() {
         Map<String, String> languages = new HashMap();
 
-        languages.put("ar", "Arabic");
-        languages.put("de", "German");
-        languages.put("en", "English");
-        languages.put("fr", "French");
-        languages.put("hi", "Hindi");
-        languages.put("it", "Italian");
-        languages.put("nl", "Dutch");
-        languages.put("no", "Norwegian");
-        languages.put("pt", "Portuguese");
-        languages.put("ru", "Russian");
-        languages.put("zh", "Chinese");
+        languages.put("ar", c.getString(R.string.ar));
+        languages.put("de", c.getString(R.string.de));
+        languages.put("en", c.getString(R.string.en));
+        languages.put("fr", c.getString(R.string.fr));
+        languages.put("hi", c.getString(R.string.hi));
+        languages.put("it", c.getString(R.string.it));
+        languages.put("nl", c.getString(R.string.nl));
+        languages.put("no", c.getString(R.string.no));
+        languages.put("pt", c.getString(R.string.pt));
+        languages.put("ru", c.getString(R.string.ru));
+        languages.put("zh", c.getString(R.string.zh));
         return languages;
     }
 

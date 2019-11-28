@@ -27,8 +27,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.mayabo.finalandroidproject.CarStationFinderActivity;
 import com.mayabo.finalandroidproject.CurrencyConversionActivity;
 import com.mayabo.finalandroidproject.MainActivity;
-import com.mayabo.finalandroidproject.NewsHeadlinesActivity;
 import com.mayabo.finalandroidproject.R;
+import com.mayabo.finalandroidproject.news.NewsHeadlinesSearchActivity;
 
 /**
  * This is the final project
@@ -148,7 +148,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
         {
             case R.id.news:
                 Toast.makeText(this, "News BBC", Toast.LENGTH_SHORT).show();
-                Intent goToNewsHeadlinesActivity = new Intent(this, NewsHeadlinesActivity.class);
+                Intent goToNewsHeadlinesActivity = new Intent(this, NewsHeadlinesSearchActivity.class);
                 startActivity(goToNewsHeadlinesActivity);
                 break;
             case R.id.station:

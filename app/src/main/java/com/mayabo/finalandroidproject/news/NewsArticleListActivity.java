@@ -122,7 +122,6 @@ public class NewsArticleListActivity extends AppCompatActivity {
             NewsApiResponse newsApiResponse = getItem(i);
 
             TextView titleText = thisRow.findViewById(R.id.titleText);
-            TextView descriptionText = thisRow.findViewById(R.id.descriptionText);
 
             Button viewArticleButton = thisRow.findViewById(R.id.viewArticleButton);
 
@@ -140,7 +139,6 @@ public class NewsArticleListActivity extends AppCompatActivity {
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragmentLocation, dFragment)
-                            .addToBackStack("AnyName")
                             .commit();
                 } else {
                     Intent goToNewsArticleContentActivity = new Intent(NewsArticleListActivity.this, NewsArticleContentActivity.class);
@@ -150,8 +148,6 @@ public class NewsArticleListActivity extends AppCompatActivity {
             });
 
             titleText.setText(newsApiResponse.getTitle());
-            descriptionText.setText(newsApiResponse.getDescription());
-
             return thisRow;
         }
     }

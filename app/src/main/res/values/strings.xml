@@ -37,7 +37,7 @@
 
     <string name="searchTitle">Search Title</string>
     <string name="searchContent">Search Content</string>
-    <string name="selectLanguage">Select Language: </string>
+    <string name="selectLanguage">Language: </string>
     <string name="selectSortBy">Sort By: </string>
     <string name="searchButton">Search</string>
     <string name="author">Author: </string>
@@ -63,6 +63,29 @@
     <string name="newsInstructionsText">This API is used to search articles, to find an article please follow the instruction below:\n
 First, enter a word/phrase in title, content or both. Then, choose a language. After that, select how to sort the result. Last, click search.</string>
     <string name="newsImageDescription">The arctic image</string>
+    <string name="saved">Saved</string>
+    <string name="downloadImage">Downloading the image!</string>
+    <string name="imageDownloaded">Image downloaded!</string>
+    <string name="articleSaved">Article saved!</string>
+    <string name="canntSave">Sorry! The article is already saved in your list.</string>
 
 
+    <string name="ar">Arabic</string>
+    <string name="de">German</string>
+    <string name="en">English</string>
+    <string name="fr">French</string>
+    <string name="hi">Hindi</string>
+    <string name="it">Italian</string>
+    <string name="nl">Dutch</string>
+    <string name="no">Norwegian</string>
+    <string name="pt">Portuguese</string>
+    <string name="ru">Russian</string>
+    <string name="zh">Chinese</string>
+    <string name="relevancy">Relevance</string>
+    <string name="popularity">Popularity</string>
+    <string name="published">Publish date</string>
+    <string name="noArticle">Sorry! No articles found.</string>
+    <string name="gotIt">Got it!</string>
+    <string name="articalError">Please fill at least one of the search text!</string>
+    <string name="searchArticle">Searching for related articles!</string>
 </resources>
