@@ -5,11 +5,16 @@
     android:orientation="horizontal">
 
     <TextView
+        android:background="@color/colorHome"
         android:id="@+id/title_TextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello This is a Title"
+        android:text="This is a Title"
         android:textSize="20dp"
+        android:textColor="@color/lightBackground"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:gravity="center"
         />
 
 </LinearLayout>

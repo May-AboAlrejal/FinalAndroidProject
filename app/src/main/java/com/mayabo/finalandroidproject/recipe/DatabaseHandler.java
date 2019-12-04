@@ -1,10 +1,11 @@
 package com.mayabo.finalandroidproject.recipe;
+
 import android.app.Activity;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.content.ContentValues;
-import android.database.Cursor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,22 +82,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    void addRecipe(Recipe recipe) {
+    public int addRecipe(Recipe recipe) {
+        boolean found = false;
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-
-
         values.put(COL_TITLE, recipe.getTitle()); // Recipe Name
         values.put(COL_IMAGE_ID, recipe.getImageID()); // Recipe Image ID
         values.put(COL_IMAGE_URL, recipe.getImgUrl()); // Recipe Image URL
         values.put(COL_URL, recipe.getUrl()); // Recipe Source URL
 
+                    String inDataTitle;
+                    String inSelectedTitle;
 
-        // Inserting Row
-        db.insert(TABLE_RECIPE, null, values);
-        //2nd argument is String containing nullColumnHack
-        db.close(); // Closing database connection
+                    ArrayList<Recipe> myRecipes = new ArrayList<>();
+                    myRecipes.addAll(this.getAllRecipes());
+
+                        for (int i = 0; i < myRecipes.size(); i++) {
+                            inDataTitle = myRecipes.get(i).getTitle();
+                            inSelectedTitle = recipe.getTitle();
+                            if (inDataTitle.equals(inSelectedTitle)) {
+                                found = true;
+                                break;
+                            }
+                    }
+
+                    if (!found) {
+
+                        db.insert(TABLE_RECIPE, null, values);
+                        db.close(); // Closing database connection
+                        return 1;
+                    } else {
+                        return -1;
+                    }
     }
 
 

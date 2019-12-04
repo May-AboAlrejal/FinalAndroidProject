@@ -6,34 +6,90 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    android:paddingBottom="16dp">
+    android:paddingBottom="16dp"
+    android:id="@+id/hello"
+    android:layout_weight="6"
+    android:background="@android:color/white"
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"/>
+        android:id="@+id/toolbar"
+        />
 
-    <Button
-        android:id="@+id/carStationFinder"
+    <ImageView
+        android:src="@drawable/algo"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/carIcon" />
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_weight="2"
+        android:paddingBottom="20dp"
+        android:divider="@drawable/divider"
+        android:showDividers="middle"
+        >
 
-    <Button
-        android:id="@+id/recipeSearch"
+        <Button
+            android:id="@+id/carStationFinder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/carIcon"
+            android:layout_weight="1"
+            android:background="@drawable/button_2"
+            android:textColor="@android:color/white"
+
+            />
+
+        <Button
+            android:id="@+id/recipeSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/foodIcon"
+            android:layout_weight="1"
+            android:textColor="@color/lightBackground"
+            android:background="@drawable/button_1"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/foodIcon" />
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:divider="@drawable/divider"
+        android:showDividers="middle"
+        >
 
-    <Button
-        android:id="@+id/currencyConversion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/moneyIcon" />
+        <Button
+            android:id="@+id/currencyConversion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/moneyIcon"
+            android:layout_weight="1"
+            android:background="@drawable/button_3"
+            android:textColor="@color/lightBackground"/>
 
-    <Button
-        android:id="@+id/newsHeadlines"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/newsIcon" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/newsHeadlines"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/newsIcon"
+            android:textColor="@color/cardview_dark_background"
+            android:background="@drawable/button_4"/>
+
+    </LinearLayout>
+
+
+
 </LinearLayout>

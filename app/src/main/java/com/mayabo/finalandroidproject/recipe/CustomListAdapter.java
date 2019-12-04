@@ -68,6 +68,8 @@ public class CustomListAdapter extends BaseAdapter {
 
         //sets the text for item name and item description from the current item object
         title.setText(currentRecipe.getTitle());
+
+
         // returns the view for the current row
         return viewOld;
     }

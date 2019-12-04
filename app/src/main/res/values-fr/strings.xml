@@ -63,4 +63,8 @@
     <string name="newsInstructionsText">Cette API est utilisée pour rechercher des articles. Pour trouver un article, suivez les instructions ci-dessous:\n
 Commencez par entrer un mot / une phrase dans le titre, le contenu ou les deux. Ensuite, choisissez une langue. Après cela, sélectionnez comment trier le résultat. Enfin, cliquez sur Rechercher.</string>
     <string name="newsImageDescription">L\'image arctique</string>
+
+
+    <string name="frameText">The arctic image</string>
+    <string name="rights">\u00402019 Phong Le. All rights reserved.</string>
 </resources>

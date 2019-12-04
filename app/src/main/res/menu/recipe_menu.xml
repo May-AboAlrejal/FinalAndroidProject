@@ -24,7 +24,8 @@
     <item android:id="@+id/station"
         android:title="@string/station_tbar"
         android:icon="@drawable/station"
-        android:orderInCategory="300"
+        android:orderInCategory="400"
+
         app:showAsAction="always"/>
 
 
@@ -32,6 +33,7 @@
     <item android:id="@+id/intro_recipe"
         android:title="@string/intro_rec"
         app:showAsAction="never"
+        android:orderInCategory="500"
         />
 
 </menu>

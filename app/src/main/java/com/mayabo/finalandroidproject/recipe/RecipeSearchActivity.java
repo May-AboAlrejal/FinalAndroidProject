@@ -16,19 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.LinearLayout;
 import android.view.Gravity;
-import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.material.snackbar.Snackbar;
 import com.mayabo.finalandroidproject.CarStationFinderActivity;
 import com.mayabo.finalandroidproject.CurrencyConversionActivity;
 import com.mayabo.finalandroidproject.MainActivity;
-import com.mayabo.finalandroidproject.NewsHeadlinesActivity;
 import com.mayabo.finalandroidproject.R;
+import com.mayabo.finalandroidproject.news.NewsHeadlinesSearchActivity;
 
 /**
  * This is the final project
@@ -61,7 +56,8 @@ public class RecipeSearchActivity extends AppCompatActivity {
         setContentView(R.layout.recipe_home);
         tbar = findViewById(R.id.toolbar);
         tbar.setTitle("Recipe");
-        tbar.setTitleTextColor(getResources().getColor(R.color.titleColor));
+        tbar.setTitleTextColor(getResources().getColor(R.color.lightBackground));
+        tbar.setBackgroundColor(getResources().getColor(R.color.tBar));
         tbar.getOverflowIcon().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(tbar);
 
@@ -148,7 +144,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
         {
             case R.id.news:
                 Toast.makeText(this, "News BBC", Toast.LENGTH_SHORT).show();
-                Intent goToNewsHeadlinesActivity = new Intent(this, NewsHeadlinesActivity.class);
+                Intent goToNewsHeadlinesActivity = new Intent(this, NewsHeadlinesSearchActivity.class);
                 startActivity(goToNewsHeadlinesActivity);
                 break;
             case R.id.station:
@@ -167,7 +163,6 @@ public class RecipeSearchActivity extends AppCompatActivity {
                 startActivity(goToRecipeSearchActivity);
                 break;
             case R.id.intro_recipe:
-                Toast.makeText(this, "This is the Instruction For Recipe", Toast.LENGTH_SHORT).show();
                 instructionAlert();
                 break;
         }
@@ -230,16 +225,6 @@ public class RecipeSearchActivity extends AppCompatActivity {
         layoutParams.gravity = Gravity.CENTER; //this is layout_gravity
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setLayoutParams(layoutParams);
 
-
-
-
-
-
-
     }
-
-
-
-
 
 }
