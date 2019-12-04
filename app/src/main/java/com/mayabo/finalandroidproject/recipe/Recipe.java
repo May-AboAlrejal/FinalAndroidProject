@@ -62,6 +62,10 @@ public class Recipe {
         return title;
     }
 
+
+    /**
+     * Simple setters and getters without customize anything
+     * */
     public void setTitle(String title) {
         this.title = title;
     }

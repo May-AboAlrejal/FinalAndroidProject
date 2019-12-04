@@ -88,12 +88,11 @@ public class ListFavouriteActivity extends AppCompatActivity {
 
 
 
-
+        //Set the list item on click listener
             theList.setOnItemClickListener((parent, view, position, id) -> {
 
                 Log.e("You clicked on :", " item " + position);
                 Recipe chosenRecipe = savedList.get(position);
-
                 Bundle dataToPass = new Bundle();
                 dataToPass.putString(NAME_ACTIVITY, ACTIVITY_NAME);
                 dataToPass.putString(TITLE_SELECTED, chosenRecipe.getTitle());
@@ -103,13 +102,12 @@ public class ListFavouriteActivity extends AppCompatActivity {
                 dataToPass.putLong(ITEM_ID, id);
                 dataToPass.putLong(ID_IN_DB, chosenRecipe.getId());
                 dataToPass.putString(IMAGE_ID, chosenRecipe.getImageID());
-
-
                 if(isTablet)
                 {
                     /**
                      * The FragmentManager can add, remove, or replace a Fragment
-                     * that is currently loaded into a FrameLayout*/
+                     * that is currently loaded into a FrameLayout
+                     * */
                     FragmentDetails dFragment = new FragmentDetails(); //add a DetailFragment
                     dFragment.setArguments( dataToPass ); //pass it a bundle for information
                     dFragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
@@ -128,8 +126,6 @@ public class ListFavouriteActivity extends AppCompatActivity {
 
     }
 
-
-
     //This function only gets called on the phone. The tablet never goes to a new activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -140,11 +136,15 @@ public class ListFavouriteActivity extends AppCompatActivity {
             {
                 long id = data.getLongExtra(ITEM_ID, 0);
                 deleteMessageId((int)id);
-
+                Toast.makeText(this, "Successfully Removed!", Toast.LENGTH_LONG).show();
             }
         }
     }
 
+    /**
+     * Delete Method to delete and updateAdapter populate a new ListView
+     *
+     * */
     public void deleteMessageId(int id)
     {
         Log.i("Delete this message:" , " id="+id);

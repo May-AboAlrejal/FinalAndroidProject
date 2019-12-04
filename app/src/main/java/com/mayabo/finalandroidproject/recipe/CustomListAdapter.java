@@ -51,6 +51,12 @@ public class CustomListAdapter extends BaseAdapter {
     }
 
 
+        /**
+         * public method takes 2 parameters
+         * @Param: Int, View, ViewGroup
+         * simple getView method nothing fancy
+         * */
+
     @Override
     public View getView(int position, View viewOld, ViewGroup parent) {
         // inflate the layout for each list row

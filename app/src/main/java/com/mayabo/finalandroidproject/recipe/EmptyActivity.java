@@ -27,6 +27,13 @@ public class EmptyActivity extends AppCompatActivity {
 
     Menu menu;
 
+
+
+    /**
+     * Empty Activity Class is loaded in use for one fragmet on the phone
+     * see FragmentDetails
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,14 +41,13 @@ public class EmptyActivity extends AppCompatActivity {
         dataToPass = getIntent().getExtras(); //get the data that was passed from FragmentExample
         Log.i("In Empty Activity", dataToPass.getString(SearchingActivity.NAME_ACTIVITY));
 
+
+        //Custome toolbar for Bonus
         tbar = findViewById(R.id.toolbar);
         tbar.setTitle("Details");
         tbar.setTitleTextColor(getResources().getColor(R.color.lightBackground));
         tbar.setBackgroundColor(getResources().getColor(R.color.tBar));
         setSupportActionBar(tbar);
-
-
-
 
 
         FrameLayout fragmentLayout = (FrameLayout) findViewById(R.id.fragmentLocation);
@@ -52,6 +58,7 @@ public class EmptyActivity extends AppCompatActivity {
                 Toast.makeText(this, "Successfully Added", Toast.LENGTH_LONG).show();
 
             } else {
+                //snackbar popup when add duplicated and ask need to go to favourite since its been added
                 Snackbar snackbar = Snackbar
                         .make(fragmentLayout, "Can't Add Duplicated!", Snackbar.LENGTH_LONG);
                 snackbar.setAction("Go To Favourite", new View.OnClickListener() {
@@ -63,6 +70,7 @@ public class EmptyActivity extends AppCompatActivity {
                 });
                 snackbar.show();
             }
+            //myLog for checking if its go through inside the if
             Log.i("Not Null", dataToPass.getString("Add Result"));
 
         } else {
@@ -76,11 +84,11 @@ public class EmptyActivity extends AppCompatActivity {
         getSupportFragmentManager()//get the support manager to use the builder design pattern
                 .beginTransaction()
                 .replace(R.id.fragmentLocation, dFragment) // add to the FrameLayout the fragment
-                //.addToBackStack("AnyName")
                 .commit(); // call the action
     }
 
 
+    //Custom OnbackPress method will take the user to the main Page of Recipe
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -90,6 +98,11 @@ public class EmptyActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    /**
+     * Custom onOption this may exist in every activity of mine part
+     * this will take the user to the main page of Recipe
+     * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -105,6 +118,11 @@ public class EmptyActivity extends AppCompatActivity {
         return true;
     }
 
+
+    /**
+     * CustomOption menu
+     *populate a custom in the option menu bar
+     * */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -114,6 +132,7 @@ public class EmptyActivity extends AppCompatActivity {
         return true;
     }
 
+    // separate intent method take the Recipe main Activity
     protected void intentToMain() {
         Intent goToMain = new Intent(this, RecipeSearchActivity.class);
         startActivity(goToMain);

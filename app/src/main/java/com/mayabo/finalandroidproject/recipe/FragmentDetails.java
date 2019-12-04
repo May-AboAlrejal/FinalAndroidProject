@@ -8,33 +8,25 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.mayabo.finalandroidproject.R;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class FragmentDetails extends Fragment {
 
@@ -43,23 +35,18 @@ public class FragmentDetails extends Fragment {
     private long id;
     TextView title;
     TextView foodUrl;
-    TextView tapIn;
-    TextView frameIntro;
     Button actionButton;
-    String titleStr;
-    String urlFood;
     String imageURL;
     Bitmap image = null;
     ImageView itemImage;
-    ImageView heart;
     ProgressBar itemProgress;
-    Menu menu;
     SingleQuery singlequery;
     String activityName;
     Fragment currentFragment;
     Toolbar tbar;
 
 
+    //set Tablet to tablet to the boolean
     public void setTablet(boolean tablet) {
         isTablet = tablet;
     }
@@ -69,6 +56,8 @@ public class FragmentDetails extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,11 +71,6 @@ public class FragmentDetails extends Fragment {
         tbar = (Toolbar) result.findViewById(R.id.toolbar);
 
         dataFromActivity = getArguments();
-//        tapIn = (TextView) result.findViewById(R.id.tapIn);
-//        savebtn = (Button) findViewById(R.id.save_btn);
-//        heart = (ImageView) result.findViewById(R.id.heartAction);
-
-
         return result;
     }
 
@@ -138,16 +122,11 @@ public class FragmentDetails extends Fragment {
                     }
 
 
-
-
                 }
                 //for Phone:
                 else //You are only looking at the details, you need to go back to the previous list page
                 {
-                    EmptyActivity parent = (EmptyActivity) getActivity();
-//
                     DatabaseHandler db = new DatabaseHandler(getActivity());
-//                    //String title, String imageID, String imgUrl, String url
                     String title = dataFromActivity.getString(SearchingActivity.TITLE_SELECTED);
                     String imageID = dataFromActivity.getString(SearchingActivity.IMAGE_ID);
                     String imgUrl = dataFromActivity.getString(SearchingActivity.IMAGE_URL);
@@ -156,87 +135,30 @@ public class FragmentDetails extends Fragment {
 
                     Intent nextActivity = new Intent(getContext(), EmptyActivity.class);
                     dataFromActivity.putString("Add Result", "Success");
-//
                     if (db.addRecipe(newRep) == 1) {
 
-                    Log.i("Title: ", title);
-                    Log.i("Image ID: ", imageID);
-                    Log.i("Image URL: ", imgUrl);
-                    Log.i("URL: ", url);
-
-
-
+                        Log.i("Title: ", title);
+                        Log.i("Image ID: ", imageID);
+                        Log.i("Image URL: ", imgUrl);
+                        Log.i("URL: ", url);
 
 
                     } else {
                         dataFromActivity.putString("Add Result", "Fail");
                         Log.i("Fail", dataFromActivity.getString(SearchingActivity.TITLE_SELECTED));
-//                        parent.finish();
                     }
 
-//                    boolean found = false;
-
-//                    Intent backToFragmentExample = new Intent();
-//                    backToFragmentExample.putExtra(SearchingActivity.ITEM_ID, dataFromActivity.getLong(SearchingActivity.ITEM_ID));
-
-
-//                    parent.setResult(Activity.RESULT_OK, backToFragmentExample); //send data back to PreviousActivity in onActivityResult()
-//                    parent.startActivity(backToFragmentExample); //send data back to PreviousActivity in onActivityResult()
-
                     Log.i("Clicked Added", dataFromActivity.getString(SearchingActivity.NAME_ACTIVITY));
-//                    Intent nextActivity = new Intent(getContext(), EmptyActivity.class);
-//                    nextActivity.putExtras(dataFromActivity); //send data to next activity
-//                    parent.startActivityForResult(nextActivity, SearchingActivity.EMPTY_ACTIVITY); //make the transition
-//
-//                    DatabaseHandler db = new DatabaseHandler(getActivity());
-//
-//                    String inDataTitle;
-//                    String inSelectedTitle;
-//
-//                    ArrayList<Recipe> myRecipes = new ArrayList<>();
-//                    myRecipes.addAll(db.getAllRecipes());
-//
-//                    for (int i = 0; i < myRecipes.size(); i++) {
-//                        inDataTitle = myRecipes.get(i).getTitle();
-//                        inSelectedTitle = dataFromActivity.getString(SearchingActivity.TITLE_SELECTED);
-//                        if (inDataTitle.equals(inSelectedTitle)) {
-//                            found = true;
-//                            break;
-//                        }
-//                    }
-//
-//                    if (!found) {
-//                        Snackbar snackbar = Snackbar
-//                                .make(view, "Successfully Added To Favourite!", Snackbar.LENGTH_LONG);
-//                        snackbar.show();
-//                        parent.finish();
-//                    } else {
-//                        Snackbar snackbar = Snackbar
-//                                .make(view, "You Already Added This Recipe, Can't Add Duplicate Item!", Snackbar.LENGTH_LONG);
-//                        snackbar.setAction("Go To Favourite", new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                Intent intent = new Intent(getActivity(), ListFavouriteActivity.class);
-//                                startActivity(intent);
-//                            }
-//                        });
-//                        snackbar.show();
-//                        parent.finish();
-//                    }
-//
-//
-//
                     nextActivity.putExtras(dataFromActivity); //send data to next activity
                     startActivity(nextActivity);
 
                 }
 
-            }
-            else {
+            } else {
 
-                if(isTablet) { //both the list and details are on the screen:
+                if (isTablet) { //both the list and details are on the screen:
                     ListFavouriteActivity parent = (ListFavouriteActivity) getActivity();
-                    parent.deleteMessageId((int)id); //this deletes the item and updates the list
+                    parent.deleteMessageId((int) id); //this deletes the item and updates the list
                     Snackbar snackbar = Snackbar
                             .make(view, "Remove From List Favourite!", Snackbar.LENGTH_LONG);
                     snackbar.show();
@@ -253,7 +175,7 @@ public class FragmentDetails extends Fragment {
                 {
                     EmptyActivity parent = (EmptyActivity) getActivity();
                     Intent backToFragmentExample = new Intent();
-                    backToFragmentExample.putExtra(ListFavouriteActivity.ITEM_ID, dataFromActivity.getLong(ListFavouriteActivity.ITEM_ID ));
+                    backToFragmentExample.putExtra(ListFavouriteActivity.ITEM_ID, dataFromActivity.getLong(ListFavouriteActivity.ITEM_ID));
                     parent.setResult(Activity.RESULT_OK, backToFragmentExample); //send data back to FragmentExample in onActivityResult()
                     parent.finish(); //go back
                 }
@@ -262,7 +184,6 @@ public class FragmentDetails extends Fragment {
 
         });
     }
-
 
 
     @Override
@@ -286,6 +207,12 @@ public class FragmentDetails extends Fragment {
     }
 
 
+
+    /**
+     * SingleQuery inner class extends from AsyncTask
+     * this is to download the image
+     * in the background
+     * */
     private class SingleQuery extends AsyncTask<String, Integer, String> {
 
 
@@ -366,16 +293,14 @@ public class FragmentDetails extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
+            //if the image reference no null then we set Image
             if (image != null) {
                 itemImage.setImageBitmap(image);
             } else {
-//                Toast.makeText(context, "Image is not available for this Recipe", Toast.LENGTH_SHORT).show();
                 Snackbar s = Snackbar.make(getView(), "Image is not available for this Recipe", Snackbar.LENGTH_SHORT);
                 s.show();
                 itemImage.setImageResource(R.drawable.food);
             }
-
-
             itemProgress.setVisibility(View.INVISIBLE);
         }
 
@@ -387,7 +312,7 @@ public class FragmentDetails extends Fragment {
         }
 
 
-        //Image
+        //getImage function and check for the response of the URL connection
         protected Bitmap getImage(URL url) {
 
             HttpURLConnection iconConn = null;
@@ -395,6 +320,7 @@ public class FragmentDetails extends Fragment {
                 iconConn = (HttpURLConnection) url.openConnection();
                 iconConn.connect();
                 int response = iconConn.getResponseCode();
+                //if the reponse 200 the successfull
                 if (response == 200) {
                     return BitmapFactory.decodeStream(iconConn.getInputStream());
                 } else {
@@ -410,6 +336,11 @@ public class FragmentDetails extends Fragment {
             }
         }
 
+
+        /**
+         * Checking for file if it is exist in the device data file
+         * seee the Device File Explore
+         */
 
         public boolean fileExistance(String fileName) {
             File file = getActivity().getFileStreamPath(fileName);
