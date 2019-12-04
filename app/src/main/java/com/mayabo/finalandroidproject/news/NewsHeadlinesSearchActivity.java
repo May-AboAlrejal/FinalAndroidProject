@@ -290,9 +290,12 @@ public class NewsHeadlinesSearchActivity extends AppCompatActivity {
                             String source = articles.getJSONObject(i).getJSONObject(NewsApiResponse.SOURCE).getString(NewsApiResponse.NAME);
                             NewsApiResponse newsResponse = new NewsApiResponse(author, title, description, url, urlToImage, publishedAt, content, source);
                             newsArticles.add(newsResponse);
-
                             publishProgress(j);
-
+                            try{
+                                Thread.sleep(20);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 } else if (status.equals("error")) {
