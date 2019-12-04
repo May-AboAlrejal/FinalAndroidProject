@@ -107,10 +107,10 @@ First, enter a word/phrase in title, content or both. Then, choose a language. A
     <string name="version_num">Version 1</string>
     <string name="guide">
         How to use the conversion application:\n
-        1. Enter the country currency code you want to convert after FROM.\n
-        2. Enter the currency code you want to convert to after TO.\n
-        3. Enter the amount of money you want to convert.\n
-        4. Click the CONVERT button to convert</string>
+        1. FROM: The currency code you want to convert.\n
+        2. TO: The currency code you want to convert to.\n
+        3. Enter the amount of money of conversion.\n
+        4. Click the CONVERT button.\n</string>
     <string name="back">BACK</string>
     <string name="toast_wrongInput">Your input is not correct!</string>
     <string name="toast_nullScrCurrency">Please enter your source currency</string>
