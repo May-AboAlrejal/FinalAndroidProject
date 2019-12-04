@@ -15,8 +15,8 @@
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
-        />
+        android:id="@+id/toolbar"/>
+
 
     <ImageView
         android:src="@drawable/algo"
@@ -89,7 +89,4 @@
             android:background="@drawable/button_4"/>
 
     </LinearLayout>
-
-
-
 </LinearLayout>

@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
+            android:textSize="@dimen/textSize"
             android:text="@string/title" />
 
         <EditText
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:inputType="text"
+            android:textSize="@dimen/textSize"
             android:hint="@string/searchTitle" />
     </LinearLayout>
 
@@ -46,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
+            android:textSize="@dimen/textSize"
             android:text="@string/content" />
 
         <EditText
@@ -53,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
+            android:textSize="@dimen/textSize"
             android:inputType="text"
             android:hint="@string/searchContent" />
     </LinearLayout>
@@ -71,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
+            android:textSize="@dimen/textSize"
             android:text="@string/selectLanguage" />
 
         <Spinner
@@ -78,6 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
+            android:textSize="@dimen/textSize"
             android:spinnerMode="dropdown" />
     </LinearLayout>
 
@@ -96,6 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
+            android:textSize="@dimen/textSize"
             android:text="@string/selectSortBy" />
 
         <Spinner
@@ -103,6 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
+            android:textSize="@dimen/textSize"
             android:spinnerMode="dropdown" />
     </LinearLayout>
 
@@ -120,6 +128,7 @@
         android:id="@+id/searchButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
         android:text="@string/searchButton" />
 
     <Space
@@ -130,6 +139,7 @@
         android:id="@+id/viewSavedArticles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
         android:text="@string/viewSavedArticles" />
 
 </LinearLayout>

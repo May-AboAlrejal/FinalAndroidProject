@@ -19,10 +19,12 @@ import android.view.Gravity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.mayabo.finalandroidproject.CarStationFinderActivity;
-import com.mayabo.finalandroidproject.CurrencyConversionActivity;
 import com.mayabo.finalandroidproject.MainActivity;
 import com.mayabo.finalandroidproject.R;
+import com.mayabo.finalandroidproject.currency.CurrencyConversionActivity;
 import com.mayabo.finalandroidproject.news.NewsHeadlinesSearchActivity;
 
 /**
@@ -219,6 +221,16 @@ public class RecipeSearchActivity extends AppCompatActivity {
         layoutParams.gravity = Gravity.CENTER; //this is layout_gravity
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setLayoutParams(layoutParams);
 
+
+
+
+
+
+
     }
+
+
+
+
 
 }

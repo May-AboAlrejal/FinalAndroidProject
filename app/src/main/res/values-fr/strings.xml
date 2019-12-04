@@ -37,10 +37,10 @@
     <string name="app_name">FinalAndroidProject</string>
     <string name="searchTitle">Titre de la recherche</string>
     <string name="searchContent">Rechercher un contenu</string>
-    <string name="selectLanguage">Choisir la langue: </string>
+    <string name="selectLanguage">la langue: </string>
     <string name="selectSortBy">Trier par: </string>
     <string name="searchButton">Chercher</string>
-    <string name="author">Author: </string>
+    <string name="authorPhong">Author: </string>
     <string name="source">La source: </string>
     <string name="url">URL: </string>
     <string name="publishedAt">À: </string>
@@ -63,6 +63,30 @@
     <string name="newsInstructionsText">Cette API est utilisée pour rechercher des articles. Pour trouver un article, suivez les instructions ci-dessous:\n
 Commencez par entrer un mot / une phrase dans le titre, le contenu ou les deux. Ensuite, choisissez une langue. Après cela, sélectionnez comment trier le résultat. Enfin, cliquez sur Rechercher.</string>
     <string name="newsImageDescription">L\'image arctique</string>
+    <string name="saved">Enregistré</string>
+    <string name="downloadImage">Téléchargement de l\'image!</string>
+    <string name="imageDownloaded">Image téléchargée!</string>
+    <string name="articleSaved">Article sauvegardé!</string>
+    <string name="canntSave">Désolé! L\'article est déjà enregistré dans votre liste.</string>
+
+    <string name="ar">Arabe</string>
+    <string name="de">Allemande</string>
+    <string name="en">Anglaise</string>
+    <string name="fr">Française</string>
+    <string name="hi">Hindi</string>
+    <string name="it">Italienne</string>
+    <string name="nl">Néerlandaise</string>
+    <string name="no">Norvégienne</string>
+    <string name="pt">Portugais</string>
+    <string name="ru">Russe</string>
+    <string name="zh">Chinoise</string>
+    <string name="relevancy">Pertinence</string>
+    <string name="popularity">Popularité</string>
+    <string name="noArticle">Désolé! Aucun article trouvé.</string>
+    <string name="gotIt">Je l\'ai!</string>
+    <string name="searchArticle">Recherche d\'articles connexes!</string>
+    <string name="published">Date de publication</string>
+    <string name="articalError">S\'il vous plaît remplir au moins un des texte de recherche!</string>
 
 
     <string name="frameText">The arctic image</string>
