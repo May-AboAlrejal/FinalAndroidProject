@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/item_favorites"
+        android:title="Favorites"
+        android:icon="@drawable/outline_favorite_border_24"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/item_settings"
+        android:title="Settings"
+        android:icon="@drawable/settings"
+        android:orderInCategory="200"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/item_about"
+        android:title="About"
+        android:icon="@drawable/outline_info_24"
+        android:orderInCategory="300"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/item_exit"
+        android:title="Exit"
+        android:icon="@drawable/outline_exit_to_app_24"
+        android:orderInCategory="400"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/item_toggle_search"
+        android:title="Search"
+        android:icon="@drawable/baseline_search_24"
+        android:orderInCategory="900"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/item_info"
+        android:title="Help"
+        android:icon="@drawable/outline_help_outline_24"
+        android:orderInCategory="1000"
+        app:showAsAction="ifRoom" />
+
+</menu>
