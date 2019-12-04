@@ -16,11 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.LinearLayout;
 import android.view.Gravity;
-import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -61,7 +58,8 @@ public class RecipeSearchActivity extends AppCompatActivity {
         setContentView(R.layout.recipe_home);
         tbar = findViewById(R.id.toolbar);
         tbar.setTitle("Recipe");
-        tbar.setTitleTextColor(getResources().getColor(R.color.titleColor));
+        tbar.setTitleTextColor(getResources().getColor(R.color.lightBackground));
+        tbar.setBackgroundColor(getResources().getColor(R.color.tBar));
         tbar.getOverflowIcon().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(tbar);
 
@@ -91,7 +89,11 @@ public class RecipeSearchActivity extends AppCompatActivity {
             });
         }
 
-        //checking the viewFavourite button is exist
+        /**
+         * checking the viewFavourite button is exist
+         * if this get click go to favourite
+         * */
+
         if (viewFavourite != null) {
             viewFavourite.setOnClickListener(clk -> {
                 Intent goToList = new Intent(RecipeSearchActivity.this, ListFavouriteActivity.class);
@@ -99,12 +101,6 @@ public class RecipeSearchActivity extends AppCompatActivity {
             });
 
         }
-
-
-
-
-
-
 
     }
 
@@ -167,7 +163,6 @@ public class RecipeSearchActivity extends AppCompatActivity {
                 startActivity(goToRecipeSearchActivity);
                 break;
             case R.id.intro_recipe:
-                Toast.makeText(this, "This is the Instruction For Recipe", Toast.LENGTH_SHORT).show();
                 instructionAlert();
                 break;
         }
@@ -209,17 +204,13 @@ public class RecipeSearchActivity extends AppCompatActivity {
 
         builder.setTitle("Recipe Search Instruction");
 
-
         //positive and negative are the button
         builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // What to do on Accept
                     }
                 }).setView(middle);
-        //can have third button as neutral button
         //showing stuff
-
-
 
         final AlertDialog dialog = builder.create();
         dialog.show();

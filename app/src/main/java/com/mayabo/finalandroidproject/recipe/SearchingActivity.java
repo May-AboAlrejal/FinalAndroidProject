@@ -1,47 +1,31 @@
 package com.mayabo.finalandroidproject.recipe;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import android.graphics.drawable.BitmapDrawable;
-
-import java.io.BufferedInputStream;
-
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentActivity;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.mayabo.finalandroidproject.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -49,7 +33,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import android.graphics.PorterDuff;
 
 
 /**
@@ -67,6 +50,7 @@ import android.graphics.PorterDuff;
 public class SearchingActivity extends AppCompatActivity {
 
     public static final String ACTIVITY_NAME = "SearchingActivity";
+    public static final String NAME_ACTIVITY = "NAME ACTIVITY";
     ArrayList<Recipe> foodList;
     ProgressBar myProgressBar;
     ListView theList;
@@ -82,13 +66,18 @@ public class SearchingActivity extends AppCompatActivity {
 
 
     //Fragment attributes:
-    public static final String ITEM_SELECTED = "ITEM";
+    public static final String TITLE_SELECTED = "TITLE";
+    public static final String SOURCE_URL = "URL";
+    public static final String IMAGE_URL = "IMAGE URL";
+    public static final String IMAGE_ID = "IMAGE ID";
     public static final String ITEM_POSITION = "POSITION";
     public static final String ITEM_ID = "ID";
-    public static final String WHO_SEND = "ISSEND";
-    public static final String ID_IN_DB = "DBID";
+    public static final String ID_IN_DB = "DATAID";
+    public static final String USER_FILTER = "USER FILTER";
     public static final int EMPTY_ACTIVITY = 123;
 
+    Bundle dataToPass;
+    Bundle dataBack;
 
 
     /**
@@ -102,49 +91,46 @@ public class SearchingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.searching_acvitity_layout);
-        theList = (ListView) findViewById(R.id.list_search);
+        setContentView(R.layout.recipe_favourite);
+        theList = (ListView) findViewById(R.id.list_favourite);
         myProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         Intent dataFromPreviousPage = getIntent();
         userFilter = dataFromPreviousPage.getStringExtra("searchFilter");
+        dataBack = getIntent().getExtras();
+
+        if (dataBack.getString(SearchingActivity.USER_FILTER) != null)
+            userFilter = dataBack.getString(SearchingActivity.USER_FILTER);
+
 
         tbar = (Toolbar) findViewById(R.id.toolbar);
-        tbar.setTitle("Recipe Of "+userFilter);
-        tbar.setTitleTextColor(getResources().getColor(R.color.titleColor));
-        tbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.titleColor), PorterDuff.Mode.SRC_ATOP);
+        tbar.setTitle("Recipe Of " + userFilter);
+        tbar.setBackgroundColor(getResources().getColor(R.color.tBar));
+        tbar.setTitleTextColor(getResources().getColor(R.color.lightBackground));
+        tbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorHome), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(tbar);
 
 
-        //boolean isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
+        boolean isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
 
-
-
-        linearLayout = findViewById(R.id.linear_layout);
+        //linearLayout = findViewById(R.id.linear_layout);
         if (userFilter != null) {
-
             if (userFilter.equals("Lasagna") || userFilter.equals("Chicken Breast")) {
-                Toast.makeText(this, "Searching ... ", Toast.LENGTH_LONG).show();
                 RecipeQuery theQuery = new RecipeQuery(this);
                 theQuery.execute();
                 myProgressBar.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(this, "Your search is wrong\n No result", Toast.LENGTH_LONG).show();
-                Snackbar snackbar = Snackbar
-                        .make(linearLayout, "Go back?", Snackbar.LENGTH_LONG)
-                        //setAction is when you click on the e lambda
-                        .setAction("Yes", e -> {
-                            Intent goToSearch = new Intent(SearchingActivity.this, RecipeSearchActivity.class);
-                            startActivity(goToSearch);
-                        });
-                snackbar.setActionTextColor(Color.GREEN);
-                snackbar.show();
+                Toast.makeText(this, "Filter Error", Toast.LENGTH_LONG).show();
+//                Snackbar snackbar = Snackbar
+//                        .make(, "Go back?", Snackbar.LENGTH_LONG)
+//                        //setAction is when you click on the e lambda
+//                        .setAction("Yes", e -> {
+//                            Intent goToSearch = new Intent(SearchingActivity.this, RecipeSearchActivity.class);
+//                            startActivity(goToSearch);
+//                        });
+//                snackbar.setActionTextColor(Color.GREEN);
+//                snackbar.show();
             }
-
-
-        } else {
-
-            Toast.makeText(this, "You Search For Nothing", Toast.LENGTH_LONG).show();
         }
 
 
@@ -154,27 +140,90 @@ public class SearchingActivity extends AppCompatActivity {
          * */
 
         theList.setOnItemClickListener((parent, view, position, id) -> {
+
             Log.e("You clicked on :", " item " + position);
+
             Recipe chosenRecipe = foodList.get(position);
-            Intent singlePage = new Intent(SearchingActivity.this, RecipeSingle.class);
-            singlePage.putExtra("ActivityName", ACTIVITY_NAME);
-            singlePage.putExtra("title", chosenRecipe.getTitle());
-            singlePage.putExtra("url", chosenRecipe.getUrl());
-            singlePage.putExtra("imageUrl", chosenRecipe.getImgUrl());
-            singlePage.putExtra("imageID", chosenRecipe.getImageID());
-            startActivity(singlePage);
+
+            dataToPass = new Bundle();
+            dataToPass.putString(NAME_ACTIVITY, ACTIVITY_NAME);
+            dataToPass.putString(TITLE_SELECTED, chosenRecipe.getTitle());
+            dataToPass.putString(SOURCE_URL, chosenRecipe.getUrl());
+            dataToPass.putString(IMAGE_URL, chosenRecipe.getImgUrl());
+            dataToPass.putInt(ITEM_POSITION, position);
+            dataToPass.putLong(ITEM_ID, id);
+            dataToPass.putLong(ID_IN_DB, chosenRecipe.getId());
+            dataToPass.putString(IMAGE_ID, chosenRecipe.getImageID());
+            dataToPass.putString(USER_FILTER, userFilter);
+
+
+            if (isTablet) {
+                /**
+                 * The FragmentManager can add, remove, or replace a Fragment
+                 * that is currently loaded into a FrameLayout*/
+                FragmentDetails dFragment = new FragmentDetails(); //add a DetailFragment
+                dFragment.setArguments(dataToPass); //pass it a bundle for information
+                dFragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
+                        .commit(); //actually load the fragment.
+
+
+            } else //isPhone
+            {
+                Intent nextActivity = new Intent(SearchingActivity.this, EmptyActivity.class);
+                nextActivity.putExtras(dataToPass); //send data to next activity
+                startActivity(nextActivity);
+//                startActivityForResult(nextActivity, EMPTY_ACTIVITY); //make the transition
+            }
         });
 
 
+    }
+
+
+    //This function only gets called on the phone. The tablet never goes to a new activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == EMPTY_ACTIVITY)
+        {
+            if(resultCode == RESULT_OK) //if you hit the delete button instead of back button
+            {
+                long id = data.getLongExtra(ITEM_ID, 0);
+                if (addMessageId((int)id)) {
+
+                    Toast.makeText(this, "Successfully Added", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Can't Add", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+
+    public boolean addMessageId(int id) {
+        boolean found = false;
+        String inDataTitle;
+        String inSelectedTitle;
+        DatabaseHandler db = new DatabaseHandler(this);
+
+        if ( db.addRecipe(foodList.get(id)) == 1) {
+            adapter.notifyDataSetChanged();
+//            Toast.makeText(this, "Successfully Added", Toast.LENGTH_LONG).show();
+            return true;
+        } else {
+//            Toast.makeText(this, "Can't Add", Toast.LENGTH_LONG).show();
+            return false;
+        }
 
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId())
-
-        {
+        switch (item.getItemId()) {
             case R.id.exit:
                 Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
                 finish();
@@ -192,41 +241,6 @@ public class SearchingActivity extends AppCompatActivity {
         return true;
     }
 
-
-    /**
-     * This is a custom dialog method
-     * this will need to have builder
-     * the view will be set to its layout
-     * The elements need to be call to use the middle.findViewById
-     */
-
-
-    public void alertDialog() {
-        View middle = getLayoutInflater().inflate(R.layout.title_item, null);
-        TextView tv = findViewById(R.id.title_TextView);
-
-        tv.setText("You clicked my button!");
-
-        //Alert Diaglog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //this is call the builder pattern, the order of calling function does not matter
-
-        //positive and negative are the button
-        builder.setMessage("The Message")
-                .setPositiveButton("Positive", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // What to do on Accept
-                    }
-                })
-                .setNegativeButton("Negative", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // What to do on Cancel
-                    }
-                }).setView(middle);
-
-        //show
-        builder.create().show();
-    }
 
     /**
      * This class is a inner class that will work with the Internet connection
@@ -283,7 +297,6 @@ public class SearchingActivity extends AppCompatActivity {
                     JSONArray recipesJArray = jObject.getJSONArray("recipes");
 
 
-
                     for (int i = 0; i < recipesJArray.length(); i++) {
                         JSONObject recipeJSON = recipesJArray.getJSONObject(i);
                         title = recipeJSON.getString("title");
@@ -291,10 +304,6 @@ public class SearchingActivity extends AppCompatActivity {
                         imageUrl = recipeJSON.getString("image_url");
                         imageID = recipeJSON.getString("recipe_id");
 
-                        String imgUrl = imageUrl.substring(0, 4) + "s" + imageUrl.substring(4);
-                        String imageName = imageID + ".jpeg";
-
-//                        imageList.add(downloadImage(imgUrl, imageName));
 
                         recipe = new Recipe(title, imageID, imageUrl, foodUrl);
 
@@ -312,7 +321,6 @@ public class SearchingActivity extends AppCompatActivity {
                     e.printStackTrace();
                     result = "JSON Creating Object Error";
                 }
-
 
 
                 Log.d("Response: ", "> " + line);
@@ -334,34 +342,6 @@ public class SearchingActivity extends AppCompatActivity {
 
         }
 
-
-        protected Bitmap downloadImage(String imageUrl, String imageName) {
-            if (fileExistance(imageName)) {
-                FileInputStream inputStream = null;
-                try {
-                    inputStream = new FileInputStream(getBaseContext().getFileStreamPath(imageName));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                image = BitmapFactory.decodeStream(inputStream);
-                Log.i(ACTIVITY_NAME, "Image already exists");
-            } else {
-                try {
-
-                    URL url = new URL(imageUrl);
-                    image = getImage(url);
-                    FileOutputStream outputStream = openFileOutput(imageName, Context.MODE_PRIVATE);
-                    image.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
-                    outputStream.flush();
-                    outputStream.close();
-                    Log.i(ACTIVITY_NAME, "Downloading new image");
-
-                    } catch (Exception e) { e.printStackTrace();}
-                }
-            return image;
-        }
-
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -372,39 +352,11 @@ public class SearchingActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
             adapter = new CustomListAdapter(context, foodList);
             theList.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             myProgressBar.setVisibility(View.INVISIBLE);
 
-        }
-
-        protected boolean fileExistance(String fileName) {
-            File file = getBaseContext().getFileStreamPath(fileName);
-            return file.exists();
-        }
-
-        protected Bitmap getImage(URL url) {
-
-            HttpURLConnection iconConn = null;
-            try {
-                iconConn = (HttpURLConnection) url.openConnection();
-                iconConn.connect();
-                int response = iconConn.getResponseCode();
-                if (response == 200) {
-                    return BitmapFactory.decodeStream(iconConn.getInputStream());
-                } else {
-                    return null;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            } finally {
-                if (iconConn != null) {
-                    iconConn.disconnect();
-                }
-            }
         }
 
         @Override
@@ -416,9 +368,13 @@ public class SearchingActivity extends AppCompatActivity {
 
     }
 
-
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, RecipeSearchActivity.class);
+        finish();
+        startActivity(intent);
+    }
 }
 
 

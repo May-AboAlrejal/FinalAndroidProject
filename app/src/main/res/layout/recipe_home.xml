@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorHome"
     >
 
     <androidx.appcompat.widget.Toolbar
@@ -11,48 +12,99 @@
         android:layout_height="wrap_content"
         android:id="@+id/toolbar"
         android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary"
         />
 
+
     <LinearLayout
+        android:paddingTop="30dp"
+        android:layout_marginBottom="70dp"
+        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_below="@id/toolbar"
         >
-        <EditText
-            android:id="@+id/search_edit"
+
+        <TextView
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CookHub!"
+            android:gravity="center"
+            android:textSize="25dp"
+            android:textColor="@color/lightBackground"
+            android:layout_marginBottom="70dp"
+            />
+
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:src="@drawable/cook"
+            />
+
+
+        <EditText
+            android:textColorHint="@color/lightBackground"
+            android:layout_marginTop="50dp"
+            android:textSize="20dp"
+            android:id="@+id/search_edit"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
             android:hint="@string/search_edit"
-            android:gravity="center"/>
-
-        <Button
-            android:id="@+id/view_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/to_search"
+            android:gravity="center"
+            android:textColor="@color/lightBackground"
+            android:backgroundTint="@color/titleColor"
             />
 
         <Button
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_bordered_button"
+            android:id="@+id/view_search"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/to_search"
+            android:textColor="@color/lightBackground"
+            />
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_bordered_button"
             android:id="@+id/view_favourite"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:text="@string/to_favourite"
+            android:textColor="@color/lightBackground"
             />
 
         <TextView
+            android:layout_marginTop="20dp"
+            android:textSize="15dp"
             android:id="@+id/intro"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/intro"
-            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/lightBackground"
             />
+
+
+
     </LinearLayout>
 
+
+
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/rights"
+        android:text="@string/rights"
+        android:layout_marginBottom="10dp"
+        />
 
 
 

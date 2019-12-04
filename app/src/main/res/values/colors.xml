@@ -5,10 +5,17 @@
     <color name="colorAccent">#D81B60</color>
     <color name="newsColor">#68a0b0</color>
     <color name="newsToolbarColor">#5a6c90</color>
-    <color name="colorHome">#f58b54</color>
-    <color name="titleColor">#eeeeee</color>
-    <color name="colorLightBlue">#33CCFF</color>
-    <color name="colorLightGreen">#98FB98</color>
-    <color name="colorCornSilk">#FFF8DC</color>
-    <color name="colorLight">#A9F5F2</color>
+    <color name="colorHome">#1d1919</color>
+    <color name="titleColor">#fff</color>
+    <color name="lightBackground">#ebebe3</color>
+    <color name="black">#1d1919</color>
+    <color name="blue">#4dd599</color>
+    <color name="hint">#f1d6ab</color>
+    <color name="rights">#63686e</color>
+    <color name="tBar">#2b2b28</color>
+    <color name="fragmentBack">#222222</color>
+    <color name="mainHome">#43cfec</color>
+    <color name="mainYellow">#fcc169</color>
+
+
 </resources>

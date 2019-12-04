@@ -87,4 +87,8 @@ Commencez par entrer un mot / une phrase dans le titre, le contenu ou les deux. 
     <string name="searchArticle">Recherche d\'articles connexes!</string>
     <string name="published">Date de publication</string>
     <string name="articalError">S\'il vous plaît remplir au moins un des texte de recherche!</string>
+
+
+    <string name="frameText">The arctic image</string>
+    <string name="rights">\u00402019 Phong Le. All rights reserved.</string>
 </resources>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!-- Layout weight is important-->
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        />
+
+    <RelativeLayout
+        android:layout_below="@id/toolbar"
+        android:id="@+id/left"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/list_favourite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:transcriptMode="alwaysScroll"
+            android:background="@color/colorHome"/>
+
+        <ProgressBar
+            android:layout_alignParentBottom="true"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@id/toolbar"
+        android:layout_toLeftOf="@id/fragmentLocation"
+        android:layout_width="3dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"/>
+
+    <FrameLayout
+        android:id="@+id/fragmentLocation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fragmentBack"
+        android:layout_below="@id/toolbar"
+        android:layout_toRightOf="@+id/left"
+        >
+
+        <TextView
+            android:id="@+id/frameIntro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textColor="@color/lightBackground"
+            android:text="@string/frameText" />
+    </FrameLayout>
+
+
+</RelativeLayout>
+
+

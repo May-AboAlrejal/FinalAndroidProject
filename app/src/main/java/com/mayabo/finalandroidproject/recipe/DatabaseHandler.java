@@ -1,10 +1,11 @@
 package com.mayabo.finalandroidproject.recipe;
+
 import android.app.Activity;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.content.ContentValues;
-import android.database.Cursor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +44,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
 
+    //Constructor taking acivity
     public DatabaseHandler(Activity ctx){
-        //The factory parameter should be null, unless you know a lot about Database Memory management
-        /**Context ctx: the Activity where the database is being opened
-         * String databaseName – this is the file that will contain the data.
-         * CursorFactory – An object to create Cursor objects, normally this is null.
-         * Int version – What is the version of your database
-         */
+        //The factory parameter should be null
         super(ctx, DATABASE_NAME, null, VERSION_NUM );
     }
 
@@ -80,48 +77,51 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Add Recipe Function take
+     * @Param: Recipe
+     * Check boolean for found the duplicate
+     * return an int because I don't want boolean
+     * creating a ContentValue to store the attributes
+     *
+     * */
 
-    void addRecipe(Recipe recipe) {
+    public int addRecipe(Recipe recipe) {
+        boolean found = false;
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-
-
         values.put(COL_TITLE, recipe.getTitle()); // Recipe Name
         values.put(COL_IMAGE_ID, recipe.getImageID()); // Recipe Image ID
         values.put(COL_IMAGE_URL, recipe.getImgUrl()); // Recipe Image URL
         values.put(COL_URL, recipe.getUrl()); // Recipe Source URL
 
+                    String inDataTitle;
+                    String inSelectedTitle;
 
-        // Inserting Row
-        db.insert(TABLE_RECIPE, null, values);
-        //2nd argument is String containing nullColumnHack
-        db.close(); // Closing database connection
+                    //call getAll in addAll getting a temporary list to iterate over the database object
+                    ArrayList<Recipe> myRecipes = new ArrayList<>();
+                    myRecipes.addAll(this.getAllRecipes());
+
+                        for (int i = 0; i < myRecipes.size(); i++) {
+                            inDataTitle = myRecipes.get(i).getTitle();
+                            inSelectedTitle = recipe.getTitle();
+                            if (inDataTitle.equals(inSelectedTitle)) {
+                                found = true;
+                                break;
+                            }
+                    }
+
+                    if (!found) {
+
+                        db.insert(TABLE_RECIPE, null, values);
+                        db.close(); // Closing database connection
+                        return 1;
+                    } else {
+                        return -1;
+                    }
     }
 
-
-
-    // code to get the single contact
-    Recipe getRecipe(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_RECIPE, new String[] { COL_ID,
-                        COL_TITLE, COL_IMAGE_ID, COL_IMAGE_URL, COL_URL }, COL_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
-        //Recipe (long id, String title, String imageID, String imgUrl, String url)
-        long cID = Long.parseLong(cursor.getString(0));
-        String cTitle = cursor.getString(1);
-        String cImageID = cursor.getString(2);
-        String cImageUrl = cursor.getString(3);
-        String cUrl = cursor.getString(4);
-
-        Recipe recipe = new Recipe(cID,cTitle,cImageID,cImageUrl,cUrl);
-        // return contact
-        return recipe;
-    }
 
     // Deleting single Recipe
     public void deleteRecipe(Recipe recipe) {
@@ -131,16 +131,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Getting contacts Count
-    public int getRecipesCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_RECIPE;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-
-        // return count
-        return cursor.getCount();
-    }
 
     // code to get all contacts in a list view
     public List<Recipe> getAllRecipes() {
@@ -149,6 +139,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String selectQuery = "SELECT  * FROM " + TABLE_RECIPE;
 
         SQLiteDatabase db = this.getWritableDatabase();
+        //calling the rawQuery to return a result into the Cursor
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
@@ -166,7 +157,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        // return contact list
+        // return a Recipe list
         return recipeList;
     }
 
