@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:orientation="horizontal"
+        android:rowCount="4">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:text="@string/info_from" />
+
+        <TextView
+            android:id="@+id/base_currency_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_columnSpan="2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:text="@string/info_to" />
+
+        <TextView
+            android:id="@+id/dst_currency_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_columnSpan="2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:text="@string/info_date" />
+
+        <TextView
+            android:id="@+id/convert_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:layout_columnSpan="2"
+            android:text="@string/tv_unavailable" />
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:text="@string/info_rate"/>
+
+        <TextView
+            android:id="@+id/convert_rate"
+            android:text="@string/tv_unavailable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="1"
+            android:layout_columnSpan="2"/>
+    </GridLayout>
+
+<!--    <Button-->
+<!--        android:id="@+id/bt_add_to_fav"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/bt_addToFavList"/>-->
+
+
+</LinearLayout>

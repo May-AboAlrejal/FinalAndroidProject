@@ -1,3 +1,41 @@
 <resources>
-    <string name="app_name">FinalAndroidProject</string>
+    <string name="app_name">FinalProject</string>
+    <string name="welcome">Currency Converter</string>
+    <string name="convertedCurrency">Converted Currency</string>
+    <string name="convert">Convert</string>
+    <string name="tv_srcPrompt">FROM</string>
+    <string name="tv_dstPrompt">TO</string>
+    <string name="bt_addToFavList">ADD TO FAVORITE LIST</string>
+    <string name="tbar_help">Help</string>
+    <string name="tbar_favoritelist">Favorite List</string>
+    <string name="tv_unavailable">Unavailable</string>
+    <string name="info_from">Convert from: </string>
+    <string name="info_to">Convert to: </string>
+    <string name="info_date">Date of conversion: </string>
+    <string name="info_rate">Rate: </string>
+    <string name="tv_base">BASE</string>
+    <string name="tv_converted">CONVERTED</string>
+    <string name="author">Author: Manh Hoang Nguyen</string>
+    <string name="version_num">Version 1</string>
+    <string name="guide">
+        How to use the conversion application:\n
+        1. Enter the country currency code you want to convert after FROM.\n
+        2. Enter the currency code you want to convert to after TO.\n
+        3. Enter the amount of money you want to convert.\n
+        4. Click the CONVERT button to convert</string>
+    <string name="back">BACK</string>
+    <string name="toast_wrongInput">Your input is not correct!</string>
+    <string name="toast_nullScrCurrency">Please enter your source currency</string>
+    <string name="toast_nullDstCurrency">"Please enter your destination currency"</string>
+    <string name="toast_nullAmountOfMoney">Please enter your amount of money</string>
+    <string name="toast_addToFavorite">Added to your favorite</string>
+    <string name="toast_conversionExist">The coversion existed</string>
+    <string name="toast_clickedOverFlowMenu">"You clicked to overflow menu item")</string>
+    <string name="dialog_removeQuestion">Remove from Favorite List?</string>
+    <string name="bt_remove">Remove</string>
+    <string name="bt_cancel">Cancel</string>
+    <string name="snackbar_tryAgain">Try again</string>
+    <string name="et_baseMoneyHint">Base Money</string>
+    <string name="et_dstMoneyHint">Destination Money</string>
+    <string name="et_amountMoneyHint">Enter your money</string>
 </resources>
