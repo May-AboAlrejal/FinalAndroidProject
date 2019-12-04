@@ -47,7 +47,6 @@ public class FragmentNewsArticleContent extends Fragment {
     private NewsBaseHelper dbOpener;
     private SQLiteDatabase db;
     private Button articleButton;
-    private int rowCount;
 
     public void setTablet(boolean tablet) {
         isTablet = tablet;
@@ -108,7 +107,7 @@ public class FragmentNewsArticleContent extends Fragment {
         String checkURL = article.getUrl();
 
         Cursor c = db.query(false, NewsBaseHelper.TABLE_NAME, new String[]{NewsApiResponse.URL}, NewsApiResponse.URL + " like ? ", new String[]{checkURL}, null, null, null, null);
-        rowCount = c.getCount();
+        int rowCount = c.getCount();
 
         articleButton = result.findViewById(R.id.articleButton);
         if (searchedArticleButton) {
@@ -141,6 +140,9 @@ public class FragmentNewsArticleContent extends Fragment {
      * @param article the article selected
      */
     private void saveArticle(NewsApiResponse article) {
+        String checkURL = article.getUrl();
+        Cursor c = db.query(false, NewsBaseHelper.TABLE_NAME, new String[]{NewsApiResponse.URL}, NewsApiResponse.URL + " like ? ", new String[]{checkURL}, null, null, null, null);
+        int rowCount = c.getCount();
         if (rowCount == 0) {
             ContentValues newRowValues = new ContentValues();
 
