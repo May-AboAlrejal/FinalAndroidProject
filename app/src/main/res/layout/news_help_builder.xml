@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/newsIcon"
+        app:srcCompat="@drawable/news" />
+
+    <TextView
+        android:id="@+id/authorNewsName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:text="@string/authorNewsName" />
+    <TextView
+        android:id="@+id/may"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:text="@string/authorNewsNameText" />
+    <TextView
+        android:id="@+id/newsVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:text="@string/newsVersion" />
+    <TextView
+        android:id="@+id/newsVersionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:text="@string/newsVersionText" />
+    <TextView
+        android:id="@+id/newsInstructions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:text="@string/newsInstructions" />
+    <TextView
+        android:id="@+id/newsInstructionsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:text="@string/newsInstructionsText" />
+
+
+</LinearLayout>

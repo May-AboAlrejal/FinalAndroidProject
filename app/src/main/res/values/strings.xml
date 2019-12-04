@@ -1,5 +1,94 @@
 <resources>
-    <string name="app_name">FinalProject</string>
+    <string name="app_name">FinalAndroidProject</string>
+
+    <string name="to_search">Search Recipe</string>
+    <string name="to_favourite">List of Favourites</string>
+    <string name="search_edit">What do you want to cook?</string>
+    <string name="title_item">Title: </string>
+    <string name="url_item">Click the link below for more details \n</string>
+    <string name="search_btn">Search</string>
+    <string name="intro">The API has been shutting down\n
+    Please search for Lasagna or Chicken Breast\n
+    </string>
+    <string name="coin_tbar">Coin</string>
+    <string name="news_tbar">News</string>
+    <string name="food_tbar">Food</string>
+    <string name="station_tbar">Station</string>
+    <string name="intro_rec">Instruction Recipe</string>
+    <string name="version">Software Version: </string>
+    <string name="instruction">Instruction:\n
+        - This is the Recipe Search Engine\n
+        - Filter what you want to search in the blank\n
+        - Available only Lasagna or Chicken Breast\n
+        - After type in, click on search to see results\n
+        - Clicking on specific item to see details\n
+        \n
+        - Tap On Heart To Save\n
+        - To view and make change go to Favourite\n
+        - Empty heart indicates not save\n
+        - Filled heart indicates recipe is already saved.
+    </string>
+    <string name="save_btn">Save</string>
+    <string name="saved_title">List of Favourite</string>
+    <string name="heart_instruction">Tap On Heart To Save\n
+    To view and make change go to Favourite\n
+    Empty heart indicates not save\n
+    Filled heart indicates recipe is already saved.</string>
+
+    <string name="searchTitle">Search Title</string>
+    <string name="searchContent">Search Content</string>
+    <string name="selectLanguage">Language: </string>
+    <string name="selectSortBy">Sort By: </string>
+    <string name="searchButton">Search</string>
+    <string name="authorPhong">Author: </string>
+    <string name="source">Source: </string>
+    <string name="url">URL: </string>
+    <string name="publishedAt">At: </string>
+    <string name="description">Description: </string>
+    <string name="title">Title: </string>
+    <string name="content">Content: </string>
+    <string name="viewArticle">View Article</string>
+    <string name="saveArticle">Save Article</string>
+    <string name="deleteArticle">Delete article</string>
+    <string name="carIcon">Electric Car Charging Station finder</string>
+    <string name="foodIcon">Recipe search</string>
+    <string name="moneyIcon">Foreign currency</string>
+    <string name="newsIcon">News Headlines search</string>
+    <string name="viewSavedArticles">View saved articles</string>
+    <string name="authorNewsName">Author’s name: </string>
+    <string name="authorNewsNameText">May Abo-Alrejal</string>
+    <string name="newsVersion">Activity version number: </string>
+    <string name="newsVersionText">1</string>
+    <string name="newsInstructions">Instructions on how to use NewsApi: </string>
+    <string name="newsInstructionsText">This API is used to search articles, to find an article please follow the instruction below:\n
+First, enter a word/phrase in title, content or both. Then, choose a language. After that, select how to sort the result. Last, click search.</string>
+    <string name="newsImageDescription">The arctic image</string>
+    <string name="saved">Saved</string>
+    <string name="downloadImage">Downloading the image!</string>
+    <string name="imageDownloaded">Image downloaded!</string>
+    <string name="articleSaved">Article saved!</string>
+    <string name="canntSave">Sorry! The article is already saved in your list.</string>
+
+
+    <string name="ar">Arabic</string>
+    <string name="de">German</string>
+    <string name="en">English</string>
+    <string name="fr">French</string>
+    <string name="hi">Hindi</string>
+    <string name="it">Italian</string>
+    <string name="nl">Dutch</string>
+    <string name="no">Norwegian</string>
+    <string name="pt">Portuguese</string>
+    <string name="ru">Russian</string>
+    <string name="zh">Chinese</string>
+    <string name="relevancy">Relevance</string>
+    <string name="popularity">Popularity</string>
+    <string name="published">Publish date</string>
+    <string name="noArticle">Sorry! No articles found.</string>
+    <string name="gotIt">Got it!</string>
+    <string name="articalError">Please fill at least one of the search text!</string>
+    <string name="searchArticle">Searching for related articles!</string>
+
     <string name="welcome">Currency Converter</string>
     <string name="convertedCurrency">Converted Currency</string>
     <string name="convert">Convert</string>
@@ -38,4 +127,6 @@
     <string name="et_baseMoneyHint">Base Money</string>
     <string name="et_dstMoneyHint">Destination Money</string>
     <string name="et_amountMoneyHint">Enter your money</string>
+
+
 </resources>

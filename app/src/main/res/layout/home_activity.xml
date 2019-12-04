@@ -8,27 +8,36 @@
     android:paddingTop="16dp"
     android:paddingBottom="16dp">
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"/>
+
     <Button
         android:id="@+id/carStationFinder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Electric Car Charging Station finder" />
+        android:textSize="@dimen/textSize"
+        android:text="@string/carIcon" />
 
     <Button
         android:id="@+id/recipeSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recipe search engine" />
+        android:textSize="@dimen/textSize"
+        android:text="@string/foodIcon" />
 
     <Button
         android:id="@+id/currencyConversion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Foreign currency conversion api" />
+        android:textSize="@dimen/textSize"
+        android:text="@string/moneyIcon" />
 
     <Button
         android:id="@+id/newsHeadlines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="News Api.org headlines api" />
+        android:textSize="@dimen/textSize"
+        android:text="@string/newsIcon" />
 </LinearLayout>
