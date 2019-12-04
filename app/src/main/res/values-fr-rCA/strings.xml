@@ -10,10 +10,10 @@
     <string name="dialog_removeQuestion">Supprimer de la liste des favoris?</string>
     <string name="guide">
         Comment utiliser l\'application de conversion:\n
-        1. Entrez le code de devise du pays que vous souhaitez convertir après DE.\n
-        2. Entrez le code de devise que vous souhaitez convertir après À.\n
-        3. Entrez le montant que vous souhaitez convertir.\n
-        4. Cliquez sur le bouton CONVERTI pour convertir</string>
+        1. DE: Le code de la devise que vous souhaitez convertir. \n
+        2. À: Le code de la devise que vous souhaitez convertir.\n
+        3. Entrez le montant de la conversion.\n
+        4. Cliquez sur le bouton CONVERTI.\n</string>
     <string name="info_date">Date de conversion:</string>
     <string name="info_from">Convertir à partir de:</string>
     <string name="info_rate">Taux:</string>
