@@ -16,6 +16,9 @@
     <color name="fragmentBack">#222222</color>
     <color name="mainHome">#43cfec</color>
     <color name="mainYellow">#fcc169</color>
-
+    <color name="colorCornSilk">#FFF8DC</color>
+    <color name="colorLight">#89F5F2</color>
+    <color name="colorLightBlue">#33CCFF</color>
+    <color name="colorLightGreen">#98FB98</color>
 
 </resources>
