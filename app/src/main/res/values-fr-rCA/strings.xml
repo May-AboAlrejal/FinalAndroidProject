@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProjetFinal</string>
+    <string name="author">Auteur: Manh Hoang Nguyen</string>
+    <string name="back">RETOUR</string>
+    <string name="bt_addToFavList">AJOUTER À LA LISTE DES FAVORIS</string>
+    <string name="bt_remove">Retirer</string>
+    <string name="convert">Convertir</string>
+    <string name="convertedCurrency">Devise Convertie</string>
+    <string name="dialog_removeQuestion">Supprimer de la liste des favoris?</string>
+    <string name="guide">
+        Comment utiliser l\'application de conversion:\n
+        1. Entrez le code de devise du pays que vous souhaitez convertir après DE.\n
+        2. Entrez le code de devise que vous souhaitez convertir après À.\n
+        3. Entrez le montant que vous souhaitez convertir.\n
+        4. Cliquez sur le bouton CONVERTI pour convertir</string>
+    <string name="info_date">Date de conversion:</string>
+    <string name="info_from">Convertir à partir de:</string>
+    <string name="info_rate">Taux:</string>
+    <string name="info_to">Convertir en:</string>
+    <string name="tbar_favoritelist">Liste des Favoris</string>
+    <string name="tbar_help">Aidez-moi</string>
+    <string name="toast_addToFavorite">Ajouté à votre favori</string>
+    <string name="toast_clickedOverFlowMenu">" Vous avez cliqué pour déborder d'un élément de menu"</string>
+    <string name="toast_conversionExist">" Le couvre-lit existait"</string>
+    <string name="toast_nullAmountOfMoney">S\'il vous plaît entrer votre montant d\'argent</string>
+    <string name="toast_nullDstCurrency">S\'il vous plaît entrer votre devise de destination</string>
+    <string name="toast_wrongInput">" Votre saisie n'est pas correcte!"</string>
+    <string name="toast_nullScrCurrency">Veuillez entrer votre devise source</string>
+    <string name="tv_base">BASE</string>
+    <string name="tv_converted">CONVERTI</string>
+    <string name="tv_dstPrompt">" À"</string>
+    <string name="tv_srcPrompt">DE</string>
+    <string name="tv_unavailable">Indisponible</string>
+    <string name="version_num">Version 1</string>
+    <string name="welcome">" Convertisseur de Devises"</string>
+    <string name="bt_cancel">Annuler</string>
+    <string name="snackbar_tryAgain">Réessayer</string>
+    <string name="et_baseMoneyHint">Argent de base</string>
+    <string name="et_dstMoneyHint">Argent de destination</string>
+    <string name="et_amountMoneyHint">Entrez votre argent</string>
+</resources>

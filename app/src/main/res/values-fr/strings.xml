@@ -40,7 +40,7 @@
     <string name="selectLanguage">la langue: </string>
     <string name="selectSortBy">Trier par: </string>
     <string name="searchButton">Chercher</string>
-    <string name="author">Author: </string>
+    <string name="authorPhong">Author: </string>
     <string name="source">La source: </string>
     <string name="url">URL: </string>
     <string name="publishedAt">À: </string>

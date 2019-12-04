@@ -7,5 +7,8 @@
     <color name="newsToolbarColor">#5a6c90</color>
     <color name="colorHome">#f58b54</color>
     <color name="titleColor">#eeeeee</color>
-
+    <color name="colorLightBlue">#33CCFF</color>
+    <color name="colorLightGreen">#98FB98</color>
+    <color name="colorCornSilk">#FFF8DC</color>
+    <color name="colorLight">#A9F5F2</color>
 </resources>
