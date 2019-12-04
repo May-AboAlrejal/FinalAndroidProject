@@ -173,6 +173,7 @@ public class FragmentDetails extends Fragment {
                 //for Phone:
                 else //You are only looking at the details, you need to go back to the previous list page
                 {
+
                     EmptyActivity parent = (EmptyActivity) getActivity();
                     Intent backToFragmentExample = new Intent();
                     backToFragmentExample.putExtra(ListFavouriteActivity.ITEM_ID, dataFromActivity.getLong(ListFavouriteActivity.ITEM_ID));
@@ -254,8 +255,6 @@ public class FragmentDetails extends Fragment {
 
                     URL url = new URL(queryURL);
                     image = getImage(url);
-
-
                     if (image != null) {
 
                         FileOutputStream outputStream = getActivity().openFileOutput(imageName, Context.MODE_PRIVATE);

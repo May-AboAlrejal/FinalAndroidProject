@@ -12,10 +12,10 @@
         android:src="@drawable/info"
         android:layout_gravity="center"/>
     <TextView
-        android:id="@+id/authorPhong"
+        android:id="@+id/author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/author"
+        android:text="@string/authorPhong"
         android:textSize="15dp"/>
 
     <TextView

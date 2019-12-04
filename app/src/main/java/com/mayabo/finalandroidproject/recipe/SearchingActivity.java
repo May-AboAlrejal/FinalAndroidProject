@@ -203,18 +203,14 @@ public class SearchingActivity extends AppCompatActivity {
     }
 
 
+    //Function addMessageusing its ID
     public boolean addMessageId(int id) {
-        boolean found = false;
-        String inDataTitle;
-        String inSelectedTitle;
         DatabaseHandler db = new DatabaseHandler(this);
 
         if ( db.addRecipe(foodList.get(id)) == 1) {
             adapter.notifyDataSetChanged();
-//            Toast.makeText(this, "Successfully Added", Toast.LENGTH_LONG).show();
             return true;
         } else {
-//            Toast.makeText(this, "Can't Add", Toast.LENGTH_LONG).show();
             return false;
         }
 

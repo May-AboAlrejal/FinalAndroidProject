@@ -223,10 +223,6 @@ public class RecipeSearchActivity extends AppCompatActivity {
 
 
 
-
-
-
-
     }
 
 
