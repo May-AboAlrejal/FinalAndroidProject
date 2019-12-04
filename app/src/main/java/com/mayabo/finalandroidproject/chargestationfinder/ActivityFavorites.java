@@ -1,5 +1,11 @@
 package com.mayabo.finalandroidproject.chargestationfinder;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.BlendMode;
@@ -13,44 +19,85 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.mayabo.finalandroidproject.R;
 
-public class FragmentFavorite extends Fragment {
+import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
+
+public class ActivityFavorites extends AppCompatActivity {
     private RecyclerView mFavoritesView;
+    private TextView mEmptyInfoView;
     private MyAdapter mFavoritesAdapter;
+    private int mOrigNavigationBarColor;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View result =  inflater.inflate(R.layout.fragment_charge_station_finder_favorites, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_charge_station_finder_favorites);
 
-        mFavoritesView = result.findViewById(R.id.favorites);
+        setSupportActionBar(findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        backupNavigationBarColor();
+        setupNavigationBarColor();
+
         mFavoritesAdapter = new MyAdapter();
 
-        mFavoritesView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        mFavoritesView = findViewById(R.id.favorites);
+        mEmptyInfoView = findViewById(R.id.info_empty);
         mFavoritesView.setAdapter(mFavoritesAdapter);
+        mFavoritesView.setLayoutManager(new LinearLayoutManager(this));
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback());
         itemTouchHelper.attachToRecyclerView(mFavoritesView);
 
         if (!ChargeStationFinderActivity.favorites.isEmpty()) {
-//            mEmptyInfoView.setVisibility(View.GONE);
+            mEmptyInfoView.setVisibility(View.GONE);
             mFavoritesView.setVisibility(View.VISIBLE);
         }
+    }
 
-        return result;
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupNavigationBarColor();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        restoreNavigationBarColor();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    private void backupNavigationBarColor() {
+        mOrigNavigationBarColor = getWindow().getNavigationBarColor();
+    }
+
+    private void restoreNavigationBarColor() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().setNavigationBarColor(mOrigNavigationBarColor);
+    }
+
+    private void setupNavigationBarColor() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(getColor(R.color.colorPrimary));
+        getWindow().setNavigationBarColor(getWindow().getDecorView().getRootView().getSolidColor());
+        getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
     }
 
     private Drawable fillIconWithColor(int resId, int color) {
-        Drawable icon = getResources().getDrawable(resId, this.getActivity().getTheme());
+        Drawable icon = getResources().getDrawable(resId, getTheme());
         icon.mutate();
         icon.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
         return icon;
@@ -65,7 +112,7 @@ public class FragmentFavorite extends Fragment {
         public SwipeToDeleteCallback() {
             super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
             icon = fillIconWithColor(R.drawable.outline_delete_outline_24, Color.parseColor("#ffffff"));
-            background = new ColorDrawable(FragmentFavorite.this.getActivity().getColor(R.color.colorSecondaryDark));
+            background = new ColorDrawable(getColor(R.color.colorSecondaryDark));
             divider = new ColorDrawable(Color.parseColor("#D0D0D0"));
             clearDivider = new ColorDrawable(Color.parseColor("#ffffff"));
         }
@@ -77,15 +124,15 @@ public class FragmentFavorite extends Fragment {
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
             Record record = ChargeStationFinderActivity.favorites.get(position);
-            RecordOpenHelper db = new RecordOpenHelper(FragmentFavorite.this.getActivity());
+            RecordOpenHelper db = new RecordOpenHelper(ActivityFavorites.this);
             db.remove(record);
-            ((ChargeStationFinderActivity) getActivity()).removeFavoriteItem(position);
+            ChargeStationFinderActivity.favorites.remove(position);
             mFavoritesAdapter.notifyItemRemoved(position);
             record.setIsFavorite(false);
-            Snackbar.make(FragmentFavorite.this.getActivity().findViewById(R.id.root), record.getTitle() + " removed", Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.root), record.getTitle() + " removed", Snackbar.LENGTH_LONG)
                 .setAction("Undo", view -> {
                     db.insert(record);
-                    ((ChargeStationFinderActivity) getActivity()).addFavoriteItem(position, record);
+                    ChargeStationFinderActivity.favorites.add(position, record);
                     mFavoritesAdapter.notifyItemInserted(position);
                     record.setIsFavorite(true);
                 })
@@ -105,20 +152,20 @@ public class FragmentFavorite extends Fragment {
                 int iconRight = itemView.getLeft() + iconMargin + icon.getIntrinsicWidth();
                 icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
                 background.setBounds(
-                        itemView.getLeft(),
-                        itemView.getTop(),
-                        itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
-                        itemView.getBottom()
+                    itemView.getLeft(),
+                    itemView.getTop(),
+                    itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
+                    itemView.getBottom()
                 );
             } else if (dX < 0) { // Swiping to the left
                 int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
                 int iconRight = itemView.getRight() - iconMargin;
                 icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
                 background.setBounds(
-                        itemView.getRight() + ((int) dX) - backgroundCornerOffset,
-                        itemView.getTop(),
-                        itemView.getRight(),
-                        itemView.getBottom()
+                    itemView.getRight() + ((int) dX) - backgroundCornerOffset,
+                    itemView.getTop(),
+                    itemView.getRight(),
+                    itemView.getBottom()
                 );
             } else { // view is unSwiped
                 background.setBounds(0, 0, 0, 0);
@@ -132,10 +179,10 @@ public class FragmentFavorite extends Fragment {
                 whichDivider = clearDivider;
             }
             whichDivider.setBounds(
-                    itemView.getLeft(),
-                    itemView.getBottom(),
-                    itemView.getRight(),
-                    itemView.getBottom() + 1
+                itemView.getLeft(),
+                itemView.getBottom(),
+                itemView.getRight(),
+                itemView.getBottom() + 1
             );
 
             background.draw(c);
@@ -172,18 +219,18 @@ public class FragmentFavorite extends Fragment {
                 ((TextView) content.findViewById(R.id.latitude)).setText(record.getLatitude());
                 ((TextView) content.findViewById(R.id.longitude)).setText(record.getLongitude());
                 ((TextView) content.findViewById(R.id.contact)).setText(record.getContact());
-                new AlertDialog.Builder(FragmentFavorite.this.getContext())
-                        .setIcon(fillIconWithColor(R.drawable.outline_info_24, FragmentFavorite.this.getContext().getColor(R.color.colorPrimary)))
-                        .setTitle(record.getTitle())
-                        .setView(content)
-                        .setPositiveButton("Open map", (dialogInterface, i) -> {
-                            Uri gmmIntentUri = Uri.parse("geo:" + record.getLatitude() + "," + record.getLongitude() + "?q=" + record.getAddress());
-                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                            mapIntent.setPackage("com.google.android.apps.maps");
-                            startActivity(mapIntent);
-                        })
-                        .setNegativeButton("Cancel", (dialogInterface, i) -> {})
-                        .create().show();
+                new AlertDialog.Builder(ActivityFavorites.this)
+                    .setIcon(fillIconWithColor(R.drawable.outline_info_24, getColor(R.color.colorPrimary)))
+                    .setTitle(record.getTitle())
+                    .setView(content)
+                    .setPositiveButton("Open map", (dialogInterface, i) -> {
+                        Uri gmmIntentUri = Uri.parse("geo:" + record.getLatitude() + "," + record.getLongitude() + "?q=" + record.getAddress());
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
+                    })
+                    .setNegativeButton("Cancel", (dialogInterface, i) -> {})
+                    .create().show();
             });
         }
 

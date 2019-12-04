@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import androidx.appcompat.widget.Toolbar;
 
+import com.mayabo.finalandroidproject.chargestationfinder.ChargeStationFinderActivity;
 import com.mayabo.finalandroidproject.news.NewsHeadlinesSearchActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         Button recipeSearch = findViewById(R.id.recipeSearch);
 
         carStationFinder.setOnClickListener( clk -> {
-            Intent goToCarStationFinderActivity = new Intent(MainActivity.this, CarStationFinderActivity.class);
+            Intent goToCarStationFinderActivity = new Intent(MainActivity.this, ChargeStationFinderActivity.class);
             startActivity(goToCarStationFinderActivity);
         });
 

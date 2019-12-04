@@ -449,6 +449,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
      * @param color id of color to use
      * @return drawable icon with specified color
      */
+    @SuppressLint("NewApi")
     private Drawable fillIconWithColor(int resId, int color) {
         Drawable icon = getResources().getDrawable(resId, getTheme());
         icon.mutate();
