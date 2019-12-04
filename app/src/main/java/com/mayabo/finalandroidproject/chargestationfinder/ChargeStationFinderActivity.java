@@ -37,6 +37,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +74,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     private ImageView mSwapFieldsView;
     private ImageView mGetLocationView;
     private ConstraintLayout mSearchBarView;
+    private FrameLayout mFragmentView;
     private List<Record> mSearchResults;
     private MyAdapter mSearchResultAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -81,6 +83,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     private Drawable mPlainIconFavorite;
     private int mOrigNavigationBarColor;
     private boolean mIsSearchExpanded;
+    private boolean mIsSearching;
+    private boolean mHasFragment;
 
     public static List<Record> favorites;
 
@@ -109,6 +113,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         favorites = new RecordOpenHelper(this).getAllRecords();
         mSearchResults = new ArrayList<>();
         mIsSearchExpanded = true;
+        mIsSearching = false;
+        mFragmentView = findViewById(R.id.frame_layout);
+        mHasFragment = mFragmentView != null;
         mColoredIconInfo = fillIconWithColor(R.drawable.outline_info_24, getColor(R.color.colorPrimary));
         mColoredIconFavorite = fillIconWithColor(R.drawable.outline_star_24, getColor(R.color.colorAccent));
         mPlainIconFavorite = getResources().getDrawable(R.drawable.outline_star_border_24, getTheme());
@@ -197,8 +204,13 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             }
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                mLatitudeView.setText(String.valueOf(location.getLatitude()));
-                mLongitudeView.setText(String.valueOf(location.getLongitude()));
+                if (location == null) {
+                    Toast.makeText(this, "location not available", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    mLatitudeView.setText(String.valueOf(location.getLatitude()));
+                    mLongitudeView.setText(String.valueOf(location.getLongitude()));
+                }
             }
         });
 
@@ -242,16 +254,18 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
      * Creates a new thread and fetch data from server. Updates ListView.
      */
     private void search() {
-        mEmptyInfoView.setText("Loading...");
-        mEmptyInfoView.setVisibility(View.VISIBLE);
-        mSearchResultsView.setVisibility(View.GONE);
-        mSearchResults.clear();
-        mSearchResultAdapter.notifyDataSetChanged();
-        new MyQuery().execute(new QueryParams(
-            ChargeStationFinderActivity.this.mLatitudeView.getText().toString(),
-            ChargeStationFinderActivity.this.mLongitudeView.getText().toString(),
-            null
-        ));
+        if (!mIsSearching) {
+            mEmptyInfoView.setText("Loading...");
+            mEmptyInfoView.setVisibility(View.VISIBLE);
+            mSearchResultsView.setVisibility(View.GONE);
+            mSearchResults.clear();
+            mSearchResultAdapter.notifyDataSetChanged();
+            new MyQuery().execute(new QueryParams(
+                ChargeStationFinderActivity.this.mLatitudeView.getText().toString(),
+                ChargeStationFinderActivity.this.mLongitudeView.getText().toString(),
+                null
+            ));
+        }
     }
 
     /**
@@ -297,6 +311,26 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void removeFavoriteItem(int position) {
+        Record record = favorites.remove(position);
+        int index = mSearchResults.indexOf(record);
+        if (index >= 0) {
+            mSearchResults.get(index).setIsFavorite(false);
+            sortResults();
+            mSearchResultAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void addFavoriteItem(int position, Record record) {
+        favorites.add(position, record);
+        int index = mSearchResults.indexOf(record);
+        if (index >= 0) {
+            mSearchResults.get(index).setIsFavorite(true);
+            sortResults();
+            mSearchResultAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -345,7 +379,21 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_favorites:
-                startActivity(new Intent(this, ActivityFavorites.class));
+                if (mHasFragment) {
+                    if (mFragmentView.getVisibility() == View.GONE) {
+                        mFragmentView.setVisibility(View.VISIBLE);
+                    } else {
+                        mFragmentView.setVisibility(View.GONE);
+                    }
+                    FragmentFavorite fragment = new FragmentFavorite();
+                    getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frame_layout, fragment)
+                        .commit();
+                }
+                else {
+                    startActivity(new Intent(this, ActivityFavorites.class));
+                }
                 return true;
             case R.id.item_about:
                 new AlertDialog.Builder(this)
@@ -460,6 +508,13 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                     } else {
                         mLayoutManager.scrollToPosition(index - 1);
                     }
+                }
+                if (mHasFragment && mFragmentView.getVisibility() == View.VISIBLE) {
+                    FragmentFavorite fragment = new FragmentFavorite();
+                    getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, fragment)
+                        .commit();
                 }
             });
             holder.itemView.setOnClickListener(view -> {
@@ -646,6 +701,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     private class MyQuery extends AsyncTask<QueryParams, Record, Void> {
         @Override
         protected Void doInBackground(QueryParams... queryParams) {
+            mIsSearching = true;
             try {
                 HttpURLConnection connection = (HttpURLConnection) new URL(queryParams[0].buildQueryStatement()).openConnection();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8), 8);
@@ -709,6 +765,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 sortResults();
                 mSearchResultAdapter.notifyDataSetChanged();
             }
+            mIsSearching = false;
         }
     }
 }
