@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
@@ -85,6 +86,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     private boolean mIsSearchExpanded;
     private boolean mIsSearching;
     private boolean mHasFragment;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     public static List<Record> favorites;
 
@@ -132,6 +135,15 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mSwapFieldsView = findViewById(R.id.swap_fields);
         mGetLocationView = findViewById(R.id.my_location);
         mSearchBarView = findViewById(R.id.search_bar);
+
+
+        this.preferences = getApplicationContext().getSharedPreferences("charge_station_finder_pref", 0);
+        String longitude = this.preferences.getString("longitude", "");
+        String latitude     = this.preferences.getString("latitude",      "");
+        editor = preferences.edit();
+
+        mLongitudeView.setText(longitude);
+        mLatitudeView.setText(latitude);
 
         mSwapFieldsView.setImageDrawable(fillIconWithColor(R.drawable.outline_swap_vert_24, getColor(R.color.colorSecondaryTextLight)));
         mGetLocationView.setImageDrawable(fillIconWithColor(R.drawable.outline_my_location_24, getColor(R.color.colorSecondaryTextLight)));
@@ -224,6 +236,14 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         setupNavigationBarColor();
         sortResults();
         mSearchResultAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        editor.putString("longitude", mLatitudeView.getText().toString());
+        editor.putString("latitude", mLongitudeView.getText().toString());
+        editor.commit();
     }
 
     @Override
