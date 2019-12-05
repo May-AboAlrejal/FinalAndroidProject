@@ -90,34 +90,67 @@ public class Record {
         return contact.equals("null") ? null : contact;
     }
 
+    /**
+     *
+     * @param contact contact to set
+     */
     public void setContact(String contact) {
         this.contact = contact;
     }
 
+    /**
+     *
+     * @return if this Record is favorite
+     */
     public boolean isFavorite() {
         return isFavorite;
     }
 
+    /**
+     *
+     * @param favorite attribute to set
+     */
     public void setIsFavorite(boolean favorite) {
         isFavorite = favorite;
     }
 
+    /**
+     *
+     * @return distance of this Record
+     */
     public Double getDistance() {
         return distance;
     }
 
+    /**
+     *
+     * @param distance distance to set
+     */
     public void setDistance(Double distance) {
         this.distance = distance;
     }
 
+    /**
+     *
+     * @return address of this Record
+     */
     public String getAddress() {
         return address;
     }
 
+    /**
+     *
+     * @param address address to set
+     */
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     *
+     * @param other Record to compare with
+     * @return true if two Records are equal
+     */
     @Override
     public boolean equals(Object other) {
         if (other == this) {

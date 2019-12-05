@@ -20,10 +20,18 @@ public class RecordOpenHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CONTACT = "CONTACT";
     public static final String COLUMN_ADDRESS = "ADDRESS";
 
+    /**
+     *
+     * @param context the activity that accesses this database
+     */
     public RecordOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Creates table FAVORITES if not exists
+     * @param db database to use
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
@@ -38,18 +46,35 @@ public class RecordOpenHelper extends SQLiteOpenHelper {
         );
     }
 
+    /**
+     * Drops the table FAVORITES if version has been upgraded.
+     * @param db database to use.
+     * @param oldVersion found version
+     * @param newVersion version should be
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
+    /**
+     * Drops the table FAVORITES if version has been downgraded.
+     * @param db database to use
+     * @param oldVersion found version
+     * @param newVersion version should be
+     */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
+    /**
+     * Adds a new Record to database.
+     * @param record record to add
+     * @return id of the new row added
+     */
     public long insert(Record record) {
         Cursor cursor = getAll();
         cursor.moveToFirst();
@@ -70,6 +95,11 @@ public class RecordOpenHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_NAME, null, values);
     }
 
+    /**
+     * Removes the specified Record.
+     * @param record record to remove
+     * @return the number of rows affected
+     */
     public int remove(Record record) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(
