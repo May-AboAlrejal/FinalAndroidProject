@@ -24,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.mayabo.finalandroidproject.CarStationFinderActivity;
 import com.mayabo.finalandroidproject.MainActivity;
 import com.mayabo.finalandroidproject.R;
+import com.mayabo.finalandroidproject.chargestationfinder.ChargeStationFinderActivity;
 import com.mayabo.finalandroidproject.currency.CurrencyConversionActivity;
 import com.mayabo.finalandroidproject.news.NewsHeadlinesSearchActivity;
 
@@ -149,7 +150,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
                 break;
             case R.id.station:
                 Toast.makeText(this, "Charging Station", Toast.LENGTH_SHORT).show();
-                Intent goToCarStationFinderActivity = new Intent(this, CarStationFinderActivity.class);
+                Intent goToCarStationFinderActivity = new Intent(this, ChargeStationFinderActivity.class);
                 startActivity(goToCarStationFinderActivity);
                 break;
             case R.id.coin:
