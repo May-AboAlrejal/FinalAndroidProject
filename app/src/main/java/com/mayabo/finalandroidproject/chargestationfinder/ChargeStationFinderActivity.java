@@ -91,6 +91,10 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
 
     public static List<Record> favorites;
 
+    /**
+     * Initializes class variables to initial states.
+     * @param savedInstanceState previous status
+     */
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,6 +234,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mSwipeRefreshView.setOnRefreshListener(this::search);
     }
 
+    /**
+     * Restores previous status.
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -238,6 +245,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mSearchResultAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Save current status.
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -246,22 +256,34 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    /**
+     * Restore to default settings.
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
         restoreNavigationBarColor();
     }
 
+    /**
+     * Save the default settings.
+     */
     private void backupNavigationBarColor() {
         mOrigNavigationBarColor = getWindow().getNavigationBarColor();
     }
 
+    /**
+     * Revert to the default settings.
+     */
     private void restoreNavigationBarColor() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().setNavigationBarColor(mOrigNavigationBarColor);
     }
 
+    /**
+     * Set to custom settings.
+     */
     private void setupNavigationBarColor() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -333,6 +355,10 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Removes an item from the favorite list and updates the ListView.
+     * @param position opsition the item to remove
+     */
     public void removeFavoriteItem(int position) {
         Record record = favorites.remove(position);
         int index = mSearchResults.indexOf(record);
@@ -343,6 +369,11 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Adds an item to the favorite list and updates the ListView.
+     * @param position position to put the new item
+     * @param record the item to add
+     */
     public void addFavoriteItem(int position, Record record) {
         favorites.add(position, record);
         int index = mSearchResults.indexOf(record);
@@ -353,6 +384,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Unfocuses all the EditTexts or go back to main menu.
+     */
     @Override
     public void onBackPressed() {
         if (mLatitudeView.hasFocus() || mLongitudeView.hasFocus()) {
@@ -363,12 +397,21 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Calls onBackPressed.
+     * @return true
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
+    /**
+     * Inflates the menu.
+     * @param menu menu to inflate
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -395,6 +438,11 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Performs jobs depends on with item is selected.
+     * @param item item selected
+     * @return true if the event is consumed.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -445,6 +493,11 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Changes the focus for EditTexts.
+     * @param event the input event that is fired.
+     * @return true if the event is consumed.
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {

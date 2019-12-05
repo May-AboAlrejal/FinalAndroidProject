@@ -29,6 +29,10 @@ public class FragmentFavorite extends Fragment {
     private RecyclerView mFavoritesView;
     private MyAdapter mFavoritesAdapter;
 
+    /**
+     * Initializes class variables to initial states.
+     * @param savedInstanceState previous status
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View result =  inflater.inflate(R.layout.fragment_charge_station_finder_favorites, container, false);
@@ -49,6 +53,12 @@ public class FragmentFavorite extends Fragment {
         return result;
     }
 
+    /**
+     * Creates an icon with color specified.
+     * @param resId id of the icon to use
+     * @param color color to use
+     * @return colored drawable icon
+     */
     private Drawable fillIconWithColor(int resId, int color) {
         Drawable icon = getResources().getDrawable(resId, this.getActivity().getTheme());
         icon.mutate();

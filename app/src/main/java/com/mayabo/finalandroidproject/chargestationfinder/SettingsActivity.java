@@ -13,6 +13,10 @@ import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACK
 public class SettingsActivity extends AppCompatActivity {
     private int mOrigNavigationBarColor;
 
+    /**
+     * Initializes class variables to initial states.
+     * @param savedInstanceState previous status
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,34 +29,53 @@ public class SettingsActivity extends AppCompatActivity {
         setupNavigationBarColor();
     }
 
+    /**
+     * Restores previous status.
+     */
     @Override
     public void onResume() {
         super.onResume();
         setupNavigationBarColor();
     }
 
+    /**
+     * Restore to default settings.
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
         restoreNavigationBarColor();
     }
 
+    /**
+     * Calls onBackPressed.
+     * @return true
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
+    /**
+     * Save the default settings.
+     */
     private void backupNavigationBarColor() {
         mOrigNavigationBarColor = getWindow().getNavigationBarColor();
     }
 
+    /**
+     * Revert to the default settings.
+     */
     private void restoreNavigationBarColor() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().setNavigationBarColor(mOrigNavigationBarColor);
     }
 
+    /**
+     * Set to custom settings.
+     */
     private void setupNavigationBarColor() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

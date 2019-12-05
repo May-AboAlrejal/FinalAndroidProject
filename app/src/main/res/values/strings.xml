@@ -148,4 +148,5 @@ First, enter a word/phrase in title, content or both. Then, choose a language. A
     <string name="unknown">unknown</string>
     <string name="unavailable">unavailable</string>
     <string name="loading">Loading...</string>
+    <string name="max_results">Max results</string>
 </resources>

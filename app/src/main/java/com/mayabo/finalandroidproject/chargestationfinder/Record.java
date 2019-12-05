@@ -9,6 +9,15 @@ public class Record {
     private Double distance;
     private boolean isFavorite;
 
+    /**
+     * Creates an new instant of Record with specified values.
+     * @param title title of this Record
+     * @param contact contact of this Record
+     * @param address address of this Record
+     * @param latitude latitude of this Record
+     * @param longitude longitude of this Record
+     * @param isFavorite if this Record is favorite
+     */
     public Record(String title, String contact, String address, String latitude, String longitude, boolean isFavorite) {
         setTitle(title);
         setContact(contact);
@@ -19,6 +28,10 @@ public class Record {
         setDistance(null);
     }
 
+    /**
+     *
+     * @return title of this Record
+     */
     public String getTitle() {
         if (title == null) {
             return null;
@@ -26,26 +39,50 @@ public class Record {
         return title.equals("null") ? "unavailable" : title;
     }
 
+    /**
+     *
+     * @param title title to set
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     *
+     * @return longitude of this Record
+     */
     public String getLongitude() {
         return longitude;
     }
 
+    /**
+     *
+     * @param longitude longitude to set
+     */
     public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
+    /**
+     *
+     * @return latitude of this Record
+     */
     public String getLatitude() {
         return latitude;
     }
 
+    /**
+     *
+     * @param latitude latitude to set
+     */
     public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
+    /**
+     *
+     * @return contact of this Record
+     */
     public String getContact() {
         if (contact == null) {
             return null;

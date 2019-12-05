@@ -34,6 +34,10 @@ public class ActivityFavorites extends AppCompatActivity {
     private MyAdapter mFavoritesAdapter;
     private int mOrigNavigationBarColor;
 
+    /**
+     * Initializes class variables to initial states.
+     * @param savedInstanceState previous status
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,34 +64,53 @@ public class ActivityFavorites extends AppCompatActivity {
         }
     }
 
+    /**
+     * Restores previous status.
+     */
     @Override
     public void onResume() {
         super.onResume();
         setupNavigationBarColor();
     }
 
+    /**
+     * Restore to default settings.
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
         restoreNavigationBarColor();
     }
 
+    /**
+     * Calls onBackPressed.
+     * @return true
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
+    /**
+     * Save the default settings.
+     */
     private void backupNavigationBarColor() {
         mOrigNavigationBarColor = getWindow().getNavigationBarColor();
     }
 
+    /**
+     * Revert to the default settings.
+     */
     private void restoreNavigationBarColor() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().setNavigationBarColor(mOrigNavigationBarColor);
     }
 
+    /**
+     * Set to custom settings.
+     */
     private void setupNavigationBarColor() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -96,6 +119,12 @@ public class ActivityFavorites extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
     }
 
+    /**
+     * Creates an icon with color specified.
+     * @param resId id of the icon to use
+     * @param color color to use
+     * @return colored drawable icon
+     */
     private Drawable fillIconWithColor(int resId, int color) {
         Drawable icon = getResources().getDrawable(resId, getTheme());
         icon.mutate();
