@@ -20,8 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.mayabo.finalandroidproject.CarStationFinderActivity;
 import com.mayabo.finalandroidproject.MainActivity;
 import com.mayabo.finalandroidproject.R;
 import com.mayabo.finalandroidproject.chargestationfinder.ChargeStationFinderActivity;

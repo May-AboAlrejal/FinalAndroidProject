@@ -29,7 +29,6 @@
         <activity android:name=".news.NewsHeadlinesSearchActivity" />
         <activity android:name=".currency.CurrencyConversionActivity" />
         <activity android:name=".currency.FavoriteListActivity" />
-        <activity android:name=".CarStationFinderActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
