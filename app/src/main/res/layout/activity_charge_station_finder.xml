@@ -79,7 +79,7 @@
                             <TextView
                                 android:id="@+id/latitude"
                                 android:nextFocusDown="@id/longitude"
-                                android:hint="Latitude"
+                                android:hint="@string/latitude"
                                 android:textColorHint="@android:color/secondary_text_dark"
                                 android:textSize="20sp"
                                 android:textColor="@color/colorPrimaryTextLight"
@@ -138,7 +138,7 @@
 
                             <TextView
                                 android:id="@+id/longitude"
-                                android:hint="Longitude"
+                                android:hint="@string/longitude"
                                 android:textColorHint="@android:color/secondary_text_dark"
                                 android:textSize="20sp"
                                 android:textColor="@color/colorPrimaryTextLight"
@@ -172,7 +172,7 @@
 
     <TextView
         android:id="@+id/info_empty"
-        android:text="Swipe to refresh"
+        android:text="@string/swipe_to_refresh"
         android:textSize="44sp"
         android:textColor="#C0C0C0"
         android:layout_width="wrap_content"

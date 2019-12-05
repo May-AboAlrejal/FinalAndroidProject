@@ -21,14 +21,14 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="Favorites"
+            app:title="@string/favorites"
             app:layout_constraintTop_toTopOf="parent" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
         android:id="@+id/info_empty"
-        android:text="No content here"
+        android:text="@string/no_content_now"
         android:textSize="44sp"
         android:textColor="#C0C0C0"
         android:layout_width="wrap_content"

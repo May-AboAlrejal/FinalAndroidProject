@@ -17,7 +17,8 @@
         android:usesCleartextTraffic="true">
 
 
-        <activity android:name=".chargestationfinder.ChargeStationFinderActivity" />
+        <activity android:name=".chargestationfinder.ChargeStationFinderActivity"
+            android:label="@string/charge_station_finder" />
         <activity android:name=".chargestationfinder.ActivityFavorites" />
         <activity android:name=".chargestationfinder.SettingsActivity" />
         <activity android:name=".recipe.EmptyActivity" />

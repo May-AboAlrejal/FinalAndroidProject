@@ -139,7 +139,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
 
         this.preferences = getApplicationContext().getSharedPreferences("charge_station_finder_pref", 0);
         String longitude = this.preferences.getString("longitude", "");
-        String latitude     = this.preferences.getString("latitude",      "");
+        String latitude = this.preferences.getString("latitude",      "");
         editor = preferences.edit();
 
         mLongitudeView.setText(longitude);
@@ -227,7 +227,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         });
 
         mSwipeRefreshView.setColorSchemeResources(R.color.colorAccent);
-        mSwipeRefreshView.setOnRefreshListener(() -> search());
+        mSwipeRefreshView.setOnRefreshListener(this::search);
     }
 
     @Override
@@ -275,7 +275,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
      */
     private void search() {
         if (!mIsSearching) {
-            mEmptyInfoView.setText("Loading...");
+            mEmptyInfoView.setText(R.string.loading);
             mEmptyInfoView.setVisibility(View.VISIBLE);
             mSearchResultsView.setVisibility(View.GONE);
             mSearchResults.clear();
@@ -672,11 +672,16 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
 
         private void setLatitude(String latitude) {
             try {
-                double value = Double.valueOf(latitude);
-                if (value <= 90 && value >= -90) {
+                if (latitude.isEmpty()) {
                     this.latitude = latitude;
-                } else {
-                    throw new Exception();
+                }
+                else {
+                    double value = Double.valueOf(latitude);
+                    if (value <= 90 && value >= -90) {
+                        this.latitude = latitude;
+                    } else {
+                        throw new Exception();
+                    }
                 }
             }
             catch (Exception e) {
@@ -694,11 +699,16 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
 
         private void setLongitude(String longitude) {
             try {
-                double value = Double.valueOf(longitude);
-                if (value <= 180 && value >= -180) {
+                if (longitude.isEmpty()) {
                     this.longitude = longitude;
-                } else {
-                    throw new Exception();
+                }
+                else {
+                    double value = Double.valueOf(longitude);
+                    if (value <= 180 && value >= -180) {
+                        this.longitude = longitude;
+                    } else {
+                        throw new Exception();
+                    }
                 }
             }
             catch (Exception e) {

@@ -91,4 +91,23 @@ Commencez par entrer un mot / une phrase dans le titre, le contenu ou les deux. 
 
     <string name="frameText">The arctic image</string>
     <string name="rights">\u00402019 Phong Le. Tous les droits sont réservés.</string>
+
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="swipe_to_refresh">glisser pour rafraîchir</string>
+    <string name="favorites">Favoris</string>
+    <string name="settings">Paramètres</string>
+    <string name="about">Sur</string>
+    <string name="exit">Sortie</string>
+    <string name="search">Chercher</string>
+    <string name="help">Aidez-moi</string>
+    <string name="charge_station_finder">Recherche de station de charge</string>
+    <string name="no_content_now">Pas de contenu ici</string>
+    <string name="author_info">Auteure: Po-Yen, Wu</string>
+    <string name="version_info">Version: 1.0</string>
+    <string name="title_2">Titre</string>
+    <string name="contact">Contact</string>
+    <string name="unknown">inconnue</string>
+    <string name="unavailable">indisponible</string>
+    <string name="loading">Chargement...</string>
 </resources>
