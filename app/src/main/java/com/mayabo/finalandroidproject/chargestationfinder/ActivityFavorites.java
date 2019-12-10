@@ -252,7 +252,7 @@ public class ActivityFavorites extends AppCompatActivity {
             }
             holder.distance.setVisibility(View.GONE);
             holder.isFavorite.setVisibility(View.GONE);
-            holder.itemView.setOnClickListener(view -> {
+            holder.itemView.findViewById(R.id.text2).setOnClickListener(view -> {
                 View content = getLayoutInflater().inflate(R.layout.charge_station_detail, null, false);
                 ((TextView) content.findViewById(R.id.title)).setText(record.getTitle());
                 ((TextView) content.findViewById(R.id.latitude)).setText(record.getLatitude());

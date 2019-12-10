@@ -132,7 +132,8 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = getLayoutInflater().inflate(R.layout.charge_station_finder_settings, parent, false);
-            Settings.layoutFor(getItem(position), convertView, SettingsActivity.this);
+            int settingId = getItem(position);
+            Settings.layoutFor(settingId, convertView, SettingsActivity.this);
             return convertView;
         }
     }

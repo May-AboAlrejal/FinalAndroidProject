@@ -8,6 +8,12 @@
     <color name="colorSecondaryDark">#a2000f</color>
     <color name="colorPrimaryTextLight">#3C4043</color>
     <color name="colorSecondaryTextLight">#666666</color>
+    <color name="primary_text_light">@android:color/primary_text_light</color>
+    <color name="primary_text_dark">@android:color/primary_text_dark</color>
+    <color name="secondary_text_light">@android:color/secondary_text_light</color>
+    <color name="secondary_text_dark">@android:color/secondary_text_dark</color>
+    <color name="tertiary_text_light">@android:color/tertiary_text_light</color>
+    <color name="tertiary_text_dark">@android:color/tertiary_text_dark</color>
     <color name="colorError">#B00020</color>
     <color name="newsColor">#68a0b0</color>
     <color name="newsToolbarColor">#5a6c90</color>

@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="6pt"
-        android:textColor="@color/colorPrimaryTextLight"
+        android:textColor="@color/primary_text_light"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/settings_group_tag"
         app:layout_constraintLeft_toLeftOf="parent" />
@@ -37,7 +37,7 @@
         android:id="@+id/setting_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/tertiary_text_light"
+        android:textColor="@color/tertiary_text_light"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/setting_title"
         app:layout_constraintLeft_toLeftOf="@id/checkbox" />
@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
-        android:background="@android:color/secondary_text_dark"
+        android:background="@color/secondary_text_dark"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
