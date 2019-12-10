@@ -164,11 +164,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             if (b) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 mGetLocationView.setVisibility(View.GONE);
-                mSwapFieldsView.setVisibility(View.GONE);
             } else {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 mGetLocationView.setVisibility(View.VISIBLE);
-                mSwapFieldsView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -182,11 +180,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mLongitudeView.setOnFocusChangeListener((view, b) -> {
             if (b) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                mGetLocationView.setVisibility(View.GONE);
                 mSwapFieldsView.setVisibility(View.GONE);
             } else {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                mGetLocationView.setVisibility(View.VISIBLE);
                 mSwapFieldsView.setVisibility(View.VISIBLE);
                 InputMethodManager imm =  (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(findViewById(R.id.longitude).getRootView().getWindowToken(), 0);
