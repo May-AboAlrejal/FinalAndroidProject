@@ -436,9 +436,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 if(drawable != null && item.getOrder() < 900) {
                     drawable.mutate();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        drawable.setColorFilter(new BlendModeColorFilter(R.color.colorPrimary, BlendMode.SRC_ATOP));
+                        drawable.setColorFilter(new BlendModeColorFilter(getColor(R.color.colorPrimary), BlendMode.SRC_ATOP));
                     } else {
-                        drawable.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                        drawable.setColorFilter(getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
                     }
                 }
             }
