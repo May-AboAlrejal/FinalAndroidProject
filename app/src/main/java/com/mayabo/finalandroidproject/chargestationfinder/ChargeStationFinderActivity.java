@@ -251,8 +251,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        editor.putString("longitude", mLatitudeView.getText().toString());
-        editor.putString("latitude", mLongitudeView.getText().toString());
+        editor.putString("latitude", mLatitudeView.getText().toString());
+        editor.putString("longitude", mLongitudeView.getText().toString());
         editor.commit();
     }
 
