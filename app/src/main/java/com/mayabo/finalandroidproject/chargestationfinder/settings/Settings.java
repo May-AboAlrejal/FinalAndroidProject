@@ -82,11 +82,10 @@ public class Settings {
                 .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
                     String input = maxResultsView.getText().toString();
                     String maxResults;
-                    if (input.contentEquals("0")) {
-                        maxResults = "";
-                    } else {
-                        maxResults = String.valueOf(Long.valueOf(input));
+                    if (input.isEmpty()) {
+                        input = "0";
                     }
+                    maxResults = String.valueOf(Long.valueOf(input));
                     editor.putString("max_results", maxResults);
                     editor.apply();
                 })
