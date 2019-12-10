@@ -12,9 +12,11 @@ import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,10 +115,14 @@ public class ActivityFavorites extends AppCompatActivity {
      */
     private void setupNavigationBarColor() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().setStatusBarColor(getColor(R.color.colorPrimary));
         getWindow().setNavigationBarColor(getWindow().getDecorView().getRootView().getSolidColor());
-        getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        }
     }
 
     /**
@@ -128,7 +134,11 @@ public class ActivityFavorites extends AppCompatActivity {
     private Drawable fillIconWithColor(int resId, int color) {
         Drawable icon = getResources().getDrawable(resId, getTheme());
         icon.mutate();
-        icon.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            icon.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
+        } else {
+            icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        }
         return icon;
     }
 

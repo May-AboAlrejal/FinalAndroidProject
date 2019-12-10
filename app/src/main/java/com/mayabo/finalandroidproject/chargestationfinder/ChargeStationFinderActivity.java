@@ -18,6 +18,7 @@ import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -25,6 +26,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -295,7 +297,11 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().setStatusBarColor(getColor(R.color.colorPrimary));
         getWindow().setNavigationBarColor(getWindow().getDecorView().getRootView().getSolidColor());
-        getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        }
     }
 
     /**
@@ -429,7 +435,11 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 Drawable drawable = item.getIcon();
                 if(drawable != null && item.getOrder() < 900) {
                     drawable.mutate();
-                    drawable.setColorFilter(new BlendModeColorFilter(getColor(R.color.colorPrimary), BlendMode.SRC_ATOP));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        drawable.setColorFilter(new BlendModeColorFilter(R.color.colorPrimary, BlendMode.SRC_ATOP));
+                    } else {
+                        drawable.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                    }
                 }
             }
             if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
@@ -529,11 +539,14 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
      * @param color id of color to use
      * @return drawable icon with specified color
      */
-    @SuppressLint("NewApi")
     private Drawable fillIconWithColor(int resId, int color) {
         Drawable icon = getResources().getDrawable(resId, getTheme());
         icon.mutate();
-        icon.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            icon.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
+        } else {
+            icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        }
         return icon;
     }
 
