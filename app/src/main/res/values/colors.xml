@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#c72c41</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#4285F4</color>
+    <color name="colorPrimaryDark">#0059c1</color>
+    <color name="colorAccent">#F4B400</color>
+    <color name="colorAccentDark">#bc8500</color>
+    <color name="colorSecondary">#DB4437</color>
+    <color name="colorSecondaryDark">#a2000f</color>
+    <color name="colorPrimaryTextLight">#3C4043</color>
+    <color name="colorSecondaryTextLight">#666666</color>
+    <color name="colorError">#B00020</color>
     <color name="newsColor">#68a0b0</color>
     <color name="newsToolbarColor">#5a6c90</color>
     <color name="colorHome">#1d1919</color>
@@ -20,18 +26,4 @@
     <color name="colorLight">#89F5F2</color>
     <color name="colorLightBlue">#33CCFF</color>
     <color name="colorLightGreen">#98FB98</color>
-
-    <color name="colorSecondary">#DB4437</color>
-
-    <color name="colorSecondaryDark">#a2000f</color>
-
-
-    <color name="colorAccentDark">#bc8500</color>
-
-    <color name="colorError">#B00020</color>
-
-    <color name="colorPrimaryTextLight">#3C4043</color>
-
-    <color name="colorSecondaryTextLight">#666666</color>
-
 </resources>

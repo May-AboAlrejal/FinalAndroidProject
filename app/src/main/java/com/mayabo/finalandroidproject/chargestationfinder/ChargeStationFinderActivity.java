@@ -634,7 +634,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return mSearchResults.size();
+            int size = mSearchResults.size();
+            int max_results = Integer.valueOf(mPreferences.getString("max_results", String.valueOf(size)));
+            return size <= max_results || max_results == 0 ? size : max_results;
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
