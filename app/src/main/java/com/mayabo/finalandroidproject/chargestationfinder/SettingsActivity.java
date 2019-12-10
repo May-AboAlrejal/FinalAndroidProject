@@ -3,14 +3,25 @@ package com.mayabo.finalandroidproject.chargestationfinder;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 import com.mayabo.finalandroidproject.R;
+import com.mayabo.finalandroidproject.chargestationfinder.settings.Settings;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
 import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
 
 public class SettingsActivity extends AppCompatActivity {
+    private ListView mSettingsView;
+    private List<Integer> mSettings;
+    private MyAdapter mSettingsAdapter;
     private int mOrigNavigationBarColor;
 
     /**
@@ -27,6 +38,19 @@ public class SettingsActivity extends AppCompatActivity {
 
         backupNavigationBarColor();
         setupNavigationBarColor();
+
+        mSettings = new ArrayList<Integer>() {{
+            add(Settings.GROUP_GENERAL);
+            add(Settings.MAX_RESULTS);
+            add(Settings.DISTANCE_UNIT);
+            add(Settings.DIVIDER);
+            add(Settings.GROUP_OTHERS);
+            add(Settings.CLEAR_FAVORITES);
+        }};
+        mSettingsAdapter = new MyAdapter();
+
+        mSettingsView = findViewById(R.id.settings);
+        mSettingsView.setAdapter(mSettingsAdapter);
     }
 
     /**
@@ -82,5 +106,29 @@ public class SettingsActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(getColor(R.color.colorPrimary));
         getWindow().setNavigationBarColor(getWindow().getDecorView().getRootView().getSolidColor());
         getWindow().getDecorView().setSystemUiVisibility(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+    }
+
+    private class MyAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+            return mSettings.size();
+        }
+
+        @Override
+        public Integer getItem(int position) {
+            return mSettings.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            convertView = getLayoutInflater().inflate(R.layout.charge_station_finder_settings, parent, false);
+            Settings.layoutFor(getItem(position), convertView, SettingsActivity.this);
+            return convertView;
+        }
     }
 }

@@ -86,8 +86,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     private boolean mIsSearchExpanded;
     private boolean mIsSearching;
     private boolean mHasFragment;
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
+    private SharedPreferences mPreferences;
+    private SharedPreferences.Editor mEditor;
+    private boolean mDistanceUnit;
 
     public static List<Record> favorites;
 
@@ -141,10 +142,11 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         mSearchBarView = findViewById(R.id.search_bar);
 
 
-        this.preferences = getApplicationContext().getSharedPreferences("charge_station_finder_pref", 0);
-        String longitude = this.preferences.getString("longitude", "");
-        String latitude = this.preferences.getString("latitude",      "");
-        editor = preferences.edit();
+        this.mPreferences = getApplicationContext().getSharedPreferences("charge_station_finder_pref", 0);
+        mEditor = mPreferences.edit();
+        String longitude = this.mPreferences.getString("longitude", "");
+        String latitude = this.mPreferences.getString("latitude",      "");
+        mDistanceUnit = mPreferences.getBoolean("distance_unit", true);
 
         mLongitudeView.setText(longitude);
         mLatitudeView.setText(latitude);
@@ -237,8 +239,16 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         setupNavigationBarColor();
-        sortResults();
-        mSearchResultAdapter.notifyDataSetChanged();
+        boolean distanceUnit = mPreferences.getBoolean("distance_unit", true);
+        if (mDistanceUnit != distanceUnit) {
+            mDistanceUnit = distanceUnit;
+            if (!mSearchResults.isEmpty()) {
+                search();
+            }
+        } else {
+            sortResults();
+            mSearchResultAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -247,9 +257,9 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        editor.putString("latitude", mLatitudeView.getText().toString());
-        editor.putString("longitude", mLongitudeView.getText().toString());
-        editor.commit();
+        mEditor.putString("latitude", mLatitudeView.getText().toString());
+        mEditor.putString("longitude", mLongitudeView.getText().toString());
+        mEditor.commit();
     }
 
     /**
@@ -301,7 +311,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             new MyQuery().execute(new QueryParams(
                 ChargeStationFinderActivity.this.mLatitudeView.getText().toString(),
                 ChargeStationFinderActivity.this.mLongitudeView.getText().toString(),
-                null
+                Integer.valueOf(ChargeStationFinderActivity.this.mPreferences.getString("max_results", "0")),
+                mDistanceUnit
             ));
         }
     }
@@ -539,14 +550,14 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Record record = mSearchResults.get(position);
             holder.title.setText(record.getTitle());
-            holder.distance.setText(String.format(Locale.getDefault(), "%.2f %s", record.getDistance(), "miles"));
+            holder.distance.setText(String.format(Locale.getDefault(), "%.2f %s", record.getDistance(), mDistanceUnit ? "KMs" : "Miles"));
             if (record.getAddress() != null) {
                 holder.address.setText(record.getAddress());
             }
             if (record.getContact() != null) {
                 holder.contact.setText(record.getContact());
             }
-            if (record.isFavorite() || favorites.contains(record)) {
+            if (favorites.contains(record)) {
                 record.setIsFavorite(true);
                 holder.isFavorite.setImageDrawable(mColoredIconFavorite);
             } else {
@@ -694,11 +705,13 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         private String latitude;
         private String longitude;
         private Integer maxResult;
+        private boolean distanceUnit;
 
-        private QueryParams(String latitude, String longitude, Integer maxResult) {
+        private QueryParams(String latitude, String longitude, Integer maxResult, boolean distanceUnit) {
             this.setLatitude(latitude);
             this.setLongitude(longitude);
             this.setMaxResult(maxResult);
+            this.setDistanceUnit(distanceUnit);
         }
 
         private String buildQueryStatement() {
@@ -712,6 +725,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             if (this.getMaxResult() != null && this.getMaxResult() > 0) {
                 url.append("&maxresults=").append(this.getMaxResult());
             }
+            url.append("&distanceunit=").append(this.getDistanceUnit() ? "KM" : "Miles");
             return url.toString();
         }
 
@@ -775,6 +789,14 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
 
         public void setMaxResult(Integer maxResult) {
             this.maxResult = maxResult;
+        }
+
+        private boolean getDistanceUnit() {
+            return this.distanceUnit;
+        }
+
+        public void setDistanceUnit(boolean distanceUnit) {
+            this.distanceUnit = distanceUnit;
         }
     }
 

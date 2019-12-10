@@ -111,4 +111,13 @@ Commencez par entrer un mot / une phrase dans le titre, le contenu ou les deux. 
     <string name="unavailable">indisponible</string>
     <string name="loading">Chargement...</string>
     <string name="max_results">Max résultats</string>
+    <string name="general_settings">réglages généraux</string>
+    <string name="other_settings">Autres réglages</string>
+    <string name="max_results_desc">Laisser vide ou utiliser zéro par défaut.</string>
+    <string name="ok">D\'accord</string>
+    <string name="cancel">ANNULER</string>
+    <string name="distance_unit">Unité de distance</string>
+    <string name="distance_unit_desc">Miles ou KM</string>
+    <string name="reset_favorites">Réinitialiser les favoris</string>
+    <string name="reset_favorites_desc">Supprimez tout de la liste des favoris.</string>
 </resources>

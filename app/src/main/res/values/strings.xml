@@ -149,4 +149,13 @@ First, enter a word/phrase in title, content or both. Then, choose a language. A
     <string name="unavailable">unavailable</string>
     <string name="loading">Loading...</string>
     <string name="max_results">Max results</string>
+    <string name="general_settings">General Settings</string>
+    <string name="other_settings">Other Settings</string>
+    <string name="max_results_desc">Leave blank or use zero for default.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="distance_unit">Distance unit</string>
+    <string name="distance_unit_desc">Miles or KMs</string>
+    <string name="reset_favorites">Reset favorites</string>
+    <string name="reset_favorites_desc">Delete everything from favorite list.</string>
 </resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?android:attr/selectableItemBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Group Title -->
+
+    <TextView
+        android:id="@+id/settings_group_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <!-- Setting Title & Description -->
+
+    <TextView
+        android:id="@+id/setting_title"
+        android:text="@string/max_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="6pt"
+        android:textColor="@color/colorPrimaryTextLight"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/settings_group_tag"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/setting_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/tertiary_text_light"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/setting_title"
+        app:layout_constraintLeft_toLeftOf="@id/checkbox" />
+
+    <!-- Checkbox if needed -->
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/setting_title"
+        app:layout_constraintBottom_toBottomOf="@id/setting_desc"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <!-- Divider -->
+
+    <FrameLayout
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/secondary_text_dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

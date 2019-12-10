@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="16dp">
+
+    <RadioButton
+        android:id="@+id/kms"
+        android:text="KMs"
+        android:textSize="6pt"
+        style="@style/RadioButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RadioButton
+        android:id="@+id/miles"
+        android:text="Miles"
+        android:textSize="6pt"
+        style="@style/RadioButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RadioGroup>
