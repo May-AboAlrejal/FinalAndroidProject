@@ -219,7 +219,13 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                     .create().show();
             }
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                List<String> providers = lm.getProviders(true);
+                Location location = null;
+                for (String provider: providers) {
+                    if ((location = lm.getLastKnownLocation(provider)) != null) {
+                        break;
+                    }
+                }
                 if (location == null) {
                     Toast.makeText(this, "location not available", Toast.LENGTH_SHORT).show();
                 }
