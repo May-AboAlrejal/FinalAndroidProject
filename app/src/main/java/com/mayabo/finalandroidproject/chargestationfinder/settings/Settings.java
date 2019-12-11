@@ -50,6 +50,7 @@ public class Settings {
         FrameLayout divider = view.findViewById(R.id.divider);
         divider.setVisibility(View.VISIBLE);
         view.setPadding(view.getPaddingLeft(), 0, view.getPaddingRight(), 0);
+        view.setClickable(false);
     }
 
     private static void groupGeneral(View view, Context context) {
