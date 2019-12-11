@@ -11,7 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.mayabo.finalandroidproject.R;
-import com.mayabo.finalandroidproject.chargestationfinder.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_charge_station_finder_settings);
+        setContentView(R.layout.activity_charge_station_finder_settings_item);
 
         setSupportActionBar(findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -41,12 +40,12 @@ public class SettingsActivity extends AppCompatActivity {
         setupNavigationBarColor();
 
         mSettings = new ArrayList<Integer>() {{
-            add(Settings.GROUP_GENERAL);
-            add(Settings.MAX_RESULTS);
-            add(Settings.DISTANCE_UNIT);
-            add(Settings.DIVIDER);
-            add(Settings.GROUP_OTHERS);
-            add(Settings.CLEAR_FAVORITES);
+            add(SettingsItem.GROUP_GENERAL);
+            add(SettingsItem.MAX_RESULTS);
+            add(SettingsItem.DISTANCE_UNIT);
+            add(SettingsItem.DIVIDER);
+            add(SettingsItem.GROUP_OTHERS);
+            add(SettingsItem.CLEAR_FAVORITES);
         }};
         mSettingsAdapter = new MyAdapter();
 
@@ -131,9 +130,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = getLayoutInflater().inflate(R.layout.charge_station_finder_settings, parent, false);
+            convertView = getLayoutInflater().inflate(R.layout.charge_station_finder_settings_item, parent, false);
             int settingId = getItem(position);
-            Settings.layoutFor(settingId, convertView, SettingsActivity.this);
+            SettingsItem.layoutFor(settingId, convertView, SettingsActivity.this);
             return convertView;
         }
     }

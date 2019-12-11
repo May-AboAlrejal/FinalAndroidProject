@@ -15,6 +15,7 @@
     <color name="tertiary_text_light">@android:color/tertiary_text_light</color>
     <color name="tertiary_text_dark">@android:color/tertiary_text_dark</color>
     <color name="colorError">#B00020</color>
+    <color name="colorErrorDark">#790000</color>
     <color name="newsColor">#68a0b0</color>
     <color name="newsToolbarColor">#5a6c90</color>
     <color name="colorHome">#1d1919</color>
@@ -32,4 +33,5 @@
     <color name="colorLight">#89F5F2</color>
     <color name="colorLightBlue">#33CCFF</color>
     <color name="colorLightGreen">#98FB98</color>
+    <color name="color_divider">#D0D0D0</color>
 </resources>

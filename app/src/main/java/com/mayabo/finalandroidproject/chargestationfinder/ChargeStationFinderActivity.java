@@ -529,7 +529,6 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                 Rect outRect = new Rect();
                 view.getGlobalVisibleRect(outRect);
                 if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
-                    Log.d("focus", "touchevent");
                     view.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -627,13 +626,13 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
                     .setIcon(mColoredIconInfo)
                     .setTitle(record.getTitle())
                     .setView(content)
-                    .setPositiveButton("Open map", (dialogInterface, i) -> {
+                    .setPositiveButton(R.string.open_map, (dialogInterface, i) -> {
                         Uri gmmIntentUri = Uri.parse("geo:" + record.getLatitude() + "," + record.getLongitude() + "?q=" + record.getAddress());
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                         mapIntent.setPackage("com.google.android.apps.maps");
                         startActivity(mapIntent);
                     })
-                    .setNegativeButton("Cancel", (dialogInterface, i) -> {})
+                    .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {})
                     .create().show();
             });
         }
@@ -671,8 +670,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
         public SwipeToDeleteCallback() {
             super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
             background = new ColorDrawable(getColor(R.color.colorAccentDark));
-            divider = new ColorDrawable(Color.parseColor("#D0D0D0"));
-            clearDivider = new ColorDrawable(Color.parseColor("#ffffff"));
+            divider = new ColorDrawable(getColor(R.color.color_divider));
+            clearDivider = new ColorDrawable(Color.TRANSPARENT);
         }
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -771,8 +770,8 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             catch (Exception e) {
                 Toast.makeText(
                     ChargeStationFinderActivity.this,
-                    "Invalid latitude: \"" + latitude + "\"",
-                    Toast.LENGTH_SHORT
+                    getText(R.string.invalid_latitude) + ": \"" + latitude + "\"",
+                    Toast.LENGTH_LONG
                 ).show();
             }
         }
@@ -798,7 +797,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             catch (Exception e) {
                 Toast.makeText(
                     ChargeStationFinderActivity.this,
-                    "Invalid longitude: \"" + longitude + "\"",
+                    getText(R.string.invalid_longitude) + ": \"" + longitude + "\"",
                     Toast.LENGTH_SHORT
                 ).show();
             }
@@ -881,7 +880,7 @@ public class ChargeStationFinderActivity extends AppCompatActivity {
             if (mSearchResults.isEmpty()) {
                 mSearchResultsView.setVisibility(View.GONE);
                 mEmptyInfoView.setVisibility(View.VISIBLE);
-                mEmptyInfoView.setText("Nothing here");
+                mEmptyInfoView.setText(R.string.nothing_here);
             } else {
                 mEmptyInfoView.setVisibility(View.GONE);
                 mSearchResultsView.setVisibility(View.VISIBLE);

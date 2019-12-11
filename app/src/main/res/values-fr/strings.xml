@@ -120,4 +120,11 @@ Commencez par entrer un mot / une phrase dans le titre, le contenu ou les deux. 
     <string name="distance_unit_desc">Miles ou KM</string>
     <string name="reset_favorites">Réinitialiser les favoris</string>
     <string name="reset_favorites_desc">Supprimez tout de la liste des favoris.</string>
+    <string name="contact_unavailable">Contact indisponible</string>
+    <string name="address_unavailable">Adresse indisponible</string>
+    <string name="distance">distance</string>
+    <string name="nothing_here">Rien ici</string>
+    <string name="open_map">Ouvrir la carte</string>
+    <string name="invalid_latitude">Latitude non valide</string>
+    <string name="invalid_longitude">Longitude non valide</string>
 </resources>

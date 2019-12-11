@@ -1,8 +1,13 @@
-package com.mayabo.finalandroidproject.chargestationfinder.settings;
+package com.mayabo.finalandroidproject.chargestationfinder;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +17,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.mayabo.finalandroidproject.R;
-import com.mayabo.finalandroidproject.chargestationfinder.ChargeStationFinderActivity;
-import com.mayabo.finalandroidproject.chargestationfinder.RecordOpenHelper;
 
-public class Settings {
+public class SettingsItem {
     public static final int DIVIDER = -1;
     public static final int GROUP_GENERAL = 0;
     public static final int MAX_RESULTS = 1;
@@ -25,16 +28,16 @@ public class Settings {
 
     public static void layoutFor(int which, View view, Context context) {
         switch (which) {
-            case Settings.DIVIDER:
+            case SettingsItem.DIVIDER:
                 divider(view);
                 break;
-            case Settings.GROUP_GENERAL:
+            case SettingsItem.GROUP_GENERAL:
                 groupGeneral(view, context);
                 break;
-            case Settings.MAX_RESULTS:
+            case SettingsItem.MAX_RESULTS:
                 maxResult(view, context);
                 break;
-            case Settings.DISTANCE_UNIT:
+            case SettingsItem.DISTANCE_UNIT:
                 distanceUnit(view, context);
                 break;
             case GROUP_OTHERS:
@@ -72,7 +75,7 @@ public class Settings {
             SharedPreferences preferences = context.getSharedPreferences("charge_station_finder_pref", 0);
             SharedPreferences.Editor editor = preferences.edit();
             View content = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(R.layout.charge_station_finder_settings_max_result_dialog, null, false);
+                .inflate(R.layout.charge_station_finder_settings_item_max_result_dialog, null, false);
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             EditText maxResultsView = content.findViewById(R.id.max_result);
             maxResultsView.setText(preferences.getString("max_results", ""));
@@ -106,7 +109,7 @@ public class Settings {
             SharedPreferences preferences = context.getSharedPreferences("charge_station_finder_pref", 0);
             SharedPreferences.Editor editor = preferences.edit();
             View content = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                    .inflate(R.layout.charge_station_finder_settings_distance_unit_dialog, null, false);
+                    .inflate(R.layout.charge_station_finder_settings_item_distance_unit_dialog, null, false);
             RadioButton kmsView = content.findViewById(R.id.kms);
             RadioButton milesView = content.findViewById(R.id.miles);
             boolean checked = preferences.getBoolean("distance_unit", true);
@@ -140,6 +143,7 @@ public class Settings {
         desc.setText(R.string.reset_favorites_desc);
         view.setOnClickListener(self -> {
             new AlertDialog.Builder(context)
+                .setIcon(fillIconWithColor(R.drawable.outline_delete_outline_24, R.color.colorError, context))
                 .setTitle("Reset favorites")
                 .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
                     ChargeStationFinderActivity.favorites.clear();
@@ -158,5 +162,23 @@ public class Settings {
         TextView titleView = view.findViewById(R.id.settings_group_tag);
         titleView.setText(titleId);
         titleView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Creates a drawable icon from a drawable id and a color id.
+     * @param resId id of icon
+     * @param colorId id of color to use
+     * @return drawable icon with specified color
+     */
+    private static Drawable fillIconWithColor(int resId, int colorId, Context context) {
+        Drawable icon = context.getResources().getDrawable(resId, context.getTheme());
+        int color = context.getColor(colorId);
+        icon.mutate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            icon.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
+        } else {
+            icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        }
+        return icon;
     }
 }

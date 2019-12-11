@@ -10,47 +10,45 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/text2"
-        android:padding="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:focusable="true"
         android:clickable="true"
         android:background="?android:attr/selectableItemBackgroundBorderless">
 
         <TextView
             android:id="@+id/title"
-            android:hint="Charge Station"
+            android:hint="@string/title_2"
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
             android:id="@+id/contact"
-            android:hint="Contact unavailable"
+            android:hint="@string/contact_unavailable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintBottom_toTopOf="@id/address"
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
             android:id="@+id/address"
-            android:hint="Address unavailable"
+            android:hint="@string/address_unavailable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintTop_toBottomOf="@id/contact"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <ImageView
@@ -63,9 +61,10 @@
 
         <TextView
             android:id="@+id/distance"
-            android:hint="distance"
+            android:hint="@string/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 

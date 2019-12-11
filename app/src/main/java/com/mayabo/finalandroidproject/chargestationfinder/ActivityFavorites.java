@@ -150,10 +150,10 @@ public class ActivityFavorites extends AppCompatActivity {
 
         public SwipeToDeleteCallback() {
             super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-            icon = fillIconWithColor(R.drawable.outline_delete_outline_24, Color.parseColor("#ffffff"));
-            background = new ColorDrawable(getColor(R.color.colorSecondaryDark));
-            divider = new ColorDrawable(Color.parseColor("#D0D0D0"));
-            clearDivider = new ColorDrawable(Color.parseColor("#ffffff"));
+            icon = fillIconWithColor(R.drawable.outline_delete_outline_24, Color.WHITE);
+            background = new ColorDrawable(getColor(R.color.colorErrorDark));
+            divider = new ColorDrawable(getColor(R.color.color_divider));
+            clearDivider = new ColorDrawable(Color.WHITE);
         }
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -262,13 +262,13 @@ public class ActivityFavorites extends AppCompatActivity {
                     .setIcon(fillIconWithColor(R.drawable.outline_info_24, getColor(R.color.colorPrimary)))
                     .setTitle(record.getTitle())
                     .setView(content)
-                    .setPositiveButton("Open map", (dialogInterface, i) -> {
+                    .setPositiveButton(R.string.open_map, (dialogInterface, i) -> {
                         Uri gmmIntentUri = Uri.parse("geo:" + record.getLatitude() + "," + record.getLongitude() + "?q=" + record.getAddress());
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                         mapIntent.setPackage("com.google.android.apps.maps");
                         startActivity(mapIntent);
                     })
-                    .setNegativeButton("Cancel", (dialogInterface, i) -> {})
+                    .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {})
                     .create().show();
             });
         }
